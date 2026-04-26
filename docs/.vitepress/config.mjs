@@ -9,11 +9,14 @@ export default defineConfig({
   cleanUrls: true,
 
   head: [
-    ['link', { rel: 'icon', href: '/favicon.ico' }],
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/qa-engineer-hub/favicon.svg' }],
     ['meta', { name: 'theme-color', content: '#6366f1' }],
     ['meta', { name: 'og:type', content: 'website' }],
     ['meta', { name: 'og:title', content: 'QA Engineer Hub' }],
     ['meta', { name: 'og:description', content: 'Kiến thức chuyên sâu dành cho QA Engineer' }],
+    ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
+    ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],
+    ['link', { href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap', rel: 'stylesheet' }],
   ],
 
   themeConfig: {
@@ -140,12 +143,12 @@ export default defineConfig({
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com' }
+      { icon: 'github', link: 'https://github.com/xbsvhn/qa-engineer-hub' }
     ],
 
     footer: {
-      message: 'Built with VitePress',
-      copyright: 'Copyright © 2024-present QA Engineer Hub'
+      message: 'Open-source QA knowledge base — Built with VitePress',
+      copyright: 'Copyright © 2026 QA Engineer Hub. Made with passion for the QA community.'
     },
 
     search: {

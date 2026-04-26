@@ -1,7 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
-  <circle cx="64" cy="64" r="60" fill="#6366f1" opacity="0.1" stroke="#6366f1" stroke-width="4"/>
-  <circle cx="64" cy="52" r="28" stroke="#6366f1" stroke-width="5" fill="none"/>
-  <line x1="84" y1="72" x2="105" y2="93" stroke="#6366f1" stroke-width="5" stroke-linecap="round"/>
-  <path d="M52 52 L60 60 L76 44" stroke="#22c55e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  <text x="64" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#6366f1">QA</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" fill="none">
+  <!-- Background circle -->
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:0.12"/>
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.06"/>
+    </linearGradient>
+    <linearGradient id="stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#8b5cf6"/>
+    </linearGradient>
+  </defs>
+  <circle cx="70" cy="70" r="66" fill="url(#bg)" stroke="url(#stroke)" stroke-width="3"/>
+  <!-- Magnifying glass -->
+  <circle cx="62" cy="58" r="26" stroke="url(#stroke)" stroke-width="4.5" fill="none"/>
+  <line x1="81" y1="77" x2="104" y2="100" stroke="url(#stroke)" stroke-width="4.5" stroke-linecap="round"/>
+  <!-- Checkmark -->
+  <path d="M50 58 L58 66 L74 50" stroke="#22c55e" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
 </svg>
