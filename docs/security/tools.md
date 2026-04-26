@@ -1,17 +1,17 @@
 # Security Testing Tools
 
-## Ban chat: SAST vs DAST = Kiem tra ban ve vs Kiem tra nha that
+## Bản chất: SAST vs DAST = Kiểm tra bản vẽ vs Kiểm tra nhà thật
 
-Truoc khi hieu cac tools, ban can hieu 2 cach tiep can bao mat:
+Trước khi hiểu các tools, bạn cần hiểu 2 cách tiếp cận bảo mật:
 
 | | SAST (Static) | DAST (Dynamic) |
 |---|---|---|
-| **An du** | **Kiem tra ban ve** nha truoc khi xay | **Kiem tra nha da xay** xong (thu pha cua) |
-| **Khi nao** | Scan source code (truoc khi chay) | Scan app DANG CHAY |
-| **Input** | Source code, dependencies | URL cua app |
-| **Tim duoc** | Code vulnerabilities, insecure patterns | Runtime vulnerabilities, config issues |
-| **Uu diem** | Phat hien SOM, trong CI/CD | Tim REAL vulnerabilities |
-| **Nhuoc diem** | False positives nhieu (bao dong gia) | Can app dang chay |
+| **Ẩn dụ** | **Kiểm tra bản vẽ** nhà trước khi xây | **Kiểm tra nhà đã xây** xong (thử phá cửa) |
+| **Khi nào** | Scan source code (trước khi chạy) | Scan app ĐANG CHẠY |
+| **Input** | Source code, dependencies | URL của app |
+| **Tìm được** | Code vulnerabilities, insecure patterns | Runtime vulnerabilities, config issues |
+| **Ưu điểm** | Phát hiện SỚM, trong CI/CD | Tìm REAL vulnerabilities |
+| **Nhược điểm** | False positives nhiều (báo động giả) | Cần app đang chạy |
 | **Tools** | SonarQube, Snyk, ESLint Security | OWASP ZAP, Burp Suite |
 
 ```
@@ -19,199 +19,199 @@ Development Pipeline:
 Code --> SAST scan --> Build --> Deploy --> DAST scan --> Release
          (Snyk)                            (OWASP ZAP)
 
-SAST = "xem ban ve tim loi"      (phat hien som, re)
-DAST = "dao vao nha thu pha"     (phat hien muon hon, nhung chinh xac hon)
+SAST = "xem bản vẽ tìm lỗi"      (phát hiện sớm, rẻ)
+DAST = "đào vào nhà thử phá"     (phát hiện muộn hơn, nhưng chính xác hơn)
 ```
 
 ::: tip Aha moment
-SAST va DAST **bo sung cho nhau**, khong thay the nhau. SAST tim loi trong code (nhu "o day khong co khoa"), DAST verify loi that (nhu "toi thuc su mo duoc cua"). Dung CA HAI de bao mat tot nhat.
+SAST và DAST **bổ sung cho nhau**, không thay thế nhau. SAST tìm lỗi trong code (như "ở đây không có khóa"), DAST verify lỗi thật (như "tôi thực sự mở được cửa"). Dùng CẢ HAI để bảo mật tốt nhất.
 :::
 
 ---
 
-## OWASP ZAP -- Mien phi, manh me
+## OWASP ZAP -- Miễn phí, mạnh mẽ
 
-### ZAP la gi?
+### ZAP là gì?
 
-**OWASP ZAP** (Zed Attack Proxy) la tool **MIEN PHI** de tim security vulnerabilities trong web applications. No hoat dong nhu mot **"nguoi trung gian"** giua browser va server -- nghe len moi request/response va tim lo hong.
+**OWASP ZAP** (Zed Attack Proxy) là tool **MIỄN PHÍ** để tìm security vulnerabilities trong web applications. Nó hoạt động như một **"người trung gian"** giữa browser và server -- nghe lén mọi request/response và tìm lỗ hổng.
 
-An du: ZAP giong nhu **may soi chieu** o san bay. Moi "hanh ly" (request) di qua, no soi va tim "do cam" (vulnerabilities).
+Ẩn dụ: ZAP giống như **máy soi chiếu** ở sân bay. Mỗi "hành lý" (request) đi qua, nó soi và tìm "đồ cấm" (vulnerabilities).
 
-### Cach dung co ban
+### Cách dùng cơ bản
 
 ```
-1. Automated Scan (nhanh, de):
-   - Mo ZAP --> Nhap URL target --> Click "Attack"
-   - ZAP tu dong:
-     a. Crawl toan bo website (tim tat ca cac trang)
-     b. Gui payloads doc hai vao moi input (SQL injection, XSS...)
-     c. Phan tich responses
-     d. Bao cao vulnerabilities tim duoc
-   - Thoi gian: 5-30 phut tuy do lon website
+1. Automated Scan (nhanh, dễ):
+   - Mở ZAP --> Nhập URL target --> Click "Attack"
+   - ZAP tự động:
+     a. Crawl toàn bộ website (tìm tất cả các trang)
+     b. Gửi payloads độc hại vào mọi input (SQL injection, XSS...)
+     c. Phân tích responses
+     d. Báo cáo vulnerabilities tìm được
+   - Thời gian: 5-30 phút tùy độ lớn website
 
-2. Manual Explore (qua proxy -- chinh xac hon):
-   - Set browser proxy --> ZAP (ZAP nghe moi request)
-   - Browse website BINH THUONG (login, click, dien form...)
-   - ZAP capture va analyze MOI request/response
-   - ZAP highlight cac van de tiem an
-   - Sau do chay "Active Scan" tren cac URLs da capture
+2. Manual Explore (qua proxy -- chính xác hơn):
+   - Set browser proxy --> ZAP (ZAP nghe mọi request)
+   - Browse website BÌNH THƯỜNG (login, click, điền form...)
+   - ZAP capture và analyze MỌI request/response
+   - ZAP highlight các vấn đề tiềm ẩn
+   - Sau đó chạy "Active Scan" trên các URLs đã capture
 
-3. Active Scan (tan cong thu):
-   - Sau khi explore, chon URLs can scan sau
-   - ZAP thu inject payloads (SQL, XSS, path traversal...)
-   - Report vulnerabilities voi do nghiem trong
+3. Active Scan (tấn công thử):
+   - Sau khi explore, chọn URLs cần scan sâu
+   - ZAP thử inject payloads (SQL, XSS, path traversal...)
+   - Report vulnerabilities với độ nghiêm trọng
 ```
 
-### ZAP Alerts -- Doc ket qua
+### ZAP Alerts -- Đọc kết quả
 
-| Risk Level | Mau | Vi du | Action |
+| Risk Level | Màu | Ví dụ | Action |
 |---|---|---|---|
-| **High** | Do | SQL Injection, Remote Code Execution | Fix NGAY |
-| **Medium** | Cam | XSS, Missing Security Headers | Fix trong sprint nay |
-| **Low** | Vang | Cookie without HttpOnly flag | Plan fix |
+| **High** | Đỏ | SQL Injection, Remote Code Execution | Fix NGAY |
+| **Medium** | Cam | XSS, Missing Security Headers | Fix trong sprint này |
+| **Low** | Vàng | Cookie without HttpOnly flag | Plan fix |
 | **Informational** | Xanh | Server version disclosure | Nice to fix |
 
-### CI/CD Integration -- Chay ZAP tu dong
+### CI/CD Integration -- Chạy ZAP tự động
 
 ```yaml
-# GitHub Actions -- ZAP Scan moi dem
+# GitHub Actions -- ZAP Scan mỗi đêm
 - name: ZAP Full Scan
   uses: zaproxy/action-full-scan@v0.10.0
   with:
     target: 'https://staging.example.com'
-    # ^^^ Scan tren STAGING, khong phai production!
+    # ^^^ Scan trên STAGING, không phải production!
     rules_file_name: '.zap/rules.tsv'
-    # ^^^ File config: alert nao bo qua, alert nao bao
+    # ^^^ File config: alert nào bỏ qua, alert nào báo
     cmd_options: '-a'
-    # ^^^ -a = include alpha rules (nhieu checks hon)
+    # ^^^ -a = include alpha rules (nhiều checks hơn)
 ```
 
 ---
 
-## Burp Suite -- "Dao Thuy Si" cua security testing
+## Burp Suite -- "Dao Thụy Sĩ" của security testing
 
-### Burp Suite la gi?
+### Burp Suite là gì?
 
-**Burp Suite** la tool **pho bien nhat** cho penetration testing. Giong nhu "dao Thuy Si" -- nhieu cong cu trong 1.
+**Burp Suite** là tool **phổ biến nhất** cho penetration testing. Giống như "dao Thụy Sĩ" -- nhiều công cụ trong 1.
 
-- **Community Edition**: Mien phi (du cho QA)
-- **Professional Edition**: Tra phi (cho security engineers)
+- **Community Edition**: Miễn phí (đủ cho QA)
+- **Professional Edition**: Trả phí (cho security engineers)
 
-### QA dung Burp Suite de:
+### QA dùng Burp Suite để:
 
-| Feature | An du | Muc dich |
+| Feature | Ẩn dụ | Mục đích |
 |---|---|---|
-| **Proxy** | May nghe len | Bat va xem MOI request/response |
-| **Repeater** | May fax | Gui lai 1 request, sua truoc khi gui |
-| **Intruder** | May bom thu | Tu dong gui hang ngan requests (brute force, fuzzing) |
-| **Scanner** | May soi chieu (Pro) | Tu dong tim vulnerabilities |
+| **Proxy** | Máy nghe lén | Bắt và xem MỌI request/response |
+| **Repeater** | Máy fax | Gửi lại 1 request, sửa trước khi gửi |
+| **Intruder** | Máy bơm thử | Tự động gửi hàng ngàn requests (brute force, fuzzing) |
+| **Scanner** | Máy soi chiếu (Pro) | Tự động tìm vulnerabilities |
 
-### Vi du: Test IDOR voi Burp
+### Ví dụ: Test IDOR với Burp
 
 ```
 1. Login as User A
-2. Bat Burp Proxy --> capture tat ca requests
-3. Tim request: GET /api/orders/123  (order cua User A)
-4. Click phai --> "Send to Repeater"
-5. Trong Repeater, doi ID: GET /api/orders/124  (order cua User B?)
+2. Bật Burp Proxy --> capture tất cả requests
+3. Tìm request: GET /api/orders/123  (order của User A)
+4. Click phải --> "Send to Repeater"
+5. Trong Repeater, đổi ID: GET /api/orders/124  (order của User B?)
 6. Click "Send" --> Xem response
-7. Neu tra ve data order 124 --> BUG: IDOR vulnerability!
-   (User A KHONG nen xem duoc order cua User B)
+7. Nếu trả về data order 124 --> BUG: IDOR vulnerability!
+   (User A KHÔNG nên xem được order của User B)
 ```
 
 ::: tip Aha moment
-Burp Repeater la "vu khi" manh nhat cua QA khi test security. Ban bat 1 request, sua bat ky gi (ID, token, params), gui lai, va xem server phan ung sao. Don gian nhung CUNG HIEU QUA.
+Burp Repeater là "vũ khí" mạnh nhất của QA khi test security. Bạn bắt 1 request, sửa bất kỳ gì (ID, token, params), gửi lại, và xem server phản ứng sao. Đơn giản nhưng CỰC HIỆU QUẢ.
 :::
 
 ---
 
-## Snyk -- Bao ve cua truoc (Dependency Security)
+## Snyk -- Bảo vệ cửa trước (Dependency Security)
 
-### Snyk la gi?
+### Snyk là gì?
 
-**Snyk** scan **dependencies** (npm packages, Python packages...) de tim lo hong DA BIET. Giong nhu kiem tra xem o khoa ban dang dung co nam trong "danh sach o khoa bi be" khong.
+**Snyk** scan **dependencies** (npm packages, Python packages...) để tìm lỗ hổng ĐÃ BIẾT. Giống như kiểm tra xem ổ khóa bạn đang dùng có nằm trong "danh sách ổ khóa bị bẻ" không.
 
 ```bash
-# Cai dat
+# Cài đặt
 npm install -g snyk
 
 # Scan project
 snyk test
 
-# Output vi du:
+# Output ví dụ:
 # x  High severity vulnerability found in lodash
 #    Description: Prototype Pollution
 #    Introduced through: lodash@4.17.20
-#    Fixed in: lodash@4.17.21        <-- Chi can update len version nay!
+#    Fixed in: lodash@4.17.21        <-- Chỉ cần update lên version này!
 #    Path: myapp > lodash
 ```
 
 ### CI/CD Integration
 
 ```yaml
-# GitHub Actions -- Chay moi PR
+# GitHub Actions -- Chạy mỗi PR
 - name: Snyk Security Check
   uses: snyk/actions/node@master
   env:
     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-  # Neu tim thay lo hong High/Critical --> pipeline FAIL
-  # --> Dev PHAI fix truoc khi merge
+  # Nếu tìm thấy lỗ hổng High/Critical --> pipeline FAIL
+  # --> Dev PHẢI fix trước khi merge
 ```
 
 ---
 
-## Cac tools khac
+## Các tools khác
 
-| Tool | Loai | Mo ta | An du | Cost |
+| Tool | Loại | Mô tả | Ẩn dụ | Cost |
 |---|---|---|---|---|
-| **SonarQube** | SAST | Scan code quality + security | "Giao vien cham bai" | Free (Community) |
+| **SonarQube** | SAST | Scan code quality + security | "Giáo viên chấm bài" | Free (Community) |
 | **ESLint Security** | SAST | Security rules cho JavaScript | "Spell checker cho security" | Free |
-| **npm audit** | SCA | Check npm dependencies | "Kiem tra danh sach thu hoi" | Free (built-in) |
-| **Dependabot** | SCA | Tu dong tao PR khi co lo hong | "Bao ve tu dong" | Free (GitHub) |
-| **Lighthouse** | Audit | Security + Performance audit | "Kiem tra suc khoe tong quat" | Free (Chrome) |
+| **npm audit** | SCA | Check npm dependencies | "Kiểm tra danh sách thu hồi" | Free (built-in) |
+| **Dependabot** | SCA | Tự động tạo PR khi có lỗ hổng | "Bảo vệ tự động" | Free (GitHub) |
+| **Lighthouse** | Audit | Security + Performance audit | "Kiểm tra sức khỏe tổng quát" | Free (Chrome) |
 
-**SCA** = Software Composition Analysis -- kiem tra thu vien ban dang dung co an toan khong.
+**SCA** = Software Composition Analysis -- kiểm tra thư viện bạn đang dùng có an toàn không.
 
 ---
 
 ## Security Testing Workflow cho QA
 
 ```
-Hang ngay:
-  +-- Khi test feature moi --> thu basic SQL/XSS injection
-      (mat 2 phut, nhung co the tim duoc lo hong nghiem trong)
+Hàng ngày:
+  +-- Khi test feature mới --> thử basic SQL/XSS injection
+      (mất 2 phút, nhưng có thể tìm được lỗ hổng nghiêm trọng)
 
-Moi Sprint:
+Mỗi Sprint:
   +-- npm audit --> fix critical vulnerabilities
-  +-- OWASP ZAP quick scan tren staging
-      (chay automated scan, doc report, log bugs)
+  +-- OWASP ZAP quick scan trên staging
+      (chạy automated scan, đọc report, log bugs)
 
-Moi Release:
+Mỗi Release:
   +-- OWASP ZAP full scan
   +-- Review security headers
   +-- Test authentication flows (login, logout, token, session)
-  +-- IDOR checks tren API endpoints moi
+  +-- IDOR checks trên API endpoints mới
 
-CI/CD Pipeline (tu dong):
-  +-- Snyk --> check dependencies (moi PR)
-  +-- SonarQube --> SAST scan (moi PR)
-  +-- ZAP --> DAST scan (hang dem tren staging)
+CI/CD Pipeline (tự động):
+  +-- Snyk --> check dependencies (mỗi PR)
+  +-- SonarQube --> SAST scan (mỗi PR)
+  +-- ZAP --> DAST scan (hàng đêm trên staging)
 ```
 
 ::: tip Aha moment
-Security testing khong phai lam 1 lan roi xong. No la **quy trinh lien tuc** -- moi feature moi co the tao lo hong moi. Nhung chi can **2 phut** thu SQL/XSS tren moi form moi la ban da lam duoc 80% cong viec.
+Security testing không phải làm 1 lần rồi xong. Nó là **quy trình liên tục** -- mỗi feature mới có thể tạo lỗ hổng mới. Nhưng chỉ cần **2 phút** thử SQL/XSS trên mỗi form mới là bạn đã làm được 80% công việc.
 :::
 
 ---
 
-## Tom tat chuong
+## Tóm tắt chương
 
-| Tool | An du | Loai | QA dung khi | Cost |
+| Tool | Ẩn dụ | Loại | QA dùng khi | Cost |
 |---|---|---|---|---|
-| **OWASP ZAP** | May soi chieu san bay | DAST | Scan web app tim lo hong | Free |
-| **Burp Suite** | Dao Thuy Si | Proxy/DAST | Bat request, test IDOR | Free (Community) |
-| **Snyk** | Kiem tra danh sach thu hoi | SCA | Check vulnerable dependencies | Free tier |
-| **npm audit** | Kiem tra nhanh | SCA | Quick dependency check | Free |
-| **SonarQube** | Giao vien cham bai | SAST | Code quality + security | Free (Community) |
-| **SAST** | Kiem tra ban ve | Static | Tim loi trong code | -- |
-| **DAST** | Thu pha cua nha that | Dynamic | Tim loi khi app chay | -- |
+| **OWASP ZAP** | Máy soi chiếu sân bay | DAST | Scan web app tìm lỗ hổng | Free |
+| **Burp Suite** | Dao Thụy Sĩ | Proxy/DAST | Bắt request, test IDOR | Free (Community) |
+| **Snyk** | Kiểm tra danh sách thu hồi | SCA | Check vulnerable dependencies | Free tier |
+| **npm audit** | Kiểm tra nhanh | SCA | Quick dependency check | Free |
+| **SonarQube** | Giáo viên chấm bài | SAST | Code quality + security | Free (Community) |
+| **SAST** | Kiểm tra bản vẽ | Static | Tìm lỗi trong code | -- |
+| **DAST** | Thử phá cửa nhà thật | Dynamic | Tìm lỗi khi app chạy | -- |

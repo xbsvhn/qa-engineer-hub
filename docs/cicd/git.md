@@ -1,249 +1,249 @@
 # Git & Version Control
 
-## Ban chat: Git = "Save Game" cho code
+## Bản chất: Git = "Save Game" cho code
 
-Ban choi game RPG. Truoc khi danh boss, ban **save game**. Neu chet, ban **load lai** tu diem save. Git lam dung nhu vay cho code:
+Bạn chơi game RPG. Trước khi đánh boss, bạn **save game**. Nếu chết, bạn **load lại** từ điểm save. Git làm đúng như vậy cho code:
 
-- Moi lan **commit** = ban **save game** tai thoi diem do
-- Neu code hong, ban **quay lai** bat ky "save point" nao truoc do
-- Nhieu nguoi cung **choi chung** mot game ma khong de len nhau
+- Mỗi lần **commit** = bạn **save game** tại thời điểm đó
+- Nếu code hỏng, bạn **quay lại** bất kỳ "save point" nào trước đó
+- Nhiều người cùng **chơi chung** một game mà không đè lên nhau
 
 ::: tip Aha moment
-Khong co Git, viec "quay lai code hom qua" nghia la ban phai NHO ban da sua gi. Voi Git, ban chi can goi mot lenh la code quay ve dung thoi diem ban muon -- giong nhu may du hanh thoi gian cho code.
+Không có Git, việc "quay lại code hôm qua" nghĩa là bạn phải NHỚ bạn đã sửa gì. Với Git, bạn chỉ cần gọi một lệnh là code quay về đúng thời điểm bạn muốn -- giống như máy du hành thời gian cho code.
 :::
 
 ---
 
-## Cac khai niem cot loi -- Giai thich bang hinh anh
+## Các khái niệm cốt lõi -- Giải thích bằng hình ảnh
 
-### Repository (Repo) = Thu muc du an co "tri nho"
-
-```
-Repository = Thu muc project + Toan bo lich su thay doi
-
-Local Repo  <-- Tren may tinh cua ban (ban lam viec o day)
-Remote Repo <-- Tren GitHub/GitLab (cloud -- noi moi nguoi thay code cua ban)
-```
-
-Tuong tuong: Local repo = ban ve tren giay nhap. Remote repo = ban chup lai va dang len Google Drive de ca team xem.
-
-### Branch = Vu tru song song
+### Repository (Repo) = Thư mục dự án có "trí nhớ"
 
 ```
-main ──●──●──●──●──●──●──●──●── (code chinh, luon chay tot)
+Repository = Thư mục project + Toàn bộ lịch sử thay đổi
+
+Local Repo  <-- Trên máy tính của bạn (bạn làm việc ở đây)
+Remote Repo <-- Trên GitHub/GitLab (cloud -- nơi mọi người thấy code của bạn)
+```
+
+Tưởng tượng: Local repo = bạn vẽ trên giấy nháp. Remote repo = bạn chụp lại và đăng lên Google Drive để cả team xem.
+
+### Branch = Vũ trụ song song
+
+```
+main ──●──●──●──●──●──●──●──●── (code chính, luôn chạy tốt)
               |              ^
-              |              | Merge (gop code lai)
+              |              | Merge (gộp code lại)
               v              |
-feature/login ●──●──●──●──●─┘  (ban thu nghiem o day)
+feature/login ●──●──●──●──●─┘  (bạn thử nghiệm ở đây)
 ```
 
-**Tai sao can branch?** Tuong tuong ban viet bao cao nhom. Neu 3 nguoi cung sua TRUC TIEP tren 1 file Google Docs -- loan! Thay vao do:
-- Moi nguoi **copy ra ban rieng** (tao branch)
-- Lam xong thi **gop lai** (merge)
-- Neu ai lam hong thi chi hong ban copy, **ban goc van an toan**
+**Tại sao cần branch?** Tưởng tượng bạn viết báo cáo nhóm. Nếu 3 người cùng sửa TRỰC TIẾP trên 1 file Google Docs -- loạn! Thay vào đó:
+- Mỗi người **copy ra bản riêng** (tạo branch)
+- Làm xong thì **gộp lại** (merge)
+- Nếu ai làm hỏng thì chỉ hỏng bản copy, **bản gốc vẫn an toàn**
 
-### Branching Strategy trong du an thuc te
+### Branching Strategy trong dự án thực tế
 
 ```
-main          <-- Production code (code dang chay cho user that)
+main          <-- Production code (code đang chạy cho user thật)
   |
-  +-- develop <-- Integration branch (gop code truoc khi len main)
+  +-- develop <-- Integration branch (gộp code trước khi lên main)
   |     |
-  |     +-- feature/login-test    <-- QA viet test moi
-  |     +-- feature/cart-test     <-- QA viet test moi
-  |     +-- bugfix/flaky-test     <-- Fix test bi flaky
+  |     +-- feature/login-test    <-- QA viết test mới
+  |     +-- feature/cart-test     <-- QA viết test mới
+  |     +-- bugfix/flaky-test     <-- Fix test bị flaky
   |
-  +-- release/v2.0 <-- Chuan bi release
+  +-- release/v2.0 <-- Chuẩn bị release
 ```
 
-### Commit = "Screenshot" code tai thoi diem nay
+### Commit = "Screenshot" code tại thời điểm này
 
-Moi commit luu lai:
-- **AI** thay doi? (tac gia)
-- **CAI GI** thay doi? (file nao, dong nao)
-- **KHI NAO** thay doi? (timestamp)
-- **TAI SAO** thay doi? (commit message ban viet)
+Mỗi commit lưu lại:
+- **AI** thay đổi? (tác giả)
+- **CÁI GÌ** thay đổi? (file nào, dòng nào)
+- **KHI NÀO** thay đổi? (timestamp)
+- **TẠI SAO** thay đổi? (commit message bạn viết)
 
 ### Push / Pull = Upload / Download
 
 ```
-May ban (Local)          GitHub (Remote)
+Máy bạn (Local)          GitHub (Remote)
      |                        |
-     |--- git push --------->|   (Upload code len cloud)
+     |--- git push --------->|   (Upload code lên cloud)
      |                        |
-     |<--- git pull ---------|   (Download code moi tu cloud)
+     |<--- git pull ---------|   (Download code mới từ cloud)
 ```
 
-Giong nhu Google Drive: push = upload file len, pull = download file moi nhat ve.
+Giống như Google Drive: push = upload file lên, pull = download file mới nhất về.
 
-### Merge Conflict = Hai nguoi sua cung mot cau
+### Merge Conflict = Hai người sửa cùng một câu
 
-Tuong tuong ban va dong nghiep **cung sua dong 5** cua file `login.spec.ts`:
-- Ban doi email thanh `test@gmail.com`
-- Dong nghiep doi email thanh `admin@company.com`
+Tưởng tượng bạn và đồng nghiệp **cùng sửa dòng 5** của file `login.spec.ts`:
+- Bạn đổi email thành `test@gmail.com`
+- Đồng nghiệp đổi email thành `admin@company.com`
 
-Git khong biet chon cai nao -- nen no **bao conflict** va yeu cau ban CHON:
+Git không biết chọn cái nào -- nên nó **báo conflict** và yêu cầu bạn CHỌN:
 
 ```bash
-# Git danh dau conflict trong file nhu nay:
+# Git đánh dấu conflict trong file như này:
 <<<<<<< HEAD
-  await page.fill('#email', 'test@gmail.com');      // Code cua ban
+  await page.fill('#email', 'test@gmail.com');      // Code của bạn
 =======
-  await page.fill('#email', 'admin@company.com');   // Code cua dong nghiep
+  await page.fill('#email', 'admin@company.com');   // Code của đồng nghiệp
 >>>>>>> main
 
-# Ban phai: chon 1 version, xoa cac markers (<<<<, ====, >>>>), save file
-  await page.fill('#email', 'admin@company.com');   // Chon version dung
+# Bạn phải: chọn 1 version, xóa các markers (<<<<, ====, >>>>), save file
+  await page.fill('#email', 'admin@company.com');   // Chọn version đúng
 ```
 
 ::: warning
-Merge conflict KHONG phai loi nghiem trong. No chi la Git noi: "Toi khong biet chon version nao, ban quyet dinh giup toi." Binh tinh doc va chon version dung la xong.
+Merge conflict KHÔNG phải lỗi nghiêm trọng. Nó chỉ là Git nói: "Tôi không biết chọn version nào, bạn quyết định giúp tôi." Bình tĩnh đọc và chọn version đúng là xong.
 :::
 
 ---
 
-## Git Commands -- Hoc theo workflow hang ngay
+## Git Commands -- Học theo workflow hàng ngày
 
-### Lan dau: Clone repo ve may
+### Lần đầu: Clone repo về máy
 
 ```bash
-# Clone = "download toan bo du an ve may lan dau"
+# Clone = "download toàn bộ dự án về máy lần đầu"
 git clone https://github.com/company/automation-tests.git
 cd automation-tests
 
-# Cau hinh ten va email (Git can biet ban la ai)
+# Cấu hình tên và email (Git cần biết bạn là ai)
 git config --global user.name "Nguyen Van An"
 git config --global user.email "an@company.com"
 ```
 
-### Workflow hang ngay (QA dung NHIEU NHAT)
+### Workflow hàng ngày (QA dùng NHIỀU NHẤT)
 
 ```bash
-# Buoc 1: Lay code moi nhat tu cloud (giong "sync" Google Drive)
+# Bước 1: Lấy code mới nhất từ cloud (giống "sync" Google Drive)
 git pull origin main
 
-# Buoc 2: Tao branch moi cho cong viec hom nay
-# (tao "vu tru song song" de lam viec ma khong anh huong main)
+# Bước 2: Tạo branch mới cho công việc hôm nay
+# (tạo "vũ trụ song song" để làm việc mà không ảnh hưởng main)
 git checkout -b feature/add-checkout-tests
 
-# Buoc 3: Viet code... (viet test cases, fix tests...)
-# ... ban code binh thuong o day ...
+# Bước 3: Viết code... (viết test cases, fix tests...)
+# ... bạn code bình thường ở đây ...
 
-# Buoc 4: Xem minh da thay doi gi
-git status          # Hien thi file nao da thay doi (giong "xem danh sach file")
-git diff            # Hien thi cu the dong nao thay doi (giong "so sanh 2 ban")
+# Bước 4: Xem mình đã thay đổi gì
+git status          # Hiển thị file nào đã thay đổi (giống "xem danh sách file")
+git diff            # Hiển thị cụ thể dòng nào thay đổi (giống "so sánh 2 bản")
 
-# Buoc 5: "Chon file" de save (stage)
-git add tests/checkout.spec.ts    # Chon 1 file cu the
-git add tests/                     # Chon ca thu muc
-git add .                          # Chon TAT CA (can than -- co the add nham file!)
+# Bước 5: "Chọn file" để save (stage)
+git add tests/checkout.spec.ts    # Chọn 1 file cụ thể
+git add tests/                     # Chọn cả thư mục
+git add .                          # Chọn TẤT CẢ (cẩn thận -- có thể add nhầm file!)
 
-# Buoc 6: "Save game" (commit)
+# Bước 6: "Save game" (commit)
 git commit -m "Add checkout flow e2e tests"
 
-# Buoc 7: Upload len cloud (push)
+# Bước 7: Upload lên cloud (push)
 git push origin feature/add-checkout-tests
 
-# Buoc 8: Tao Pull Request tren GitHub --> Team review --> Merge vao main
+# Bước 8: Tạo Pull Request trên GitHub --> Team review --> Merge vào main
 ```
 
 ::: tip Aha moment
-`git add` giong nhu ban **bo hang vao gio** (stage). `git commit` giong nhu ban **ra quay tinh tien** (save). Ban co the bo nhieu mon vao gio truoc khi tinh tien -- tuong tu, ban co the `add` nhieu file roi moi `commit` mot lan.
+`git add` giống như bạn **bỏ hàng vào giỏ** (stage). `git commit` giống như bạn **ra quầy tính tiền** (save). Bạn có thể bỏ nhiều món vào giỏ trước khi tính tiền -- tương tự, bạn có thể `add` nhiều file rồi mới `commit` một lần.
 :::
 
-### Cac lenh bo sung huu ich
+### Các lệnh bổ sung hữu ích
 
 ```bash
-# Xem lich su "save game" (commits)
-git log --oneline -10       # 10 commits gan nhat, moi dong 1 commit
+# Xem lịch sử "save game" (commits)
+git log --oneline -10       # 10 commits gần nhất, mỗi dòng 1 commit
 
-# Chuyen sang branch khac (giong "load save game" khac)
+# Chuyển sang branch khác (giống "load save game" khác)
 git checkout main
 git checkout feature/login-test
 
-# Xem tat ca branches
+# Xem tất cả branches
 git branch -a
 
-# Xoa branch da merge (don dep sau khi xong viec)
+# Xóa branch đã merge (dọn dẹp sau khi xong việc)
 git branch -d feature/old-branch
 
-# Lay thong tin moi tu cloud NHUNG CHUA merge (chi "nhin" thoi)
+# Lấy thông tin mới từ cloud NHƯNG CHƯA merge (chỉ "nhìn" thôi)
 git fetch origin
 
-# "Undo" thay doi chua commit
+# "Undo" thay đổi chưa commit
 git checkout -- filename.ts     # Undo 1 file
-git stash                       # Tam cat TAT CA thay doi (giong "cat vao ngan keo")
-git stash pop                   # Lay lai tu "ngan keo"
+git stash                       # Tạm cất TẤT CẢ thay đổi (giống "cất vào ngăn kéo")
+git stash pop                   # Lấy lại từ "ngăn kéo"
 ```
 
 ---
 
-## Pull Request (PR) = "Xin phep" truoc khi gop code
+## Pull Request (PR) = "Xin phép" trước khi gộp code
 
-### PR la gi?
+### PR là gì?
 
-Tuong tuong ban viet bai luan. Truoc khi nop, ban **nho ban be doc va gop y**. Pull Request la quy trinh tuong tu cho code:
+Tưởng tượng bạn viết bài luận. Trước khi nộp, bạn **nhờ bạn bè đọc và góp ý**. Pull Request là quy trình tương tự cho code:
 
-1. Ban **push branch** len GitHub
-2. Ban **tao Pull Request**: "Hey team, toi viet xong tests nay, review giup toi"
-3. Team **doc code**, **gop y**, **approve**
-4. CI pipeline **tu dong chay tests**
-5. Tat ca OK --> **Merge vao main**
+1. Bạn **push branch** lên GitHub
+2. Bạn **tạo Pull Request**: "Hey team, tôi viết xong tests này, review giúp tôi"
+3. Team **đọc code**, **góp ý**, **approve**
+4. CI pipeline **tự động chạy tests**
+5. Tất cả OK --> **Merge vào main**
 
-### QA tao PR
+### QA tạo PR
 
 ```
-1. Push branch len remote
-2. Tao Pull Request tren GitHub:
+1. Push branch lên remote
+2. Tạo Pull Request trên GitHub:
    - Title: "Add checkout e2e tests"
-   - Description: Thay doi gi, tai sao, cach review
-   - Reviewers: Team lead, QA khac
+   - Description: Thay đổi gì, tại sao, cách review
+   - Reviewers: Team lead, QA khác
    - Labels: "automation", "tests"
-3. CI pipeline tu dong chay tests
-4. Reviewers approve --> Merge vao main
+3. CI pipeline tự động chạy tests
+4. Reviewers approve --> Merge vào main
 ```
 
-### QA review PR cua Dev
+### QA review PR của Dev
 
-Day la "vu khi bi mat" cua QA gioi -- **doc code dev thay doi** de:
+Đây là "vũ khí bí mật" của QA giỏi -- **đọc code dev thay đổi** để:
 
 ```
-Khi review dev PR, QA focus vao:
-- Files nao thay doi?  --> Module nao can test lai?
-- Logic nao moi?       --> Can test cases gi?
-- Co edge cases nao dev chua handle?
-- Unit tests co du cho code moi?
+Khi review dev PR, QA focus vào:
+- Files nào thay đổi?  --> Module nào cần test lại?
+- Logic nào mới?       --> Cần test cases gì?
+- Có edge cases nào dev chưa handle?
+- Unit tests có đủ cho code mới?
 ```
 
 ::: tip Aha moment
-QA review PR cua dev = **shift-left testing**. Ban tim bug TRUOC KHI code duoc merge, thay vi doi den luc test tren staging. Nhanh hon, re hon, hieu qua hon.
+QA review PR của dev = **shift-left testing**. Bạn tìm bug TRƯỚC KHI code được merge, thay vì đợi đến lúc test trên staging. Nhanh hơn, rẻ hơn, hiệu quả hơn.
 :::
 
 ---
 
-## .gitignore -- "Danh sach cam" khong push len cloud
+## .gitignore -- "Danh sách cấm" không push lên cloud
 
-Co nhung file **khong nen** push len GitHub (file tam, file mat khau, file qua nang):
+Có những file **không nên** push lên GitHub (file tạm, file mật khẩu, file quá nặng):
 
 ```gitignore
-# Dependencies (qua nang, ai can thi tu install)
+# Dependencies (quá nặng, ai cần thì tự install)
 node_modules/
 
-# Test outputs (sinh ra moi lan chay, khong can luu)
+# Test outputs (sinh ra mỗi lần chạy, không cần lưu)
 test-results/
 playwright-report/
 screenshots/
 videos/
 
-# Environment (chua mat khau, tokens -- TUYET DOI khong push!)
+# Environment (chứa mật khẩu, tokens -- TUYỆT ĐỐI không push!)
 .env
 .env.local
 
-# IDE settings (cua rieng moi nguoi)
+# IDE settings (của riêng mỗi người)
 .vscode/settings.json
 .idea/
 
-# OS files (file rac cua he dieu hanh)
+# OS files (file rác của hệ điều hành)
 .DS_Store
 Thumbs.db
 
@@ -253,20 +253,20 @@ dist/
 
 ---
 
-## Commit Message Convention -- "Nhat ky" ro rang
+## Commit Message Convention -- "Nhật ký" rõ ràng
 
 ```
-Format: <type>: <mo ta ngan gon>
+Format: <type>: <mô tả ngắn gọn>
 
 Types:
-  test:     Them hoac sua tests
+  test:     Thêm hoặc sửa tests
   fix:      Fix bug trong test code
-  feat:     Them feature moi (page object, helper)
-  refactor: Refactor code (khong doi behavior)
-  ci:       Thay doi CI/CD config
-  docs:     Cap nhat documentation
+  feat:     Thêm feature mới (page object, helper)
+  refactor: Refactor code (không đổi behavior)
+  ci:       Thay đổi CI/CD config
+  docs:     Cập nhật documentation
 
-Vi du:
+Ví dụ:
   test: add checkout flow e2e tests
   fix: resolve flaky login test timeout
   refactor: extract common login helper
@@ -274,19 +274,19 @@ Vi du:
 ```
 
 ::: tip
-Commit message tot = doc 1 dong la biet code thay doi gi va TAI SAO. Commit message te = "fix bug", "update code" -- doc xong van khong hieu gi.
+Commit message tốt = đọc 1 dòng là biết code thay đổi gì và TẠI SAO. Commit message tệ = "fix bug", "update code" -- đọc xong vẫn không hiểu gì.
 :::
 
 ---
 
-## Tom tat chuong
+## Tóm tắt chương
 
-| Concept | An du | QA dung khi |
+| Concept | Ẩn dụ | QA dùng khi |
 |---|---|---|
-| **Git** | "Save game" cho code | Moi ngay lam viec |
-| **Branch** | Vu tru song song | Tao nhanh lam feature moi |
-| **Commit** | Screenshot code | Luu tien do cong viec |
-| **Push/Pull** | Upload/Download | Dong bo code voi team |
-| **Merge Conflict** | 2 nguoi sua cung cau | Giai quyet khi merge |
-| **Pull Request** | Xin phep gop code | Review truoc khi merge |
-| **.gitignore** | Danh sach cam | Khong push file khong can thiet |
+| **Git** | "Save game" cho code | Mỗi ngày làm việc |
+| **Branch** | Vũ trụ song song | Tạo nhánh làm feature mới |
+| **Commit** | Screenshot code | Lưu tiến độ công việc |
+| **Push/Pull** | Upload/Download | Đồng bộ code với team |
+| **Merge Conflict** | 2 người sửa cùng câu | Giải quyết khi merge |
+| **Pull Request** | Xin phép gộp code | Review trước khi merge |
+| **.gitignore** | Danh sách cấm | Không push file không cần thiết |

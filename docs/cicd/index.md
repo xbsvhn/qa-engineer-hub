@@ -1,19 +1,19 @@
 # CI/CD
 
-## CI/CD la gi? -- Hieu ban chat truoc
+## CI/CD là gì? -- Hiểu bản chất trước
 
-Tuong tuong ban la mot dau bep trong nha hang. Moi ngay ban nau mon moi (code moi). Truoc khi phuc vu khach, ban phai:
+Tưởng tượng bạn là một đầu bếp trong nhà hàng. Mỗi ngày bạn nấu món mới (code mới). Trước khi phục vụ khách, bạn phải:
 
-1. **Kiem tra nguyen lieu** (build -- code co compile duoc khong?)
-2. **Nem thu** (test -- code co chay dung khong?)
-3. **Bung ra ban** (deploy -- dua code len server cho user dung)
+1. **Kiểm tra nguyên liệu** (build -- code có compile được không?)
+2. **Nếm thử** (test -- code có chạy đúng không?)
+3. **Bưng ra bàn** (deploy -- đưa code lên server cho user dùng)
 
-**CI/CD** la **robot lam 3 buoc nay tu dong** moi khi ban thay doi code. Ban chi viec nau (code), robot lo phan con lai.
+**CI/CD** là **robot làm 3 bước này tự động** mỗi khi bạn thay đổi code. Bạn chỉ việc nấu (code), robot lo phần còn lại.
 
-- **CI** (Continuous Integration) = tu dong build + test moi khi ai do push code
-- **CD** (Continuous Delivery) = tu dong deploy len server sau khi tests pass
+- **CI** (Continuous Integration) = tự động build + test mỗi khi ai đó push code
+- **CD** (Continuous Delivery) = tự động deploy lên server sau khi tests pass
 
-## Pipeline = day chuyen san xuat
+## Pipeline = dây chuyền sản xuất
 
 ```
 Developer push code
@@ -36,12 +36,12 @@ Developer push code
 +----------------------------------------------------------+
 ```
 
-> **Aha moment:** Automation tests chi THUC SU co gia tri khi chay trong CI/CD pipeline. Viet 1000 test cases ma phai chay bang tay = lang phi. Dat chung vao pipeline = moi lan dev push code, tests tu dong chay va bao ket qua.
+> **Aha moment:** Automation tests chỉ THỰC SỰ có giá trị khi chạy trong CI/CD pipeline. Viết 1000 test cases mà phải chạy bằng tay = lãng phí. Đặt chúng vào pipeline = mỗi lần dev push code, tests tự động chạy và báo kết quả.
 
-## Noi dung section nay
+## Nội dung section này
 
-| # | Chu de | Mo ta |
+| # | Chủ đề | Mô tả |
 |---|---|---|
 | 1 | [Git & Version Control](./git) | "Save game" cho code, branching, Pull Request |
-| 2 | [GitHub Actions](./github-actions) | May tinh GitHub cho muon mien phi de chay tests |
-| 3 | [Docker cho QA](./docker) | Dong goi code vao "container" chay giong nhau moi noi |
+| 2 | [GitHub Actions](./github-actions) | Máy tính GitHub cho mượn miễn phí để chạy tests |
+| 3 | [Docker cho QA](./docker) | Đóng gói code vào "container" chạy giống nhau mọi nơi |

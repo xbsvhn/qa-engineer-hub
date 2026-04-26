@@ -1,111 +1,111 @@
 # Performance Concepts
 
-## Tai sao Performance Testing quan trong?
+## Tại sao Performance Testing quan trọng?
 
-Mot app **chay dung** nhung **chay CHAM** = app **hong** trong mat nguoi dung.
+Một app **chạy đúng** nhưng **chạy CHẬM** = app **hỏng** trong mắt người dùng.
 
-- **53% users** roi trang neu load > 3 giay (Google research)
-- **Amazon**: moi 100ms delay = giam 1% doanh thu
-- **Performance bug** kho tim hon functional bug -- app "chay dung" nhung cham dan khi co nhieu nguoi dung
+- **53% users** rời trang nếu load > 3 giây (Google research)
+- **Amazon**: mỗi 100ms delay = giảm 1% doanh thu
+- **Performance bug** khó tìm hơn functional bug -- app "chạy đúng" nhưng chậm dần khi có nhiều người dùng
 
 ::: tip Aha moment
-Functional testing hoi: "App co LAM DUNG khong?" Performance testing hoi: "App co lam dung NHANH KHONG khi 1000 nguoi dung cung luc?" -- hai cau hoi khac nhau hoan toan.
+Functional testing hỏi: "App có LÀM ĐÚNG không?" Performance testing hỏi: "App có làm đúng NHANH KHÔNG khi 1000 người dùng cùng lúc?" -- hai câu hỏi khác nhau hoàn toàn.
 :::
 
 ---
 
-## Metrics = "Chi so suc khoe" cua he thong
+## Metrics = "Chỉ số sức khỏe" của hệ thống
 
-### Response Time -- Thoi gian phan hoi
+### Response Time -- Thời gian phản hồi
 
 ```
-Client gui request ────────────────────> Server xu ly ──> Client nhan response
+Client gửi request ────────────────────> Server xử lý ──> Client nhận response
 |<──────────────── Response Time ──────────────────────────────────>|
 ```
 
-Tuong tuong ban goi mon an trong nha hang. Response time = thoi gian tu luc ban goi den luc mon an len ban.
+Tưởng tượng bạn gọi món ăn trong nhà hàng. Response time = thời gian từ lúc bạn gọi đến lúc món ăn lên bàn.
 
-### P90/P95/P99 -- Giai thich bang vi du that
+### P90/P95/P99 -- Giải thích bằng ví dụ thật
 
-**Vi du:** 100 nguoi goi mon an trong nha hang.
+**Ví dụ:** 100 người gọi món ăn trong nhà hàng.
 
-| Metric | Y nghia | Vi du | Target pho bien |
+| Metric | Ý nghĩa | Ví dụ | Target phổ biến |
 |---|---|---|---|
-| **Average** | Trung binh | Trung binh moi nguoi doi 5 phut | Tham khao, KHONG dung de danh gia |
-| **P50 (Median)** | 50 nguoi nhan do an trong... | 3 phut | < 1 giay |
-| **P90** | 90 nguoi nhan do an trong... | 8 phut | < 3 giay |
-| **P95** | 95 nguoi nhan do an trong... | 12 phut | < 5 giay |
-| **P99** | 99 nguoi nhan do an trong... | 25 phut (1 nguoi xui) | < 10 giay |
+| **Average** | Trung bình | Trung bình mỗi người đợi 5 phút | Tham khảo, KHÔNG dùng để đánh giá |
+| **P50 (Median)** | 50 người nhận đồ ăn trong... | 3 phút | < 1 giây |
+| **P90** | 90 người nhận đồ ăn trong... | 8 phút | < 3 giây |
+| **P95** | 95 người nhận đồ ăn trong... | 12 phút | < 5 giây |
+| **P99** | 99 người nhận đồ ăn trong... | 25 phút (1 người xui) | < 10 giây |
 
-::: warning Dung chi nhin Average -- no la "bay" kinh dien!
+::: warning Đừng chỉ nhìn Average -- nó là "bẫy" kinh điển!
 ```
 4 requests: 1ms, 1ms, 1ms, 10,000ms
-Average = (1 + 1 + 1 + 10,000) / 4 = 2,500ms --> "trong co ve OK"
-NHUNG P99 = 10,000ms --> 1% users doi 10 GIAY!
+Average = (1 + 1 + 1 + 10,000) / 4 = 2,500ms --> "trông có vẻ OK"
+NHƯNG P99 = 10,000ms --> 1% users đợi 10 GIÂY!
 ```
-Average che giau nhung truong hop te nhat. **LUON report P90/P95** thay vi chi Average.
+Average che giấu những trường hợp tệ nhất. **LUÔN report P90/P95** thay vì chỉ Average.
 :::
 
 ::: tip Aha moment
-Khi lead hoi "Performance co OK khong?", dung tra loi "Average la 500ms". Hay tra loi "P95 la 1.2 giay, nghia la 95% requests nhanh hon 1.2s, chi 5% cham hon." -- day moi la thong tin co gia tri.
+Khi lead hỏi "Performance có OK không?", đừng trả lời "Average là 500ms". Hãy trả lời "P95 là 1.2 giây, nghĩa là 95% requests nhanh hơn 1.2s, chỉ 5% chậm hơn." -- đây mới là thông tin có giá trị.
 :::
 
-### Throughput = Cong suat xu ly
+### Throughput = Công suất xử lý
 
-| Metric | Y nghia |
+| Metric | Ý nghĩa |
 |---|---|
-| **RPS** (Requests per second) | So requests server xu ly duoc moi giay |
-| **TPS** (Transactions per second) | So transactions hoan thanh moi giay |
+| **RPS** (Requests per second) | Số requests server xử lý được mỗi giây |
+| **TPS** (Transactions per second) | Số transactions hoàn thành mỗi giây |
 
-Giong nhu nha hang phuc vu duoc bao nhieu mon/phut. RPS cao = nha hang nhanh nhen.
+Giống như nhà hàng phục vụ được bao nhiêu món/phút. RPS cao = nhà hàng nhanh nhẹn.
 
-### Error Rate = Ty le that bai
+### Error Rate = Tỷ lệ thất bại
 
 ```
-Error Rate = (So requests loi / Tong requests) x 100%
+Error Rate = (Số requests lỗi / Tổng requests) x 100%
 
-Target: < 1% duoi tai binh thuong
-        < 5% duoi stress test
+Target: < 1% dưới tải bình thường
+        < 5% dưới stress test
 ```
 
-Giong ty le order bi sai trong nha hang. 1% la chap nhan duoc. 10% = nha hang co van de nghiem trong.
+Giống tỷ lệ order bị sai trong nhà hàng. 1% là chấp nhận được. 10% = nhà hàng có vấn đề nghiêm trọng.
 
-### Resource Utilization = "Suc khoe" cua server
+### Resource Utilization = "Sức khỏe" của server
 
-| Resource | Metric | Bao dong khi |
+| Resource | Metric | Báo động khi |
 |---|---|---|
-| **CPU** | % su dung | > 80% lien tuc |
-| **Memory** | % su dung, co tang lien tuc? | > 85% hoac tang dan khong ngung |
-| **Disk I/O** | Toc do doc/ghi | Bottleneck |
-| **Network** | Bandwidth | Bao hoa |
+| **CPU** | % sử dụng | > 80% liên tục |
+| **Memory** | % sử dụng, có tăng liên tục? | > 85% hoặc tăng dần không ngừng |
+| **Disk I/O** | Tốc độ đọc/ghi | Bottleneck |
+| **Network** | Bandwidth | Bão hòa |
 
 ---
 
-## Cac loai Performance Testing -- Chi tiet
+## Các loại Performance Testing -- Chi tiết
 
-### 1. Load Testing = "Nha hang co phuc vu duoc 200 khach khong?"
+### 1. Load Testing = "Nhà hàng có phục vụ được 200 khách không?"
 
-**Muc dich:** Verify he thong hoat dong tot voi **so users DU KIEN** (khong vuot qua gioi han).
+**Mục đích:** Verify hệ thống hoạt động tốt với **số users DỰ KIẾN** (không vượt quá giới hạn).
 
 ```
 Users
   |
 200+────────────────────────────────
-  |                              (giu 200 users trong 30 phut)
+  |                              (giữ 200 users trong 30 phút)
   |           /──────────────────
   |         /
-  |       /    (ramp up 5 phut -- tang dan tu 0 len 200)
+  |       /    (ramp up 5 phút -- tăng dần từ 0 lên 200)
   |     /
   |   /
-  0+─/─────────────────────────────> Thoi gian
+  0+─/─────────────────────────────> Thời gian
    0    5min              35min
 ```
 
-**Khi dung:** Truoc release, verify SLA (Service Level Agreement -- cam ket ve performance).
+**Khi dùng:** Trước release, verify SLA (Service Level Agreement -- cam kết về performance).
 
-### 2. Stress Testing = "Nha hang VO o diem nao?"
+### 2. Stress Testing = "Nhà hàng VỠ ở điểm nào?"
 
-**Muc dich:** Tim **breaking point** -- he thong chiu duoc BAO NHIEU users truoc khi "chet".
+**Mục đích:** Tìm **breaking point** -- hệ thống chịu được BAO NHIÊU users trước khi "chết".
 
 ```
 Users
@@ -120,15 +120,15 @@ Users
   |            /
 100+──────── /
   |        /
-  0+─────/────────────────────────> Thoi gian
-        (tang dan cho den khi "vo")
+  0+─────/────────────────────────> Thời gian
+        (tăng dần cho đến khi "vỡ")
 ```
 
-**Khi dung:** Biet capacity limit, plan cho growth. "He thong hien tai chiu duoc 500 users, nam sau can 800 --> can nang cap."
+**Khi dùng:** Biết capacity limit, plan cho growth. "Hệ thống hiện tại chịu được 500 users, năm sau cần 800 --> cần nâng cấp."
 
-### 3. Spike Testing = "Dot ngot tu 10 khach len 500 khach"
+### 3. Spike Testing = "Đột ngột từ 10 khách lên 500 khách"
 
-**Muc dich:** He thong react sao khi tai **tang DOT NGOT** (flash sale, bai viral, event).
+**Mục đích:** Hệ thống react sao khi tải **tăng ĐỘT NGỘT** (flash sale, bài viral, event).
 
 ```
 Users
@@ -139,86 +139,86 @@ Users
   |        |    |      |
  100+──────+────+──────+──────
   |
-  0+──────────────────────────> Thoi gian
+  0+──────────────────────────> Thời gian
       Spike  Normal  Spike
 ```
 
-**Verify:** He thong co **recover** sau spike? Co mat data khong? Error rate bao nhieu?
+**Verify:** Hệ thống có **recover** sau spike? Có mất data không? Error rate bao nhiêu?
 
-Giong nhu nha hang binh thuong phuc vu 10 khach, dot ngot 500 khach keo den (co ngoi sao review tren TikTok). Nha hang co ung pho duoc khong? Hay chaos?
+Giống như nhà hàng bình thường phục vụ 10 khách, đột ngột 500 khách kéo đến (có ngôi sao review trên TikTok). Nhà hàng có ứng phó được không? Hay chaos?
 
-### 4. Endurance Testing = "Phuc vu 200 khach LIEN TUC 24 gio"
+### 4. Endurance Testing = "Phục vụ 200 khách LIÊN TỤC 24 giờ"
 
-**Muc dich:** Tim **memory leaks** va **degradation** khi chay lau.
+**Mục đích:** Tìm **memory leaks** và **degradation** khi chạy lâu.
 
 ```
 Users
   |
-200+──────────────────────────────── (200 users lien tuc 24 gio)
+200+──────────────────────────────── (200 users liên tục 24 giờ)
   |
-  0+──────────────────────────────> Thoi gian
+  0+──────────────────────────────> Thời gian
    0                              24h
 ```
 
-**Verify:** Response time co **tang dan** theo thoi gian? Memory co **leak** (tang mai khong giam)? Database connections co tang?
+**Verify:** Response time có **tăng dần** theo thời gian? Memory có **leak** (tăng mãi không giảm)? Database connections có tăng?
 
 ::: tip Aha moment
-Memory leak = voi nuoc bi ri. Luong nuoc ri rat nho, ban khong nhan ra. Nhung de 24 gio, san nha ngap. Endurance testing giup tim nhung "voi nuoc ri" nay.
+Memory leak = vòi nước bị rỉ. Lượng nước rỉ rất nhỏ, bạn không nhận ra. Nhưng để 24 giờ, sàn nhà ngập. Endurance testing giúp tìm những "vòi nước rỉ" này.
 :::
 
 ---
 
-## Bottleneck = "Nut that" lam cham he thong
+## Bottleneck = "Nút thắt" làm chậm hệ thống
 
-**Bottleneck** giong nhu **diem tac duong** tren xa lo. Du xa lo rong 6 lan, neu co 1 diem chi con 2 lan --> TAT CA xe phai chen qua 2 lan do --> cham.
+**Bottleneck** giống như **điểm tắc đường** trên xa lộ. Dù xa lộ rộng 6 làn, nếu có 1 điểm chỉ còn 2 làn --> TẤT CẢ xe phải chen qua 2 làn đó --> chậm.
 
-### Bottleneck pho bien
+### Bottleneck phổ biến
 
-| Bottleneck | Trieu chung | Giai phap |
+| Bottleneck | Triệu chứng | Giải pháp |
 |---|---|---|
-| **Slow DB queries** | Response time cao, CPU database cao | Toi uu query, them index |
-| **Memory leak** | Memory tang dan, cuoi cung crash | Fix code, tang memory |
-| **Connection pool** | Timeout errors, "connection refused" | Tang pool size |
-| **Blocking I/O** | Throughput thap, wait time cao | Async processing, caching |
-| **Bandwidth** | Download cham, timeout | CDN, compression, lazy loading |
+| **Slow DB queries** | Response time cao, CPU database cao | Tối ưu query, thêm index |
+| **Memory leak** | Memory tăng dần, cuối cùng crash | Fix code, tăng memory |
+| **Connection pool** | Timeout errors, "connection refused" | Tăng pool size |
+| **Blocking I/O** | Throughput thấp, wait time cao | Async processing, caching |
+| **Bandwidth** | Download chậm, timeout | CDN, compression, lazy loading |
 
 ---
 
-## Performance Testing Process -- 6 buoc
+## Performance Testing Process -- 6 bước
 
 ```
 1. Define Requirements
-   "Response time < 2s, chiu 1000 concurrent users, error rate < 1%"
+   "Response time < 2s, chịu 1000 concurrent users, error rate < 1%"
 
 2. Plan Tests
-   Chon tool (K6/JMeter), thiet ke scenario, chuan bi test data
+   Chọn tool (K6/JMeter), thiết kế scenario, chuẩn bị test data
 
 3. Create Scripts
-   Viet test scripts, configure load patterns
+   Viết test scripts, configure load patterns
 
 4. Execute Tests
-   Chay tests, DONG THOI monitor resources (CPU, Memory, DB)
+   Chạy tests, ĐỒNG THỜI monitor resources (CPU, Memory, DB)
 
 5. Analyze Results
-   So sanh voi requirements, tim bottlenecks
+   So sánh với requirements, tìm bottlenecks
 
 6. Report & Re-test
-   Bao cao findings, phoi hop voi dev fix, chay lai de verify
+   Báo cáo findings, phối hợp với dev fix, chạy lại để verify
 ```
 
 ---
 
-## Doc ket qua -- Vi du thuc te
+## Đọc kết quả -- Ví dụ thực tế
 
-### Ket qua Load Test
+### Kết quả Load Test
 
 ```
-Scenario: 200 concurrent users, 30 phut
+Scenario: 200 concurrent users, 30 phút
 Target: Response time < 2s, Error rate < 1%
 
 Results:
 +────────────────+──────────+────────+
-| Metric         | Ket qua  | Status |
+| Metric         | Kết quả  | Status |
 +────────────────+──────────+────────+
 | Avg Response   | 850ms    | OK     |
 | P90 Response   | 1,200ms  | OK     |
@@ -229,27 +229,27 @@ Results:
 | CPU Usage      | 72%      | WARN   |
 +────────────────+──────────+────────+
 
-Phan tich:
-- P99 = 4.5s --> 1% users trai nghiem CHAM (vuot target 2s)
-- CPU 72% --> gan nguong bao dong 80%, it room cho growth
-- Recommendation: Toi uu slow queries (nguyen nhan P99 cao)
+Phân tích:
+- P99 = 4.5s --> 1% users trải nghiệm CHẬM (vượt target 2s)
+- CPU 72% --> gần ngưỡng báo động 80%, ít room cho growth
+- Recommendation: Tối ưu slow queries (nguyên nhân P99 cao)
 ```
 
 ::: tip Aha moment
-Khi bao cao performance test, DUNG chi liet ke so lieu. Hay tra loi cau hoi: "Vay co PASS khong?" va "Neu FAIL thi vi SAO va can lam gi?" -- day la gia tri cua QA.
+Khi báo cáo performance test, ĐỪNG chỉ liệt kê số liệu. Hãy trả lời câu hỏi: "Vậy có PASS không?" và "Nếu FAIL thì vì SAO và cần làm gì?" -- đây là giá trị của QA.
 :::
 
 ---
 
-## Tom tat chuong
+## Tóm tắt chương
 
-| Concept | An du | Diem cot loi |
+| Concept | Ẩn dụ | Điểm cốt lõi |
 |---|---|---|
-| **Response Time** | Thoi gian doi mon an | Dung P90/P95, KHONG chi Average |
-| **Throughput** | So mon phuc vu/phut | RPS cang cao cang tot |
-| **Error Rate** | Ty le order sai | < 1% binh thuong, < 5% stress |
-| **Load Test** | 200 khach nhu binh thuong | Verify he thong chiu duoc tai du kien |
-| **Stress Test** | Tang khach cho den khi "vo" | Tim breaking point |
-| **Spike Test** | Dot ngot 500 khach keo den | Test tai dot ngot |
-| **Endurance** | 200 khach lien tuc 24h | Tim memory leaks |
-| **Bottleneck** | Diem tac duong | Tim va xu ly diem cham nhat |
+| **Response Time** | Thời gian đợi món ăn | Dùng P90/P95, KHÔNG chỉ Average |
+| **Throughput** | Số món phục vụ/phút | RPS càng cao càng tốt |
+| **Error Rate** | Tỷ lệ order sai | < 1% bình thường, < 5% stress |
+| **Load Test** | 200 khách như bình thường | Verify hệ thống chịu được tải dự kiến |
+| **Stress Test** | Tăng khách cho đến khi "vỡ" | Tìm breaking point |
+| **Spike Test** | Đột ngột 500 khách kéo đến | Test tải đột ngột |
+| **Endurance** | 200 khách liên tục 24h | Tìm memory leaks |
+| **Bottleneck** | Điểm tắc đường | Tìm và xử lý điểm chậm nhất |

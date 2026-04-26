@@ -1,25 +1,25 @@
 # Security Testing
 
-## Ban chat: Tim "lo hong" truoc khi ke xau tim thay
+## Bản chất: Tìm "lỗ hổng" trước khi kẻ xấu tìm thấy
 
-Tuong tuong ban la bao ve cua mot toa nha. Security testing = ban **thu HOAN THANH tu dong vao** truoc -- leo hang rao, gia danh nhan vien, thu cua khong khoa -- de tim lo hong va vap TRUOC KHI ke trom that lam.
+Tưởng tượng bạn là bảo vệ của một tòa nhà. Security testing = bạn **thử HOÀN THÀNH tự đồng vào** trước -- leo hàng rào, giả danh nhân viên, thử cửa không khóa -- để tìm lỗ hổng và vá TRƯỚC KHI kẻ trộm thật làm.
 
-> **Security testing** = co tinh **tan cong he thong cua minh** de tim lo hong bao mat truoc khi hacker lam dieu do.
+> **Security testing** = cố tình **tấn công hệ thống của mình** để tìm lỗ hổng bảo mật trước khi hacker làm điều đó.
 
-## QA khong can la security expert
+## QA không cần là security expert
 
-Bao mat la **trach nhiem cua CA TEAM**, khong chi security team. QA co the phat hien **NHIEU lo hong pho bien** chi bang basic security checks:
+Bảo mật là **trách nhiệm của CẢ TEAM**, không chỉ security team. QA có thể phát hiện **NHIỀU lỗ hổng phổ biến** chỉ bằng basic security checks:
 
 ```
-Basic Security Checks (QA NEN lam):
-+-- SQL Injection          --> Nhap ' OR 1=1 -- vao form
-+-- XSS                    --> Nhap <script>alert('xss')</script>
-+-- Broken Access Control  --> User A xem duoc data User B?
-+-- Authentication bugs    --> Login khong can password?
-+-- Sensitive Data Exposure--> Password hien thi trong API response?
-+-- Input Validation       --> Upload file .exe? Nhap 1 trieu ky tu?
+Basic Security Checks (QA NÊN làm):
++-- SQL Injection          --> Nhập ' OR 1=1 -- vào form
++-- XSS                    --> Nhập <script>alert('xss')</script>
++-- Broken Access Control  --> User A xem được data User B?
++-- Authentication bugs    --> Login không cần password?
++-- Sensitive Data Exposure--> Password hiển thị trong API response?
++-- Input Validation       --> Upload file .exe? Nhập 1 triệu ký tự?
 
-Advanced Security (Security team chuyen trach):
+Advanced Security (Security team chuyên trách):
 +-- Penetration Testing
 +-- Network security
 +-- Cryptography review
@@ -27,12 +27,12 @@ Advanced Security (Security team chuyen trach):
 ```
 
 ::: tip Aha moment
-Ban khong can la security expert. Chi can hieu **OWASP Top 10** va biet cach test co ban la da **tang gia tri ban than** rat nhieu. Hau het QA chi biet functional testing -- biet them security testing = ban noi bat!
+Bạn không cần là security expert. Chỉ cần hiểu **OWASP Top 10** và biết cách test cơ bản là đã **tăng giá trị bản thân** rất nhiều. Hầu hết QA chỉ biết functional testing -- biết thêm security testing = bạn nổi bật!
 :::
 
-## Noi dung section nay
+## Nội dung section này
 
-| # | Chu de | Mo ta |
+| # | Chủ đề | Mô tả |
 |---|---|---|
-| 1 | [OWASP Top 10](./owasp-top-10) | 10 lo hong pho bien nhat, cach test tung loai |
+| 1 | [OWASP Top 10](./owasp-top-10) | 10 lỗ hổng phổ biến nhất, cách test từng loại |
 | 2 | [Security Testing Tools](./tools) | ZAP, Burp Suite, Snyk, SAST vs DAST |

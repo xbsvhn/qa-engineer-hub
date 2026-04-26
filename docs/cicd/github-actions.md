@@ -1,114 +1,114 @@
 # GitHub Actions
 
-## Ban chat: GitHub cho ban MUON MAY TINH mien phi
+## Bản chất: GitHub cho bạn MƯỢN MÁY TÍNH miễn phí
 
-Day la dieu quan trong nhat can hieu, va rat nhieu nguoi hieu sai:
+Đây là điều quan trọng nhất cần hiểu, và rất nhiều người hiểu sai:
 
-> **GitHub Actions runner = mot MAY TINH THAT (virtual machine) ma GitHub CHO BAN MUON MIEN PHI.**
+> **GitHub Actions runner = một MÁY TÍNH THẬT (virtual machine) mà GitHub CHO BẠN MƯỢN MIỄN PHÍ.**
 
-Khi ban push code len GitHub, day la nhung gi xay ra:
+Khi bạn push code lên GitHub, đây là những gì xảy ra:
 
-1. GitHub **khoi dong mot may tinh Ubuntu moi tinh** (hoac Windows/macOS)
-2. May tinh do **download code cua ban** tu repository
-3. May tinh do **cai dat moi thu** ban can (Node.js, browsers, packages...)
-4. May tinh do **chay tests cua ban**
-5. May tinh do **bao ket qua** (pass/fail)
-6. GitHub **XOA may tinh do** -- bien mat hoan toan
+1. GitHub **khởi động một máy tính Ubuntu mới tinh** (hoặc Windows/macOS)
+2. Máy tính đó **download code của bạn** từ repository
+3. Máy tính đó **cài đặt mọi thứ** bạn cần (Node.js, browsers, packages...)
+4. Máy tính đó **chạy tests của bạn**
+5. Máy tính đó **báo kết quả** (pass/fail)
+6. GitHub **XÓA máy tính đó** -- biến mất hoàn toàn
 
 ::: tip Aha moment
-Moi lan pipeline chay = mot may tinh HOAN TOAN MOI. Khong co gi con sot lai tu lan chay truoc. Giong nhu ban thue phong khach san -- check-in, o, check-out, phong duoc don sach cho nguoi tiep theo.
+Mỗi lần pipeline chạy = một máy tính HOÀN TOÀN MỚI. Không có gì còn sót lại từ lần chạy trước. Giống như bạn thuê phòng khách sạn -- check-in, ở, check-out, phòng được dọn sạch cho người tiếp theo.
 :::
 
-**Chi phi:**
-- **Public repos:** MIEN PHI khong gioi han
-- **Private repos:** 2000 phut/thang mien phi (thua du cho hau het team)
+**Chi phí:**
+- **Public repos:** MIỄN PHÍ không giới hạn
+- **Private repos:** 2000 phút/tháng miễn phí (thừa đủ cho hầu hết team)
 
 ---
 
-## .yml files = "To huong dan" cho may tinh muon
+## .yml files = "Tờ hướng dẫn" cho máy tính mượn
 
-File `.yml` (YAML) la **danh sach chi thi** ban viet cho may tinh cua GitHub. Giong nhu ban viet giay nho cho nguoi giup viec: "Buoc 1 lam cai nay, buoc 2 lam cai kia..."
+File `.yml` (YAML) là **danh sách chỉ thị** bạn viết cho máy tính của GitHub. Giống như bạn viết giấy nhờ cho người giúp việc: "Bước 1 làm cái này, bước 2 làm cái kia..."
 
-### Vi tri file
+### Vị trí file
 
 ```
-project-cua-ban/
+project-của-bạn/
   .github/
     workflows/
-      test.yml          <-- Chay tests khi push/PR
-      regression.yml    <-- Full regression (hang dem/hang tuan)
+      test.yml          <-- Chạy tests khi push/PR
+      regression.yml    <-- Full regression (hàng đêm/hàng tuần)
       deploy.yml        <-- Deploy website
 ```
 
-### Giai thich TUNG DONG -- Playwright Test Workflow
+### Giải thích TỪNG DÒNG -- Playwright Test Workflow
 
 ```yaml
 # .github/workflows/test.yml
-# ^^^ File nay nam trong thu muc .github/workflows/
+# ^^^ File này nằm trong thư mục .github/workflows/
 
 name: Playwright Tests
-# ^^^ Ten hien thi tren GitHub -- dat ten de nhin la biet lam gi
+# ^^^ Tên hiển thị trên GitHub -- đặt tên để nhìn là biết làm gì
 
-# === KHI NAO chay? ===
+# === KHI NÀO chạy? ===
 on:
   push:
     branches: [main, develop]
-    # ^^^ Khi ai do PUSH code len branch main hoac develop --> chay
+    # ^^^ Khi ai đó PUSH code lên branch main hoặc develop --> chạy
   pull_request:
     branches: [main]
-    # ^^^ Khi ai do TAO PULL REQUEST vao main --> chay
+    # ^^^ Khi ai đó TẠO PULL REQUEST vào main --> chạy
 
-# === LAM GI? ===
+# === LÀM GÌ? ===
 jobs:
   test:
     runs-on: ubuntu-latest
-    # ^^^ "Cho toi muon may Ubuntu phien ban moi nhat"
-    # (Day la luc GitHub khoi dong 1 may tinh moi cho ban)
+    # ^^^ "Cho tôi mượn máy Ubuntu phiên bản mới nhất"
+    # (Đây là lúc GitHub khởi động 1 máy tính mới cho bạn)
 
     timeout-minutes: 30
-    # ^^^ "Neu chay qua 30 phut thi dung lai" (phong truong hop treo)
+    # ^^^ "Nếu chạy quá 30 phút thì dừng lại" (phòng trường hợp treo)
 
     steps:
-      # Buoc 1: Download code tu repo vao may tinh muon
+      # Bước 1: Download code từ repo vào máy tính mượn
       - uses: actions/checkout@v4
-        # ^^^ "actions/checkout" la mot "cong cu co san" cua GitHub
-        # No giong nhu: git clone <repo-cua-ban> tren may tinh muon
+        # ^^^ "actions/checkout" là một "công cụ có sẵn" của GitHub
+        # Nó giống như: git clone <repo-của-bạn> trên máy tính mượn
 
-      # Buoc 2: Cai dat Node.js tren may tinh muon
+      # Bước 2: Cài đặt Node.js trên máy tính mượn
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
-        # ^^^ May tinh moi KHONG co Node.js --> phai cai
-        # cache: 'npm' = luu cache de lan sau cai nhanh hon
+        # ^^^ Máy tính mới KHÔNG có Node.js --> phải cài
+        # cache: 'npm' = lưu cache để lần sau cài nhanh hơn
 
-      # Buoc 3: Cai dat dependencies (npm packages)
+      # Bước 3: Cài đặt dependencies (npm packages)
       - run: npm ci
-        # ^^^ "npm ci" = cai dat DUNG CHINH XAC cac packages trong package-lock.json
-        # Giong "npm install" nhung nhanh hon va chinh xac hon cho CI
+        # ^^^ "npm ci" = cài đặt ĐÚNG CHÍNH XÁC các packages trong package-lock.json
+        # Giống "npm install" nhưng nhanh hơn và chính xác hơn cho CI
 
-      # Buoc 4: Cai dat browsers cho Playwright
+      # Bước 4: Cài đặt browsers cho Playwright
       - run: npx playwright install --with-deps
-        # ^^^ Playwright can Chromium, Firefox, WebKit de chay tests
-        # --with-deps = cai luon system dependencies (font, libraries...)
+        # ^^^ Playwright cần Chromium, Firefox, WebKit để chạy tests
+        # --with-deps = cài luôn system dependencies (font, libraries...)
 
-      # Buoc 5: CHAY TESTS!
+      # Bước 5: CHẠY TESTS!
       - run: npx playwright test
-        # ^^^ Day la dong quan trong nhat -- chay tat ca tests
-        # Neu co test FAIL --> whole pipeline = FAIL
+        # ^^^ Đây là dòng quan trọng nhất -- chạy tất cả tests
+        # Nếu có test FAIL --> whole pipeline = FAIL
 
-      # Buoc 6: Upload test report (de xem sau)
+      # Bước 6: Upload test report (để xem sau)
       - uses: actions/upload-artifact@v4
         if: always()
-        # ^^^ "if: always()" = LUON upload, ke ca khi tests FAIL
-        # (Khi tests fail moi can xem report nhat!)
+        # ^^^ "if: always()" = LUÔN upload, kể cả khi tests FAIL
+        # (Khi tests fail mới cần xem report nhất!)
         with:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
-          # ^^^ Giu report 30 ngay roi tu dong xoa
+          # ^^^ Giữ report 30 ngày rồi tự động xóa
 
-      # Buoc 7: Upload test results (screenshots, videos khi fail)
+      # Bước 7: Upload test results (screenshots, videos khi fail)
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -118,12 +118,12 @@ jobs:
 ```
 
 ::: tip Aha moment
-Moi dong `- run:` la mot lenh chay tren may tinh muon -- GIONG HET nhu ban go lenh do trong Terminal cua minh. `- uses:` la goi mot "cong cu co san" (action) ma nguoi khac da viet san.
+Mỗi dòng `- run:` là một lệnh chạy trên máy tính mượn -- GIỐNG HỆT như bạn gõ lệnh đó trong Terminal của mình. `- uses:` là gọi một "công cụ có sẵn" (action) mà người khác đã viết sẵn.
 :::
 
 ---
 
-## Nightly Regression -- Chay tests hang dem
+## Nightly Regression -- Chạy tests hàng đêm
 
 ```yaml
 # .github/workflows/regression.yml
@@ -132,20 +132,20 @@ name: Nightly Regression
 on:
   schedule:
     - cron: '0 22 * * 1-5'
-    # ^^^ Cron expression: "22:00 UTC, thu 2 den thu 6"
-    # (= 5:00 sang gio Viet Nam -- chay xong truoc khi team bat dau lam)
+    # ^^^ Cron expression: "22:00 UTC, thứ 2 đến thứ 6"
+    # (= 5:00 sáng giờ Việt Nam -- chạy xong trước khi team bắt đầu làm)
     #
-    # Cron format: phut gio ngay thang thu
-    # 0 22 * * 1-5 = phut 0, gio 22, moi ngay, moi thang, thu 2-6
+    # Cron format: phút giờ ngày tháng thứ
+    # 0 22 * * 1-5 = phút 0, giờ 22, mọi ngày, mọi tháng, thứ 2-6
 
   workflow_dispatch: {}
-    # ^^^ Them nut "Run workflow" tren GitHub de chay bang tay khi can
+    # ^^^ Thêm nút "Run workflow" trên GitHub để chạy bằng tay khi cần
 
 jobs:
   regression:
     runs-on: ubuntu-latest
     timeout-minutes: 60
-    # ^^^ Regression chay lau hon --> tang timeout len 60 phut
+    # ^^^ Regression chạy lâu hơn --> tăng timeout lên 60 phút
 
     steps:
       - uses: actions/checkout@v4
@@ -156,12 +156,12 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps
 
-      # Chi chay tests co tag @regression
+      # Chỉ chạy tests có tag @regression
       - run: npx playwright test --grep @regression
         env:
           BASE_URL: https://staging.example.com
-          # ^^^ "env" = truyen bien moi truong (environment variable)
-          # Code doc: process.env.BASE_URL
+          # ^^^ "env" = truyền biến môi trường (environment variable)
+          # Code đọc: process.env.BASE_URL
 
       - uses: actions/upload-artifact@v4
         if: always()
@@ -172,11 +172,11 @@ jobs:
 
 ---
 
-## Sharding = Chia pizza cho nhieu nguoi an cung luc
+## Sharding = Chia pizza cho nhiều người ăn cùng lúc
 
-Tuong tuong ban co 200 test cases. Chay tuan tu = **1 nguoi an ca cai pizza** --> 40 phut.
+Tưởng tượng bạn có 200 test cases. Chạy tuần tự = **1 người ăn cả cái pizza** --> 40 phút.
 
-**Sharding** = **chia pizza thanh 4 mieng**, 4 nguoi an cung luc --> **10 phut!**
+**Sharding** = **chia pizza thành 4 miếng**, 4 người ăn cùng lúc --> **10 phút!**
 
 ```yaml
 jobs:
@@ -185,11 +185,11 @@ jobs:
     strategy:
       matrix:
         shard: [1/4, 2/4, 3/4, 4/4]
-        # ^^^ Tao 4 "may tinh muon" CUNG LUC
-        # May 1: chay tests 1-50
-        # May 2: chay tests 51-100
-        # May 3: chay tests 101-150
-        # May 4: chay tests 151-200
+        # ^^^ Tạo 4 "máy tính mượn" CÙNG LÚC
+        # Máy 1: chạy tests 1-50
+        # Máy 2: chạy tests 51-100
+        # Máy 3: chạy tests 101-150
+        # Máy 4: chạy tests 151-200
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -199,15 +199,15 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps
       - run: npx playwright test --shard=${{ matrix.shard }}
-        # ^^^ ${{ matrix.shard }} = gia tri tu matrix (1/4, 2/4, 3/4, 4/4)
-        # Playwright tu dong chia tests deu cho cac shards
+        # ^^^ ${{ matrix.shard }} = giá trị từ matrix (1/4, 2/4, 3/4, 4/4)
+        # Playwright tự động chia tests đều cho các shards
 ```
 
 ::: tip Aha moment
-Sharding = ban MUON 4 MAY TINH cung luc thay vi 1. GitHub cho phep chay **song song** -- nen tong thoi gian giam con 1/4. Day la ly do CI/CD chay tests NHANH hon chay tren may ban.
+Sharding = bạn MƯỢN 4 MÁY TÍNH cùng lúc thay vì 1. GitHub cho phép chạy **song song** -- nên tổng thời gian giảm còn 1/4. Đây là lý do CI/CD chạy tests NHANH hơn chạy trên máy bạn.
 :::
 
-### Multi-browser Testing -- Chay tren nhieu browser cung luc
+### Multi-browser Testing -- Chạy trên nhiều browser cùng lúc
 
 ```yaml
 jobs:
@@ -216,7 +216,7 @@ jobs:
     strategy:
       matrix:
         project: [chromium, firefox, webkit]
-        # ^^^ 3 may tinh: 1 chay Chrome, 1 chay Firefox, 1 chay Safari
+        # ^^^ 3 máy tính: 1 chạy Chrome, 1 chạy Firefox, 1 chạy Safari
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -235,13 +235,13 @@ jobs:
 
 ---
 
-## Secrets = "Phong bi niem phong" chua mat khau
+## Secrets = "Phong bì niêm phong" chứa mật khẩu
 
-Code push len GitHub ai cung doc duoc. Vay mat khau, API keys de o dau?
+Code push lên GitHub ai cũng đọc được. Vậy mật khẩu, API keys để ở đâu?
 
-**GitHub Secrets** = "phong bi niem phong". Ban bo mat khau vao, GitHub **niem kin**. Chi khi pipeline chay, GitHub moi **mo phong bi** va dua cho may tinh muon. Sau khi chay xong, may tinh bi xoa --> mat khau cung bien mat.
+**GitHub Secrets** = "phong bì niêm phong". Bạn bỏ mật khẩu vào, GitHub **niêm kín**. Chỉ khi pipeline chạy, GitHub mới **mở phong bì** và đưa cho máy tính mượn. Sau khi chạy xong, máy tính bị xóa --> mật khẩu cũng biến mất.
 
-### Cach setup
+### Cách setup
 
 ```
 GitHub repo --> Settings --> Secrets and variables --> Actions --> New repository secret
@@ -256,49 +256,49 @@ Name: API_KEY
 Value: sk-abc123xyz789
 ```
 
-### Cach dung trong workflow
+### Cách dùng trong workflow
 
 ```yaml
 steps:
   - run: npx playwright test
     env:
-      # Doc secrets tu "phong bi niem phong" cua GitHub
+      # Đọc secrets từ "phong bì niêm phong" của GitHub
       TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
       TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
       API_KEY: ${{ secrets.API_KEY }}
-      # ^^^ ${{ secrets.TEN }} = lay gia tri tu GitHub Secrets
-      # Gia tri nay KHONG BAO GIO hien thi trong logs (GitHub tu dong an)
+      # ^^^ ${{ secrets.TEN }} = lấy giá trị từ GitHub Secrets
+      # Giá trị này KHÔNG BAO GIỜ hiển thị trong logs (GitHub tự động ẩn)
 ```
 
 ```typescript
-// Trong test code -- doc tu environment variable
-// (Giong nhu doc tu "bien moi truong" cua may tinh)
+// Trong test code -- đọc từ environment variable
+// (Giống như đọc từ "biến môi trường" của máy tính)
 const email = process.env.TEST_USER_EMAIL || 'default@test.com';
 const password = process.env.TEST_USER_PASSWORD || 'DefaultPass@123';
 ```
 
 ::: warning
-**TUYET DOI khong hardcode mat khau trong code!**
+**TUYỆT ĐỐI không hardcode mật khẩu trong code!**
 ```typescript
-// SAI -- mat khau lo ra cho moi nguoi thay
+// SAI -- mật khẩu lộ ra cho mọi người thấy
 const password = 'RealP@ssw0rd!';
 
-// DUNG -- doc tu environment variable
+// ĐÚNG -- đọc từ environment variable
 const password = process.env.TEST_USER_PASSWORD;
 ```
 :::
 
 ---
 
-## Tom tat chuong
+## Tóm tắt chương
 
-| Concept | An du | Giai thich |
+| Concept | Ẩn dụ | Giải thích |
 |---|---|---|
-| **Runner** | May tinh cho muon | GitHub khoi dong VM moi, chay tests, roi xoa |
-| **Workflow (.yml)** | To huong dan | File chi thi cho may tinh muon |
-| **Trigger (on:)** | "Khi nao chay?" | push, pull_request, schedule, manual |
-| **Steps** | Tung buoc mot | Moi step = 1 lenh hoac 1 action |
-| **Matrix** | Nhan ban may tinh | Chay song song nhieu config |
-| **Sharding** | Chia pizza | Chia tests ra nhieu may chay cung luc |
-| **Artifacts** | File ket qua | Upload reports, screenshots de xem sau |
-| **Secrets** | Phong bi niem phong | Luu mat khau an toan, chi mo khi chay |
+| **Runner** | Máy tính cho mượn | GitHub khởi động VM mới, chạy tests, rồi xóa |
+| **Workflow (.yml)** | Tờ hướng dẫn | File chỉ thị cho máy tính mượn |
+| **Trigger (on:)** | "Khi nào chạy?" | push, pull_request, schedule, manual |
+| **Steps** | Từng bước một | Mỗi step = 1 lệnh hoặc 1 action |
+| **Matrix** | Nhân bản máy tính | Chạy song song nhiều config |
+| **Sharding** | Chia pizza | Chia tests ra nhiều máy chạy cùng lúc |
+| **Artifacts** | File kết quả | Upload reports, screenshots để xem sau |
+| **Secrets** | Phong bì niêm phong | Lưu mật khẩu an toàn, chỉ mở khi chạy |

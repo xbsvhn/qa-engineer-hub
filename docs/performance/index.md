@@ -1,35 +1,35 @@
 # Performance Testing
 
-## Ban chat: Do "suc khoe" cua he thong
+## Bản chất: Đo "sức khỏe" của hệ thống
 
-Tuong tuong ban mo mot nha hang. Functional testing = kiem tra **do an co ngon khong** (chuc nang dung). Performance testing = kiem tra **nha hang phuc vu duoc bao nhieu khach cung luc** ma van dam bao chat luong.
+Tưởng tượng bạn mở một nhà hàng. Functional testing = kiểm tra **đồ ăn có ngon không** (chức năng đúng). Performance testing = kiểm tra **nhà hàng phục vụ được bao nhiêu khách cùng lúc** mà vẫn đảm bảo chất lượng.
 
-- App load **3 giay** thay vi 0.5 giay? **53% user se tat di** (Google research)
-- Amazon: moi **100ms cham** hon = **giam 1% doanh thu**
-- Performance bug **kho tim hon** functional bug -- phai do luong co he thong
+- App load **3 giây** thay vì 0.5 giây? **53% user sẽ tắt đi** (Google research)
+- Amazon: mỗi **100ms chậm** hơn = **giảm 1% doanh thu**
+- Performance bug **khó tìm hơn** functional bug -- phải đo lường có hệ thống
 
-## Cac loai Performance Testing -- Tong quan
+## Các loại Performance Testing -- Tổng quan
 
 ```
-Load Testing      --> Nha hang phuc vu duoc 200 khach cung luc khong?
-Stress Testing    --> Nha hang "vo" o diem nao? 500 khach? 1000 khach?
-Spike Testing     --> 10 khach dot ngot tang len 500 thi sao?
-Endurance Testing --> Phuc vu 200 khach LIEN TUC 24h co on khong?
+Load Testing      --> Nhà hàng phục vụ được 200 khách cùng lúc không?
+Stress Testing    --> Nhà hàng "vỡ" ở điểm nào? 500 khách? 1000 khách?
+Spike Testing     --> 10 khách đột ngột tăng lên 500 thì sao?
+Endurance Testing --> Phục vụ 200 khách LIÊN TỤC 24h có ổn không?
 ```
 
-## Noi dung section nay
+## Nội dung section này
 
-| # | Chu de | Mo ta |
+| # | Chủ đề | Mô tả |
 |---|---|---|
-| 1 | [Performance Concepts](./concepts) | Metrics (P90/P95/P99), cac loai test, phan tich ket qua |
-| 2 | [JMeter](./jmeter) | Tool GUI pho bien, Thread Groups, Reports |
-| 3 | [K6](./k6) | Modern tool viet bang JavaScript, tich hop CI/CD |
+| 1 | [Performance Concepts](./concepts) | Metrics (P90/P95/P99), các loại test, phân tích kết quả |
+| 2 | [JMeter](./jmeter) | Tool GUI phổ biến, Thread Groups, Reports |
+| 3 | [K6](./k6) | Modern tool viết bằng JavaScript, tích hợp CI/CD |
 
-## Khi nao QA can Performance Testing?
+## Khi nào QA cần Performance Testing?
 
-| Tinh huong | Action |
+| Tình huống | Action |
 |---|---|
-| Truoc major release | Load test voi so user du kien |
-| Sau khi doi database/API | Verify khong bi cham hon truoc |
-| User phan nan "app cham" | Tim bottleneck |
-| Chuan bi su kien (sale, campaign) | Stress test voi peak load |
+| Trước major release | Load test với số user dự kiến |
+| Sau khi đổi database/API | Verify không bị chậm hơn trước |
+| User phàn nàn "app chậm" | Tìm bottleneck |
+| Chuẩn bị sự kiện (sale, campaign) | Stress test với peak load |

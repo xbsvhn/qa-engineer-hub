@@ -1,71 +1,71 @@
 # Docker cho QA
 
-## Ban chat: Docker = "Container van chuyen" cho code
+## Bản chất: Docker = "Container vận chuyển" cho code
 
-Ban da thay nhung **container sat khong lo** tren tau bien chua? Khong can biet ben trong chua gi -- dien tu, trai cay, quan ao -- container nao cung cung kich thuoc, cung cach van chuyen, **chay duoc tren bat ky tau nao**.
+Bạn đã thấy những **container sắt khổng lồ** trên tàu biển chưa? Không cần biết bên trong chứa gì -- điện tử, trái cây, quần áo -- container nào cũng cùng kích thước, cùng cách vận chuyển, **chạy được trên bất kỳ tàu nào**.
 
-Docker lam dung nhu vay cho code:
+Docker làm đúng như vậy cho code:
 
-> **Docker container = code cua ban + MOI THU no can (thu vien, config, OS) -- dong goi trong 1 "hop" chay GIONG HET NHAU tren bat ky may tinh nao.**
+> **Docker container = code của bạn + MỌI THỨ nó cần (thư viện, config, OS) -- đóng gói trong 1 "hộp" chạy GIỐNG HỆT NHAU trên bất kỳ máy tính nào.**
 
-### Van de kinh dien: "Works on my machine!"
+### Vấn đề kinh điển: "Works on my machine!"
 
-| Khong co Docker | Co Docker |
+| Không có Docker | Có Docker |
 |---|---|
-| "Tren may toi chay duoc ma!" | Container chay giong nhau tren MOI may |
-| Cai dat test env mat 2 tieng | `docker-compose up` -- 1 lenh la xong |
-| Project A can Node 18, Project B can Node 20 -- conflict | Moi project co container rieng, khong anh huong nhau |
-| CI server khac may local --> tests fail | Docker = CUNG MOT moi truong o local va CI |
+| "Trên máy tôi chạy được mà!" | Container chạy giống nhau trên MỌI máy |
+| Cài đặt test env mất 2 tiếng | `docker-compose up` -- 1 lệnh là xong |
+| Project A cần Node 18, Project B cần Node 20 -- conflict | Mỗi project có container riêng, không ảnh hưởng nhau |
+| CI server khác máy local --> tests fail | Docker = CÙNG MỘT môi trường ở local và CI |
 
 ::: tip Aha moment
-Truoc Docker, "setup moi truong" la noi dau cua moi QA moi. "Tai sao tests chay tren may anh duoc ma may toi khong duoc?" -- Docker xoa bo hoan toan van de nay.
+Trước Docker, "setup môi trường" là nỗi đau của mọi QA mới. "Tại sao tests chạy trên máy anh được mà máy tôi không được?" -- Docker xóa bỏ hoàn toàn vấn đề này.
 :::
 
 ---
 
-## Image vs Container = Khuon banh vs Cai banh
+## Image vs Container = Khuôn bánh vs Cái bánh
 
-Day la 2 khai niem quan trong nhat cua Docker:
+Đây là 2 khái niệm quan trọng nhất của Docker:
 
-- **Image** = **khuon banh** (cookie cutter) -- ban thiet ke, khong an duoc
-- **Container** = **cai banh** (cookie) -- tao tu khuon, chay duoc, an duoc
+- **Image** = **khuôn bánh** (cookie cutter) -- bạn thiết kế, không ăn được
+- **Container** = **cái bánh** (cookie) -- tạo từ khuôn, chạy được, ăn được
 
 ```
-Docker Image (khuon)              Docker Containers (banh)
+Docker Image (khuôn)              Docker Containers (bánh)
 +-------------------+
-|  Ubuntu + Node 20 |  ------->   Container 1 (dang chay tests)
-|  + Playwright     |  ------->   Container 2 (dang chay tests)
-|  + Browsers       |  ------->   Container 3 (dang chay tests)
+|  Ubuntu + Node 20 |  ------->   Container 1 (đang chạy tests)
+|  + Playwright     |  ------->   Container 2 (đang chạy tests)
+|  + Browsers       |  ------->   Container 3 (đang chạy tests)
 +-------------------+
-    1 image              -->  Co the tao NHIEU containers tu 1 image
+    1 image              -->  Có thể tạo NHIỀU containers từ 1 image
 ```
 
-**Them vi du:**
-- Image `postgres:16` = khuon chua PostgreSQL database
-- Container = 1 database that su dang chay tu image do
-- Ban co the tao 5 containers tu cung 1 image -- 5 databases rieng biet
+**Thêm ví dụ:**
+- Image `postgres:16` = khuôn chứa PostgreSQL database
+- Container = 1 database thật sự đang chạy từ image đó
+- Bạn có thể tạo 5 containers từ cùng 1 image -- 5 databases riêng biệt
 
 ---
 
-## Docker Commands co ban -- Giai thich tung lenh
+## Docker Commands cơ bản -- Giải thích từng lệnh
 
 ```bash
-# Pull image = "tai khuon banh" tu Docker Hub (kho image online)
+# Pull image = "tải khuôn bánh" từ Docker Hub (kho image online)
 docker pull mcr.microsoft.com/playwright:v1.45.0-jammy
-# ^^^ Tai image Playwright co san Chromium, Firefox, WebKit
+# ^^^ Tải image Playwright có sẵn Chromium, Firefox, WebKit
 
-# Chay container = "lam banh tu khuon"
+# Chạy container = "làm bánh từ khuôn"
 docker run -it node:20 bash
-# ^^^ Tao 1 container tu image node:20, mo Terminal ben trong
-# -it = interactive + terminal (de ban go lenh duoc)
+# ^^^ Tạo 1 container từ image node:20, mở Terminal bên trong
+# -it = interactive + terminal (để bạn gõ lệnh được)
 
-# Xem containers dang chay (giong "task manager")
+# Xem containers đang chạy (giống "task manager")
 docker ps
 
-# Dung container
+# Dừng container
 docker stop <container-id>
 
-# Xoa tat ca containers da dung (don dep)
+# Xóa tất cả containers đã dừng (dọn dẹp)
 docker container prune
 ```
 
@@ -73,89 +73,89 @@ docker container prune
 
 ## Docker cho Test Automation
 
-### Chay Playwright Tests trong Docker
+### Chạy Playwright Tests trong Docker
 
 ```bash
-# Chay tests bang Playwright Docker image (khong can cai gi tren may)
+# Chạy tests bằng Playwright Docker image (không cần cài gì trên máy)
 docker run --rm \
   -v $(pwd):/app \
   -w /app \
   mcr.microsoft.com/playwright:v1.45.0-jammy \
   bash -c "npm ci && npx playwright test"
 
-# Giai thich tung phan:
-# docker run         = tao va chay container
-# --rm               = tu dong xoa container sau khi chay xong (don dep)
-# -v $(pwd):/app     = "mount" thu muc hien tai vao /app trong container
-#                      (giong nhu "chia se folder" giua may ban va container)
-# -w /app            = dat working directory = /app
-# mcr.microsoft.com/playwright:v1.45.0-jammy = ten image
-# bash -c "..."      = lenh chay ben trong container
+# Giải thích từng phần:
+# docker run         = tạo và chạy container
+# --rm               = tự động xóa container sau khi chạy xong (dọn dẹp)
+# -v $(pwd):/app     = "mount" thư mục hiện tại vào /app trong container
+#                      (giống như "chia sẻ folder" giữa máy bạn và container)
+# -w /app            = đặt working directory = /app
+# mcr.microsoft.com/playwright:v1.45.0-jammy = tên image
+# bash -c "..."      = lệnh chạy bên trong container
 ```
 
-### Dockerfile = "Cong thuc" lam image rieng
+### Dockerfile = "Công thức" làm image riêng
 
 ```dockerfile
-# Dockerfile -- file nay mo ta CACH TAO image cua ban
+# Dockerfile -- file này mô tả CÁCH TẠO image của bạn
 
-# Bat dau tu image Playwright co san (co browsers roi)
+# Bắt đầu từ image Playwright có sẵn (có browsers rồi)
 FROM mcr.microsoft.com/playwright:v1.45.0-jammy
 
-# Dat thu muc lam viec
+# Đặt thư mục làm việc
 WORKDIR /app
 
-# Copy file package*.json truoc (de Docker cache buoc install)
+# Copy file package*.json trước (để Docker cache bước install)
 COPY package*.json ./
 
-# Cai dependencies
+# Cài dependencies
 RUN npm ci
 
-# Copy TOAN BO test code vao
+# Copy TOÀN BỘ test code vào
 COPY . .
 
-# Lenh mac dinh khi chay container
+# Lệnh mặc định khi chạy container
 CMD ["npx", "playwright", "test"]
 ```
 
 ```bash
-# Build image tu Dockerfile (giong "lam khuon banh")
+# Build image từ Dockerfile (giống "làm khuôn bánh")
 docker build -t my-tests .
-# -t my-tests = dat ten image la "my-tests"
-# .           = Dockerfile nam o thu muc hien tai
+# -t my-tests = đặt tên image là "my-tests"
+# .           = Dockerfile nằm ở thư mục hiện tại
 
-# Chay tests (giong "lam banh tu khuon")
+# Chạy tests (giống "làm bánh từ khuôn")
 docker run my-tests
 ```
 
 ---
 
-## Docker Compose = Nhac truong chi huy nhieu containers
+## Docker Compose = Nhạc trưởng chỉ huy nhiều containers
 
-Khi app cua ban can **nhieu thanh phan** chay cung luc (web app + database + API), Docker Compose la **nhac truong** dieu phoi tat ca:
+Khi app của bạn cần **nhiều thành phần** chạy cùng lúc (web app + database + API), Docker Compose là **nhạc trưởng** điều phối tất cả:
 
 ```yaml
 # docker-compose.yml
 version: '3.8'
 
 services:
-  # "Nhac cong" 1: App can test
+  # "Nhạc công" 1: App cần test
   app:
     build: ./app
     ports:
       - "3000:3000"
-      # ^^^ Map port 3000 cua container ra port 3000 cua may ban
-      # De ban truy cap http://localhost:3000
+      # ^^^ Map port 3000 của container ra port 3000 của máy bạn
+      # Để bạn truy cập http://localhost:3000
     environment:
       - DATABASE_URL=postgres://user:pass@db:5432/testdb
-      # ^^^ App ket noi database -- "db" la ten service database ben duoi
+      # ^^^ App kết nối database -- "db" là tên service database bên dưới
     depends_on:
       - db
-      # ^^^ "Doi database khoi dong truoc roi moi start app"
+      # ^^^ "Đợi database khởi động trước rồi mới start app"
 
-  # "Nhac cong" 2: Database
+  # "Nhạc công" 2: Database
   db:
     image: postgres:16
-    # ^^^ Dung image PostgreSQL co san, khong can build
+    # ^^^ Dùng image PostgreSQL có sẵn, không cần build
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: pass
@@ -163,63 +163,63 @@ services:
     ports:
       - "5432:5432"
 
-  # "Nhac cong" 3: Test runner
+  # "Nhạc công" 3: Test runner
   tests:
     build:
       context: ./tests
       dockerfile: Dockerfile
     environment:
       - BASE_URL=http://app:3000
-      # ^^^ Tests goi API cua app -- dung ten service "app" lam hostname
+      # ^^^ Tests gọi API của app -- dùng tên service "app" làm hostname
     depends_on:
       - app
-      # ^^^ "Doi app khoi dong truoc roi moi chay tests"
+      # ^^^ "Đợi app khởi động trước rồi mới chạy tests"
 ```
 
 ```bash
-# Khoi dong TAT CA services cung luc (1 lenh thay vi cai tung cai)
+# Khởi động TẤT CẢ services cùng lúc (1 lệnh thay vì cài từng cái)
 docker-compose up -d
-# -d = chay ngam (detached mode)
+# -d = chạy ngầm (detached mode)
 
-# Chay tests
+# Chạy tests
 docker-compose run tests
 
-# Don dep -- xoa tat ca containers va data
+# Dọn dẹp -- xóa tất cả containers và data
 docker-compose down -v
-# -v = xoa luon volumes (database data)
+# -v = xóa luôn volumes (database data)
 ```
 
 ::: tip Aha moment
-Truoc Docker Compose, de test mot web app, ban phai: (1) cai PostgreSQL, (2) tao database, (3) cai app, (4) config connection, (5) chay app, (6) roi moi chay tests. Voi Docker Compose: `docker-compose up` -- XONG. Tat ca 6 buoc goi gon trong 1 file YAML.
+Trước Docker Compose, để test một web app, bạn phải: (1) cài PostgreSQL, (2) tạo database, (3) cài app, (4) config connection, (5) chạy app, (6) rồi mới chạy tests. Với Docker Compose: `docker-compose up` -- XONG. Tất cả 6 bước gói gọn trong 1 file YAML.
 :::
 
 ---
 
-## Khi nao QA dung Docker?
+## Khi nào QA dùng Docker?
 
-| Tinh huong | Cach dung |
+| Tình huống | Cách dùng |
 |---|---|
-| **CI/CD pipeline** | Tests chay trong Docker container (moi truong nhat quan) |
-| **Setup test env nhanh** | `docker-compose up` thay vi cai thu cong |
-| **Test voi database** | Tao PostgreSQL/MySQL container trong vai giay |
-| **Cross-browser** | Playwright Docker image co san tat ca browsers |
-| **Team moi join** | Clone repo + `docker-compose up` = san sang test |
+| **CI/CD pipeline** | Tests chạy trong Docker container (môi trường nhất quán) |
+| **Setup test env nhanh** | `docker-compose up` thay vì cài thủ công |
+| **Test với database** | Tạo PostgreSQL/MySQL container trong vài giây |
+| **Cross-browser** | Playwright Docker image có sẵn tất cả browsers |
+| **Team mới join** | Clone repo + `docker-compose up` = sẵn sàng test |
 
-### Khi nao KHONG can Docker?
+### Khi nào KHÔNG cần Docker?
 
-- Tests don gian chay tren local --> `npx playwright test` la du
-- Team nho, moi nguoi dung cung OS va setup
-- GitHub Actions runner da cung cap moi truong day du roi
+- Tests đơn giản chạy trên local --> `npx playwright test` là đủ
+- Team nhỏ, mọi người dùng cùng OS và setup
+- GitHub Actions runner đã cung cấp môi trường đầy đủ rồi
 
 ---
 
-## Tom tat chuong
+## Tóm tắt chương
 
-| Concept | An du | Giai thich |
+| Concept | Ẩn dụ | Giải thích |
 |---|---|---|
-| **Docker** | Container van chuyen | Dong goi code + dependencies, chay giong nhau moi noi |
-| **Image** | Khuon banh | Template -- ban thiet ke, co the tao nhieu containers |
-| **Container** | Cai banh | Instance dang chay tu image |
-| **Dockerfile** | Cong thuc lam banh | File mo ta cach tao image |
-| **Docker Compose** | Nhac truong | Dieu phoi nhieu containers chay cung luc |
-| **Volume mount** | Chia se folder | Ket noi thu muc may ban voi container |
+| **Docker** | Container vận chuyển | Đóng gói code + dependencies, chạy giống nhau mọi nơi |
+| **Image** | Khuôn bánh | Template -- bạn thiết kế, có thể tạo nhiều containers |
+| **Container** | Cái bánh | Instance đang chạy từ image |
+| **Dockerfile** | Công thức làm bánh | File mô tả cách tạo image |
+| **Docker Compose** | Nhạc trưởng | Điều phối nhiều containers chạy cùng lúc |
+| **Volume mount** | Chia sẻ folder | Kết nối thư mục máy bạn với container |
