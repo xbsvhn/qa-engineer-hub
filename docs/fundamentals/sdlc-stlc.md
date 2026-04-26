@@ -1,355 +1,189 @@
 # SDLC & STLC
 
-## SDLC là gì? (Software Development Life Cycle)
+## Phần mềm được tạo ra như thế nào?
 
-SDLC là **quy trình** mà một phần mềm đi qua từ ý tưởng ban đầu đến khi được triển khai và bảo trì. Hiểu SDLC giúp QA biết **mình đang ở đâu** trong dự án và **cần làm gì** ở mỗi giai đoạn.
+Bạn muốn xây nhà. Bạn không thể đi mua gạch rồi xây ngay — bạn cần:
+1. Biết **xây nhà gì** (biệt thự? chung cư? nhà cấp 4?)
+2. **Lên kế hoạch** (bao nhiêu tiền? bao lâu? ai làm?)
+3. **Thiết kế** (bản vẽ, vật liệu)
+4. **Xây** (đổ móng, xây tường, lắp điện nước)
+5. **Kiểm tra** (nhà có chắc không? điện nước chạy không?)
+6. **Bàn giao** cho chủ nhà ở
+7. **Bảo trì** (sửa chữa khi hỏng)
 
-### Tại sao QA cần hiểu SDLC? (WHY)
-
-- Biết **khi nào** nên bắt đầu test (spoiler: càng sớm càng tốt)
-- Hiểu **ai** tạo ra cái gì ở mỗi phase → biết cần review artifact nào
-- Giao tiếp hiệu quả với Dev, BA, PM bằng **ngôn ngữ chung**
-- Đề xuất **test strategy** phù hợp với mô hình dự án đang dùng
+Phần mềm cũng được tạo ra theo quy trình tương tự. Quy trình đó gọi là **SDLC**.
 
 ---
 
-## Các giai đoạn SDLC
+## SDLC là gì — bản chất?
+
+**SDLC** = **S**oftware **D**evelopment **L**ife **C**ycle = Vòng đời phát triển phần mềm.
+
+**Bản chất:** SDLC là **chuỗi các bước** mà một phần mềm đi qua từ khi còn là ý tưởng cho đến khi được người dùng sử dụng và bảo trì. Giống như vòng đời của một ngôi nhà: từ ý tưởng → bản vẽ → xây dựng → kiểm tra → dùng → sửa chữa.
+
+### 7 giai đoạn của SDLC
 
 ```
-┌─────────────┐   ┌─────────────┐   ┌─────────────┐
-│ 1. Requirement│──►│ 2. Planning │──►│  3. Design  │
-│   Analysis   │   │             │   │             │
-└─────────────┘   └─────────────┘   └─────────────┘
-                                           │
-┌─────────────┐   ┌─────────────┐   ┌──────▼──────┐
-│7. Maintenance│◄──│6. Deployment│◄──│4. Development│
-│              │   │             │   │             │
-└─────────────┘   └─────────────┘   └──────┬──────┘
-                                           │
-                                    ┌──────▼──────┐
-                                    │ 5. Testing  │
-                                    └─────────────┘
+1. Requirement    "Cần làm gì?"       → Thu thập yêu cầu
+2. Planning       "Làm thế nào?"      → Lên kế hoạch
+3. Design         "Trông như thế nào?" → Thiết kế kiến trúc
+4. Development    "Code!"              → Viết code
+5. Testing        "Đúng chưa?"         → Kiểm tra
+6. Deployment     "Release!"           → Đưa lên production
+7. Maintenance    "Sửa + cải tiến"     → Vận hành, bảo trì
 ```
 
-### Chi tiết từng giai đoạn
+### QA làm gì ở MỖI giai đoạn?
 
-#### 1. Requirement Analysis — "Cần làm gì?"
+Đây là điều nhiều người hiểu sai: **QA không chỉ làm việc ở bước 5 (Testing)**. QA tốt tham gia từ bước 1.
 
-| | Chi tiết |
-|---|---|
-| **Input** | Business needs, stakeholder interviews |
-| **Output** | SRS (Software Requirement Specification), User Stories |
-| **Ai làm** | BA (Business Analyst), Product Owner |
-| **QA làm gì** | Review requirements, hỏi câu hỏi, identify gaps và ambiguity |
-
-**QA nên hỏi gì ở phase này:**
-- "User story này thiếu acceptance criteria"
-- "Nếu user nhập sai password 5 lần thì sao? Requirement không nói"
-- "Requirement A mâu thuẫn với requirement B"
-- "Edge case: nếu giỏ hàng có 0 sản phẩm thì nút Checkout hiện không?"
+| Giai đoạn | QA làm gì | Ví dụ cụ thể |
+|---|---|---|
+| **1. Requirement** | Đọc requirement, hỏi câu hỏi, tìm lỗ hổng | "Requirement nói user login bằng email. Vậy nếu user nhập email sai format thì hiện lỗi gì? Requirement không nói." |
+| **2. Planning** | Ước lượng thời gian test, đề xuất tool | "Feature này cần 3 ngày test. Cần Postman cho API testing." |
+| **3. Design** | Review UI/UX design, hiểu kiến trúc | "Thiết kế này button quá nhỏ, user mobile khó bấm." |
+| **4. Development** | Viết test case, chuẩn bị test data | Dev đang code → QA **đồng thời** viết test case. Không đợi dev xong mới bắt đầu. |
+| **5. Testing** | Execute test, report bug | Chạy test cases, tìm bugs, report vào Jira. |
+| **6. Deployment** | Smoke test trên production | App deploy xong → QA kiểm tra nhanh: login được không? trang chủ load không? |
+| **7. Maintenance** | Test hotfix, regression test | User report bug → Dev fix → QA kiểm tra fix đúng chưa, có gây lỗi mới không. |
 
 ::: tip Shift-left Testing
-Đây chính là **Shift-left Testing** — đưa testing/thinking về bên trái (sớm hơn) trong timeline. QA tham gia từ đây có thể phát hiện 30-50% defects trước khi viết dòng code nào.
+"Shift-left" nghĩa là **đẩy testing về bên trái** (sớm hơn) trên timeline. QA tham gia từ bước Requirement có thể phát hiện 30-50% lỗi **trước khi viết dòng code nào** — tiết kiệm rất nhiều tiền và thời gian.
 :::
-
-#### 2. Planning — "Làm như thế nào? Bao lâu?"
-
-| | Chi tiết |
-|---|---|
-| **Input** | Requirements, resources, constraints |
-| **Output** | Project Plan, timeline, resource allocation |
-| **Ai làm** | PM, Tech Lead |
-| **QA làm gì** | Ước lượng effort test, đề xuất test strategy, xác định test environment cần |
-
-#### 3. Design — "Kiến trúc hệ thống"
-
-| | Chi tiết |
-|---|---|
-| **Input** | Requirements |
-| **Output** | System Architecture, Database Design, API Design, UI/UX Wireframes |
-| **Ai làm** | Architect, Designer, Tech Lead |
-| **QA làm gì** | Review design, hiểu architecture để plan integration testing, review UI/UX |
-
-#### 4. Development — "Viết code"
-
-| | Chi tiết |
-|---|---|
-| **Input** | Design documents |
-| **Output** | Source code, Unit tests |
-| **Ai làm** | Developers |
-| **QA làm gì** | Viết test cases, chuẩn bị test data, setup test environment, viết automation scripts |
-
-**Quan trọng:** QA **không đợi** dev code xong mới bắt đầu. Trong lúc dev code, QA song song chuẩn bị mọi thứ cần thiết.
-
-#### 5. Testing — "Kiểm tra chất lượng"
-
-| | Chi tiết |
-|---|---|
-| **Input** | Build, test cases, test data |
-| **Output** | Bug reports, Test reports, Metrics |
-| **Ai làm** | QA Team |
-| **QA làm gì** | Execute test cases, report bugs, retest fixes, regression testing |
-
-#### 6. Deployment — "Đưa lên production"
-
-| | Chi tiết |
-|---|---|
-| **Input** | Tested build, deployment plan |
-| **Output** | Live system |
-| **Ai làm** | DevOps, Ops team |
-| **QA làm gì** | Smoke test trên production, verify critical flows, monitor |
-
-#### 7. Maintenance — "Vận hành và cải tiến"
-
-| | Chi tiết |
-|---|---|
-| **Input** | User feedback, bug reports, change requests |
-| **Output** | Patches, updates, new versions |
-| **Ai làm** | Cả team |
-| **QA làm gì** | Test hotfixes, regression test sau mỗi patch, maintenance testing |
 
 ---
 
-## Các mô hình SDLC phổ biến
+## Các mô hình SDLC — Dùng mô hình nào?
 
-### 1. Waterfall — Mô hình thác nước
+"Mô hình" ở đây nghĩa là **cách tổ chức** 7 bước trên. Giống như cùng là xây nhà, nhưng có người xây xong tầng 1 mới xây tầng 2 (tuần tự), có người xây song song nhiều phần (linh hoạt).
+
+### 1. Waterfall — Thác nước
+
+**Bản chất:** Làm **tuần tự** từng bước, xong bước này mới sang bước tiếp. Không quay lại.
 
 ```
 Requirement ──► Design ──► Development ──► Testing ──► Deployment
-    (tuần tự, không quay lại)
+     (xong)       (xong)       (xong)        (xong)       (xong)
+                                               ↑
+                                     QA mới bắt đầu ở đây!
 ```
 
-| | |
-|---|---|
-| **Đặc điểm** | Tuần tự, hoàn thành phase này mới sang phase tiếp |
-| **Ưu điểm** | Đơn giản, dễ quản lý, documentation đầy đủ |
-| **Nhược điểm** | Không linh hoạt, bug phát hiện muộn, chi phí thay đổi cao |
-| **Phù hợp** | Dự án nhỏ, requirement rõ ràng và ổn định |
-| **QA Challenge** | Test ở cuối → áp lực thời gian lớn, phát hiện bug muộn |
+**Vấn đề:** QA chỉ test ở cuối. Nếu phát hiện requirement sai → phải quay lại từ đầu → tốn kém, chậm.
 
-### 2. V-Model — Mô hình chữ V
+**Dùng khi nào:** Dự án nhỏ, requirement rõ ràng 100% từ đầu, không thay đổi. Ví dụ: phần mềm điều khiển máy giặt — spec cố định, không cần linh hoạt.
+
+### 2. Agile — Linh hoạt
+
+**Bản chất:** Chia dự án thành **nhiều vòng lặp nhỏ** (gọi là Sprint, thường 2 tuần). Mỗi Sprint làm một phần nhỏ, hoàn chỉnh từ đầu đến cuối.
 
 ```
-Requirement Analysis ─────────────────────── Acceptance Testing
-    │                                              ▲
-    ▼                                              │
-  System Design ───────────────────── System Testing
-      │                                      ▲
-      ▼                                      │
-    Architecture Design ──────── Integration Testing
-        │                              ▲
-        ▼                              │
-      Coding ──────────────── Unit Testing
+Sprint 1 (2 tuần)          Sprint 2 (2 tuần)          Sprint 3...
+┌─────────────────┐        ┌─────────────────┐
+│ Plan→Code→Test  │   →    │ Plan→Code→Test  │   →    ...
+│ →Demo→Feedback  │        │ →Demo→Feedback  │
+└─────────────────┘        └─────────────────┘
+   Deliver phần 1            Deliver phần 2
 ```
 
-| | |
-|---|---|
-| **Đặc điểm** | Mỗi phase development có phase testing tương ứng |
-| **Ưu điểm** | Test planning bắt đầu sớm, rõ ràng level nào test gì |
-| **Nhược điểm** | Vẫn tuần tự, không linh hoạt |
-| **Phù hợp** | Dự án yêu cầu chất lượng cao (y tế, quân sự, tài chính) |
-| **QA Role** | Rất rõ ràng, QA tham gia từ đầu, mỗi level có test plan riêng |
+**Tại sao Agile phổ biến (~80% dự án hiện nay)?**
+- Feedback sớm → sửa sai nhanh
+- QA test **mỗi Sprint** → phát hiện bug sớm
+- Linh hoạt thay đổi requirement giữa chừng
 
-### 3. Agile — Phát triển linh hoạt
+**Chi tiết về Agile/Scrum:** Xem bài [Agile & Scrum cho QA](./agile-scrum).
 
-```
-Sprint 1        Sprint 2        Sprint 3
-┌──────────┐   ┌──────────┐   ┌──────────┐
-│Plan→Build│   │Plan→Build│   │Plan→Build│
-│→Test→Demo│   │→Test→Demo│   │→Test→Demo│
-└──────────┘   └──────────┘   └──────────┘
-  2-4 weeks      2-4 weeks      2-4 weeks
-  ─────────────────────────────────────────►
-              Incremental delivery
-```
+### So sánh nhanh
 
-| | |
-|---|---|
-| **Đặc điểm** | Iterative, chia nhỏ thành Sprint 2-4 tuần |
-| **Ưu điểm** | Linh hoạt, feedback nhanh, deliver value sớm |
-| **Nhược điểm** | Cần team có kinh nghiệm, documentation ít hơn |
-| **Phù hợp** | ~80% dự án hiện đại, đặc biệt product development |
-| **QA Role** | QA tham gia mọi Sprint, test liên tục, automation rất quan trọng |
-
-::: info Thực tế
-Phần lớn dự án hiện nay dùng **Agile** (cụ thể là Scrum hoặc Kanban). Chi tiết về Agile/Scrum sẽ được trình bày ở bài [Agile & Scrum cho QA](./agile-scrum).
-:::
-
-### So sánh tổng quan
-
-| Tiêu chí | Waterfall | V-Model | Agile |
-|---|---|---|---|
-| **Flexibility** | Thấp | Thấp | Cao |
-| **Customer feedback** | Cuối dự án | Cuối dự án | Mỗi sprint |
-| **Testing bắt đầu** | Sau development | Song song planning | Mọi sprint |
-| **Documentation** | Rất nhiều | Nhiều | Vừa đủ |
-| **Risk** | Phát hiện muộn | Tốt hơn Waterfall | Phát hiện sớm |
-| **Team size** | Mọi size | Mọi size | Team nhỏ-vừa |
+| | Waterfall | Agile |
+|---|---|---|
+| **Delivery** | Cuối dự án (vài tháng) | Mỗi 2 tuần |
+| **Testing** | Cuối project | Mỗi Sprint |
+| **Thay đổi requirement** | Rất khó | Bình thường |
+| **Risk phát hiện muộn** | Cao | Thấp |
+| **Phổ biến** | ~20% | ~80% |
 
 ---
 
-## STLC — Software Testing Life Cycle
+## STLC là gì — bản chất?
 
-STLC là quy trình testing **nằm trong** SDLC, mô tả các bước QA cần thực hiện từ đầu đến cuối.
+**STLC** = **S**oftware **T**esting **L**ife **C**ycle = Vòng đời kiểm thử phần mềm.
 
-### Các giai đoạn STLC
+**Bản chất:** Nếu SDLC là quy trình **tạo ra** phần mềm, thì STLC là quy trình **kiểm tra** phần mềm. STLC nằm **bên trong** SDLC.
 
 ```
-┌──────────────┐   ┌──────────────┐   ┌──────────────┐
-│ 1. Requirement│──►│ 2. Test      │──►│ 3. Test Case │
-│    Analysis   │   │    Planning  │   │  Development │
-└──────────────┘   └──────────────┘   └──────┬───────┘
-                                              │
-┌──────────────┐   ┌──────────────┐   ┌───────▼──────┐
-│ 6. Test Cycle│◄──│ 5. Test      │◄──│ 4. Environment│
-│    Closure   │   │   Execution  │   │    Setup     │
-└──────────────┘   └──────────────┘   └──────────────┘
+SDLC (toàn bộ dự án):
+  Requirement → Design → Development → [STLC] → Deployment → Maintenance
+                                         ↑
+                                    Quy trình test
+                                    nằm ở đây
 ```
 
-### Chi tiết từng phase
+### 6 bước của STLC
 
-#### Phase 1: Requirement Analysis
+Mỗi bước trả lời một câu hỏi:
 
-**Mục đích:** Hiểu requirement để xác định **cần test gì**.
-
-**QA deliverables:**
-- Requirement Traceability Matrix (RTM) — mapping requirement ↔ test case
-- Danh sách câu hỏi/clarification cần gửi BA
-
-**Ví dụ thực tế:**
-
-Requirement: *"User can login with email and password"*
-
-QA phân tích:
-- Login bằng email valid → expected: success
-- Login bằng email invalid → expected: error message gì?
-- Password sai → cho phép sai bao nhiêu lần? Có lock account không?
-- "Remember me" checkbox có không?
-- Social login (Google, Facebook) có trong scope không?
-- Forgot password flow?
-
-#### Phase 2: Test Planning
-
-**Mục đích:** Xác định **test như thế nào**, nguồn lực, timeline.
-
-**QA deliverables:**
-- Test Plan document
-- Test Strategy
-- Effort estimation
-
-**Chi tiết:** Xem bài [Test Plan & Strategy](/manual-testing/test-plan).
-
-#### Phase 3: Test Case Development
-
-**Mục đích:** Viết test case cụ thể, chuẩn bị test data.
-
-**QA deliverables:**
-- Test Cases
-- Test Data
-- Automation scripts (nếu có)
-
-**Chi tiết:** Xem bài [Test Case Design](/manual-testing/test-case-design).
-
-#### Phase 4: Environment Setup
-
-**Mục đích:** Chuẩn bị **môi trường** để chạy test.
-
-**Thường bao gồm:**
-- Test server (staging environment)
-- Test database (có test data)
-- Browsers/devices cần test
-- Automation tool setup
-- Access permissions
-
-**Thực tế:** Nhiều dự án dùng Docker để setup test environment nhanh chóng và consistent.
-
-#### Phase 5: Test Execution
-
-**Mục đích:** **Chạy test** và report kết quả.
-
-**Activities:**
-1. Execute test cases (manual hoặc automation)
-2. So sánh actual vs expected result
-3. Nếu fail → log bug với đầy đủ thông tin
-4. Retest bugs đã fix
-5. Regression testing
-6. Update test result status
-
-**Bug report:** Xem chi tiết ở bài [Bug Reporting](/manual-testing/bug-reporting).
-
-#### Phase 6: Test Cycle Closure
-
-**Mục đích:** Đánh giá và **tổng kết** kết quả testing.
-
-**QA deliverables:**
-- Test Summary Report
-- Defect metrics (found, fixed, open, deferred)
-- Test coverage metrics
-- Lessons learned
-
-**Metrics thường report:**
-
-| Metric | Ý nghĩa | Ví dụ |
+| Bước | Câu hỏi | QA làm gì |
 |---|---|---|
-| **Pass rate** | % test case pass | 95% (285/300) |
-| **Defect density** | Bugs per module | Payment: 15 bugs, Profile: 3 bugs |
-| **Defect leakage** | Bugs found in prod | 2 bugs leaked to prod |
-| **Test coverage** | % requirements covered | 100% requirements, 85% code coverage |
+| **1. Requirement Analysis** | "Cần test cái gì?" | Đọc requirement, hỏi clarification, tìm gaps |
+| **2. Test Planning** | "Test như thế nào?" | Viết test plan: scope, timeline, ai test gì |
+| **3. Test Case Development** | "Test cases cụ thể là gì?" | Viết test cases, chuẩn bị test data |
+| **4. Environment Setup** | "Test ở đâu?" | Chuẩn bị server, browser, database, test accounts |
+| **5. Test Execution** | "Chạy test!" | Execute test cases, report bugs, retest fixes |
+| **6. Test Closure** | "Kết quả thế nào?" | Viết test report, đánh giá chất lượng, lessons learned |
+
+### Ví dụ thực tế
+
+Requirement: *"User có thể login bằng email và password"*
+
+**Bước 1 — Requirement Analysis:** QA đọc và hỏi:
+- "Email sai format → hiện lỗi gì?"
+- "Password sai bao nhiêu lần → khóa account?"
+- "Có Remember me không?"
+- "Social login (Google/Facebook) có trong scope không?"
+
+**Bước 2 — Test Planning:** "Login feature cần 2 ngày test, 1 QA, test trên Chrome + Firefox + Mobile."
+
+**Bước 3 — Test Case Development:** Viết 15-20 test cases (login đúng, login sai password, login email trống, login bị lock account...)
+
+**Bước 4 — Environment Setup:** Tạo test account trên staging server.
+
+**Bước 5 — Test Execution:** Chạy 20 test cases → 18 pass, 2 fail → log 2 bugs vào Jira.
+
+**Bước 6 — Test Closure:** "Login feature: 90% pass rate, 2 bugs (1 Major, 1 Minor). Major bug cần fix trước release."
 
 ---
 
 ## Entry & Exit Criteria
 
-Entry và Exit Criteria giúp trả lời: **"Đã đủ điều kiện để bắt đầu/kết thúc chưa?"**
+### Entry Criteria — "Đủ điều kiện bắt đầu test chưa?"
 
-### Entry Criteria — Điều kiện để BẮT ĐẦU test
+Trước khi bắt đầu test, cần đảm bảo:
+- ✅ Requirement đã review → biết test cái gì
+- ✅ Build deploy thành công → có cái để test
+- ✅ Test data sẵn sàng → có data để nhập
+- ✅ Smoke test pass → build không crash ngay
 
-| Criteria | Tại sao cần |
-|---|---|
-| Requirements đã review và approved | Không test được nếu không biết test cái gì |
-| Test plan đã approved | Cần biết test strategy |
-| Build deploy thành công trên test env | Cần có build để test |
-| Test data sẵn sàng | Cần data để execute test |
-| Smoke test pass | Build phải stable ở mức cơ bản |
+Nếu chưa đủ → **không bắt đầu test**. Test trên build hỏng = lãng phí thời gian.
 
-### Exit Criteria — Điều kiện để KẾT THÚC test
+### Exit Criteria — "Đủ điều kiện kết thúc test chưa?"
 
-| Criteria | Ví dụ threshold |
-|---|---|
-| Tất cả test case đã executed | 100% executed |
-| Pass rate đạt ngưỡng | ≥ 95% pass |
-| Không còn Critical/Blocker bug | 0 open critical bugs |
-| Bug fix rate | ≥ 90% bugs fixed |
-| Test summary report done | Report approved by PM |
+Khi nào dừng test?
+- ✅ 100% test cases đã chạy
+- ✅ Pass rate ≥ 95%
+- ✅ 0 Critical bugs mở
+- ✅ Test report đã viết
 
-::: warning Thực tế
-Trong Agile, Entry/Exit Criteria thường được thay bằng **Definition of Ready** (DoR) và **Definition of Done** (DoD) ở mức User Story. Xem chi tiết ở bài [Agile & Scrum cho QA](./agile-scrum).
-:::
+**Thực tế trong Agile:** Entry/Exit Criteria thường được thay bằng **Definition of Ready** (story sẵn sàng để bắt đầu) và **Definition of Done** (story hoàn thành). Xem bài [Agile & Scrum](./agile-scrum).
 
 ---
 
-## SDLC vs STLC — Mối quan hệ
+## Tóm tắt
 
-```
-SDLC:  Requirement → Design → Development → Testing → Deployment
-                                                │
-STLC:  ┌────────────────────────────────────────┤
-       │  Req Analysis → Test Planning → TC Development
-       │  → Env Setup → Test Execution → Closure
-       └─────────────────────────────────────────
-```
-
-**Điểm mấu chốt:** STLC **không chỉ chạy trong phase Testing** của SDLC. Req Analysis và Test Planning của STLC nên bắt đầu **song song** với Requirement và Design của SDLC.
-
----
-
-## Tóm tắt chương
-
-| Concept | Điểm cốt lõi |
+| Concept | Bản chất 1 câu |
 |---|---|
-| **SDLC** | 7 phases, QA tham gia mọi phase, không chỉ phase Testing |
-| **Waterfall** | Tuần tự, test cuối → rủi ro cao |
-| **V-Model** | Test planning song song development → tốt hơn Waterfall |
-| **Agile** | Iterative, test mỗi sprint → phổ biến nhất hiện nay |
-| **STLC** | 6 phases riêng cho testing, bắt đầu từ Requirement Analysis |
-| **Entry/Exit** | "Checklist" để quyết định bắt đầu/kết thúc test |
+| **SDLC** | Quy trình tạo phần mềm từ ý tưởng đến bảo trì — 7 bước |
+| **Waterfall** | Tuần tự, test cuối — rủi ro cao, ít dùng |
+| **Agile** | Chia nhỏ thành Sprint 2 tuần, test mỗi Sprint — phổ biến nhất |
+| **STLC** | Quy trình test nằm trong SDLC — 6 bước |
+| **Entry/Exit** | Checklist "đủ điều kiện bắt đầu/kết thúc" |
+| **QA Role** | Tham gia MỌI giai đoạn SDLC, không chỉ bước Testing |

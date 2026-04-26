@@ -1,437 +1,471 @@
-# SQL cho QA
+# SQL cho QA - Nói chuyện với Database
 
-## Tại sao QA cần biết SQL? (WHY)
+## Database là gì? Hãy tưởng tượng một tủ hồ sơ
 
-Phần lớn ứng dụng lưu trữ dữ liệu trong **database**. QA cần SQL để:
+Trước khi học SQL, bạn cần hiểu **database** (cơ sở dữ liệu) là gì đã. Đừng nghĩ nó phức tạp — hãy tưởng tượng bạn đang đứng trước **một tủ hồ sơ khổng lồ** trong văn phòng.
 
-1. **Verify data** — API trả về đúng, nhưng database lưu đúng chưa?
-2. **Tạo test data** — Tạo nhanh 1000 users thay vì register tay từng cái
-3. **Debug bugs** — Tìm nguyên nhân lỗi ở tầng data
-4. **Kiểm tra data integrity** — Sau khi migration, data có bị mất/sai không?
-5. **Hiểu backend** — Giao tiếp hiệu quả hơn với developer
+```
+🗄️ TỦ HỒ SƠ (DATABASE: ecommerce_db)
+│
+├── 📂 Ngăn kéo "users" (TABLE)
+│   ├── 📁 Hồ sơ #1: {Tên: An, Email: an@mail.com}      ← ROW (1 dòng dữ liệu)
+│   ├── 📁 Hồ sơ #2: {Tên: Bình, Email: binh@mail.com}
+│   └── 📁 Hồ sơ #3: {Tên: Chi, Email: chi@mail.com}
+│
+├── 📂 Ngăn kéo "products" (TABLE)
+│   ├── 📁 Hồ sơ #1: {Tên SP: Áo thun, Giá: 200K}
+│   └── 📁 Hồ sơ #2: {Tên SP: Quần jeans, Giá: 500K}
+│
+└── 📂 Ngăn kéo "orders" (TABLE)
+    ├── 📁 Hồ sơ #1: {User: An, Tổng: 700K, Status: completed}
+    └── 📁 Hồ sơ #2: {User: Bình, Tổng: 200K, Status: pending}
+```
 
-**Thực tế phỏng vấn:** ~80% công ty yêu cầu QA biết SQL cơ bản. Nhiều job description ghi rõ "SQL is required".
+Bây giờ dịch sang ngôn ngữ kỹ thuật:
+
+| Tủ hồ sơ | Database term | Giải thích |
+|---|---|---|
+| **Cả cái tủ** | **Database** | Nơi chứa toàn bộ dữ liệu của ứng dụng |
+| **Một ngăn kéo** | **Table** (bảng) | Một nhóm dữ liệu cùng loại (users, products, orders) |
+| **Một folder hồ sơ** | **Row** (dòng) | Một record cụ thể — ví dụ: thông tin của 1 user |
+| **Một mục trong folder** | **Column** (cột) | Một loại thông tin — ví dụ: name, email, price |
+| **Số hiệu trên folder** | **Primary Key** (PK) | Mã số duy nhất để nhận diện mỗi record, không trùng lặp |
+| **Ghi chú "xem thêm ngăn kéo X"** | **Foreign Key** (FK) | Liên kết giữa 2 bảng — ví dụ: order ghi `user_id = 1` nghĩa là "đơn hàng này của user số 1" |
+
+::: tip Aha moment
+Primary Key giống số CMND/CCCD — mỗi người có 1 số duy nhất, không ai trùng ai. Nhờ đó bạn luôn tìm được đúng người cần tìm.
+:::
 
 ---
 
-## Database là gì? (WHAT)
+## SQL là gì? Ngôn ngữ để "nói chuyện" với tủ hồ sơ
 
-### Định nghĩa
+**SQL** (Structured Query Language — ngôn ngữ truy vấn có cấu trúc) là **ngôn ngữ bạn dùng để ra lệnh cho cái tủ hồ sơ**.
 
-Database (cơ sở dữ liệu) là nơi **lưu trữ dữ liệu có tổ chức** để có thể truy xuất, quản lý và cập nhật dễ dàng.
+Bạn không thể tự mở ngăn kéo và lục tìm. Bạn phải **viết lệnh** bằng SQL, và database sẽ trả kết quả cho bạn. Giống như bạn nói với thủ thư: "Cho tôi xem hồ sơ của user tên An" — nhưng bằng ngôn ngữ SQL.
 
-### Phân loại
+Một vài "câu nói" cơ bản:
 
-| Loại | Đặc điểm | Ví dụ | Khi dùng |
-|---|---|---|---|
-| **Relational (SQL)** | Bảng, hàng, cột. Quan hệ giữa các bảng | MySQL, PostgreSQL, SQL Server | ~80% ứng dụng business |
-| **NoSQL** | Linh hoạt, không cần schema cố định | MongoDB, Redis, DynamoDB | Big data, real-time, flexible schema |
-
-### Cấu trúc Relational Database
-
-```
-Database: ecommerce_db
-├── Table: users
-│   ├── Column: id (INT, Primary Key)
-│   ├── Column: name (VARCHAR)
-│   ├── Column: email (VARCHAR, Unique)
-│   └── Column: created_at (DATETIME)
-│
-├── Table: products
-│   ├── Column: id (INT, Primary Key)
-│   ├── Column: name (VARCHAR)
-│   ├── Column: price (DECIMAL)
-│   └── Column: stock (INT)
-│
-└── Table: orders
-    ├── Column: id (INT, Primary Key)
-    ├── Column: user_id (INT, Foreign Key → users.id)
-    ├── Column: total (DECIMAL)
-    └── Column: status (VARCHAR)
-```
-
-**Giải thích:**
-- **Table** = Bảng dữ liệu (giống sheet trong Excel)
-- **Row** = 1 record (1 dòng dữ liệu)
-- **Column** = 1 field (1 thuộc tính)
-- **Primary Key (PK)** = ID duy nhất cho mỗi row
-- **Foreign Key (FK)** = Liên kết đến PK của bảng khác
+| SQL keyword | Dịch nôm na | Ví dụ thực tế |
+|---|---|---|
+| `SELECT` | "Cho tôi xem..." | Cho tôi xem tên và email của tất cả users |
+| `WHERE` | "Nhưng chỉ những cái mà..." | ...nhưng chỉ user có email là an@mail.com |
+| `JOIN` | "Kết hợp thông tin từ 2 ngăn kéo" | Cho tôi xem tên user kèm đơn hàng của họ |
+| `INSERT` | "Thêm vào hồ sơ mới" | Thêm 1 user mới tên Test User |
+| `UPDATE` | "Sửa hồ sơ" | Đổi status đơn hàng #1 thành completed |
+| `DELETE` | "Xóa hồ sơ" | Xóa tất cả hồ sơ test |
 
 ---
 
-## SQL cơ bản (HOW)
+## Tại sao QA cần biết SQL?
 
-SQL (Structured Query Language) là ngôn ngữ để **giao tiếp với database**.
+Đây là câu hỏi quan trọng nhất. Không phải "SQL dùng thế nào" mà là **"tại sao mình cần nó"**.
 
-### SELECT — Đọc dữ liệu
+### 1. Verify API có nói dối không
 
-Lệnh được QA dùng **nhiều nhất**:
+API trả response `"status": "created"` — nhưng **thực sự** data đã được lưu vào database chưa? Hay API nói "xong" mà thực ra chưa xong?
+
+```
+Bạn test API tạo user → API trả về: { "status": "success", "id": 999 }
+
+Câu hỏi: Thật sự có user #999 trong database không?
+
+Mở DBeaver, chạy:
+SELECT * FROM users WHERE id = 999;
+
+→ Nếu ra kết quả → API nói thật ✅
+→ Nếu không có gì → API nói dối! Đây là BUG 🐛
+```
+
+### 2. Tạo test data siêu nhanh
+
+Cần test tính năng "VIP user có 100 đơn hàng"? Bạn sẽ không ngồi tạo tay 100 đơn đâu. Một câu SQL giải quyết trong 1 giây.
+
+### 3. Debug bug ở tầng data
+
+UI hiển thị sai? Có thể **data trong database đã sai từ đầu**. SQL giúp bạn nhìn thẳng vào "sự thật" — data thực tế đang nằm trong database.
+
+::: info Thực tế phỏng vấn
+Khoảng 80% công ty yêu cầu QA biết SQL cơ bản. Nhiều job description ghi rõ "SQL is required". Đây không phải kiến thức optional — đây là **must-have**.
+:::
+
+---
+
+## SELECT và WHERE - Hai lệnh bạn dùng nhiều nhất
+
+### SELECT — "Cho tôi xem..."
 
 ```sql
--- Lấy tất cả users
+-- Câu lệnh đơn giản nhất: xem TẤT CẢ data trong bảng users
 SELECT * FROM users;
+```
 
--- Lấy một số columns cụ thể
+Giải thích từng phần:
+- `SELECT` — "Cho tôi xem" (lệnh đọc dữ liệu)
+- `*` — "tất cả columns" (dấu sao = wildcard = tất cả)
+- `FROM users` — "từ bảng users" (từ ngăn kéo nào?)
+
+```sql
+-- Chỉ xem tên và email thôi, không cần hết
 SELECT name, email FROM users;
+```
 
--- Lấy 10 records đầu tiên
+Ở đây thay vì `*` (tất cả), bạn chỉ định rõ: chỉ lấy column `name` và `email`.
+
+```sql
+-- Chỉ xem 10 records đầu tiên (tránh load cả triệu dòng)
 SELECT * FROM users LIMIT 10;
 ```
 
-### WHERE — Lọc dữ liệu
+`LIMIT 10` = "chỉ cho tôi xem 10 cái đầu tiên". **Luôn dùng LIMIT** khi bạn không biết bảng có bao nhiêu data — tránh trường hợp bảng có 1 triệu dòng mà bạn load hết lên.
+
+### WHERE — "Nhưng chỉ những cái mà..."
+
+`WHERE` là bộ lọc. Không có `WHERE`, bạn lấy **tất cả**. Có `WHERE`, bạn chỉ lấy **đúng cái cần**.
 
 ```sql
--- User có email cụ thể
-SELECT * FROM users WHERE email = 'test@mail.com';
-
--- Users đăng ký trong tháng 4/2026
-SELECT * FROM users
-WHERE created_at >= '2026-04-01'
-  AND created_at < '2026-05-01';
-
--- Users có tên chứa "Nguyen"
-SELECT * FROM users WHERE name LIKE '%Nguyen%';
-
--- Orders có status không phải 'completed'
-SELECT * FROM orders WHERE status != 'completed';
-
--- Products hết hàng
-SELECT * FROM products WHERE stock = 0;
+-- Tìm user có email cụ thể
+SELECT * FROM users WHERE email = 'an@mail.com';
 ```
 
-**Operators phổ biến:**
+Giải thích: "Cho tôi xem tất cả thông tin từ bảng users, **nhưng chỉ** user nào có email bằng an@mail.com".
 
-| Operator | Ý nghĩa | Ví dụ |
+```sql
+-- Tìm users đăng ký trong tháng 4/2026
+SELECT * FROM users
+WHERE created_at >= '2026-04-01'    -- từ ngày 1/4
+  AND created_at < '2026-05-01';    -- đến trước ngày 1/5
+```
+
+`AND` = "và" — cả 2 điều kiện phải đúng. User phải đăng ký **từ** ngày 1/4 **và** **trước** ngày 1/5.
+
+```sql
+-- Tìm users có tên chứa "Nguyen"
+SELECT * FROM users WHERE name LIKE '%Nguyen%';
+```
+
+`LIKE` = tìm theo pattern (mẫu). Dấu `%` = "bất kỳ ký tự nào". Nên `'%Nguyen%'` nghĩa là "bất kỳ gì + Nguyen + bất kỳ gì" — tìm tất cả tên có chứa chữ Nguyen.
+
+**Các operators (phép so sánh) hay dùng:**
+
+| Operator | Nghĩa | Ví dụ |
 |---|---|---|
 | `=` | Bằng | `status = 'active'` |
 | `!=` hoặc `<>` | Khác | `status != 'deleted'` |
-| `>`, `<`, `>=`, `<=` | So sánh | `price > 100000` |
-| `LIKE` | Pattern matching | `name LIKE '%nguyen%'` |
-| `IN` | Trong danh sách | `status IN ('active', 'pending')` |
+| `>`, `<`, `>=`, `<=` | Lớn hơn, nhỏ hơn | `price > 100000` |
+| `LIKE` | Tìm theo pattern | `name LIKE '%nguyen%'` |
+| `IN` | Nằm trong danh sách | `status IN ('active', 'pending')` |
 | `BETWEEN` | Trong khoảng | `price BETWEEN 100 AND 500` |
-| `IS NULL` | Giá trị null | `email IS NULL` |
-| `IS NOT NULL` | Không null | `phone IS NOT NULL` |
-| `AND` | Và | `age > 18 AND status = 'active'` |
-| `OR` | Hoặc | `role = 'admin' OR role = 'manager'` |
+| `IS NULL` | Không có giá trị | `email IS NULL` |
+| `AND` | Và (cả 2 điều kiện đúng) | `age > 18 AND status = 'active'` |
+| `OR` | Hoặc (1 trong 2 đúng) | `role = 'admin' OR role = 'manager'` |
 
-### ORDER BY — Sắp xếp
+### ORDER BY — Sắp xếp kết quả
 
 ```sql
--- Sắp xếp theo ngày tạo (mới nhất trước)
+-- Xem users mới nhất trước (sắp xếp ngày tạo giảm dần)
 SELECT * FROM users ORDER BY created_at DESC;
-
--- Sắp xếp theo tên (A-Z)
-SELECT * FROM users ORDER BY name ASC;
-
--- Sắp xếp theo nhiều cột
-SELECT * FROM orders ORDER BY status ASC, total DESC;
 ```
 
-### COUNT, SUM, AVG — Tổng hợp
+- `ORDER BY created_at` = sắp xếp theo cột created_at
+- `DESC` = descending (giảm dần — mới nhất lên đầu). Ngược lại là `ASC` = ascending (tăng dần — cũ nhất lên đầu)
+
+### COUNT, SUM, AVG — Đếm, tổng, trung bình
 
 ```sql
--- Đếm số users
+-- Đếm tổng số users
 SELECT COUNT(*) FROM users;
+-- COUNT(*) = đếm tất cả rows. Kết quả: 1 con số, ví dụ 1500
 
--- Đếm orders theo status
+-- Đếm orders theo từng status
 SELECT status, COUNT(*) as total
 FROM orders
 GROUP BY status;
-
--- Tổng doanh thu
-SELECT SUM(total) as revenue FROM orders WHERE status = 'completed';
-
--- Giá trung bình sản phẩm
-SELECT AVG(price) as avg_price FROM products;
-
--- Sản phẩm đắt nhất và rẻ nhất
-SELECT MAX(price) as max_price, MIN(price) as min_price FROM products;
+-- GROUP BY status = nhóm theo status, đếm mỗi nhóm bao nhiêu
+-- "as total" = đặt tên cho cột kết quả là "total" cho dễ đọc
+-- Kết quả: completed: 500, pending: 200, cancelled: 50
 ```
 
-### JOIN — Kết nối bảng
+---
 
-JOIN là khái niệm **quan trọng nhất** cần hiểu. Giúp lấy dữ liệu từ nhiều bảng cùng lúc.
+## JOIN — Kết hợp thông tin từ 2 bảng
 
-#### INNER JOIN — Chỉ lấy dữ liệu khớp ở cả 2 bảng
+Đây là phần **quan trọng nhất** và cũng hay gây bối rối nhất. Hãy hiểu bản chất trước.
+
+**Tại sao cần JOIN?** Vì data được chia vào nhiều bảng khác nhau. Bảng `orders` chỉ lưu `user_id = 1`, không lưu tên user. Muốn biết "ai đặt đơn hàng này?" thì phải **kết hợp** bảng orders với bảng users.
+
+Giống như: ngăn kéo "đơn hàng" chỉ ghi "của hồ sơ số 1". Muốn biết "hồ sơ số 1 là ai?" thì phải mở ngăn kéo "users" ra.
+
+### INNER JOIN — Chỉ lấy data khớp ở CẢ HAI bảng
+
+```
+Bảng users:                     Bảng orders:
+┌────┬───────┬──────────────┐   ┌────┬─────────┬────────┬───────────┐
+│ id │ name  │ email        │   │ id │ user_id │ total  │ status    │
+├────┼───────┼──────────────┤   ├────┼─────────┼────────┼───────────┤
+│ 1  │ An    │ an@mail.com  │   │ 1  │ 1       │ 500K   │ completed │
+│ 2  │ Bình  │ binh@mail.com│   │ 2  │ 2       │ 300K   │ pending   │
+│ 3  │ Chi   │ chi@mail.com │   │ 3  │ 1       │ 200K   │ completed │
+└────┴───────┴──────────────┘   └────┴─────────┴────────┴───────────┘
+                                     ↑
+                          user_id trỏ về id bên bảng users
+```
 
 ```sql
--- Lấy thông tin order kèm tên user
-SELECT orders.id, users.name, users.email, orders.total, orders.status
+-- "Cho tôi xem tên user kèm đơn hàng của họ"
+SELECT users.name, orders.id as order_id, orders.total, orders.status
 FROM orders
 INNER JOIN users ON orders.user_id = users.id;
 ```
 
-```
-Table: users                    Table: orders
-┌────┬───────────┐              ┌────┬─────────┬────────┐
-│ id │ name      │              │ id │ user_id │ total  │
-├────┼───────────┤              ├────┼─────────┼────────┤
-│ 1  │ An        │◄────────────►│ 1  │ 1       │ 500K   │
-│ 2  │ Binh      │◄────────────►│ 2  │ 2       │ 300K   │
-│ 3  │ Chi       │   (no order) │ 3  │ 1       │ 200K   │
-└────┴───────────┘              └────┴─────────┴────────┘
+Giải thích từng dòng:
+- `SELECT users.name, orders.total` — Lấy cột name từ bảng users, cột total từ bảng orders
+- `FROM orders` — Bắt đầu từ bảng orders
+- `INNER JOIN users` — Kết hợp với bảng users
+- `ON orders.user_id = users.id` — Điều kiện kết hợp: user_id bên orders **khớp với** id bên users
 
-INNER JOIN result:
-┌───────┬───────────┬────────┐
-│ name  │ order_id  │ total  │
-├───────┼───────────┼────────┤
-│ An    │ 1         │ 500K   │  ← An có 2 orders
-│ An    │ 3         │ 200K   │
-│ Binh  │ 2         │ 300K   │
-└───────┴───────────┴────────┘
-(Chi không có order → không xuất hiện)
+```
+Kết quả INNER JOIN:
+┌───────┬──────────┬────────┬───────────┐
+│ name  │ order_id │ total  │ status    │
+├───────┼──────────┼────────┼───────────┤
+│ An    │ 1        │ 500K   │ completed │  ← An có 2 đơn
+│ An    │ 3        │ 200K   │ completed │
+│ Bình  │ 2        │ 300K   │ pending   │
+└───────┴──────────┴────────┴───────────┘
+
+⚠️  Chi KHÔNG xuất hiện — vì Chi không có đơn hàng nào
+    INNER JOIN chỉ lấy những cái KHỚP ở cả 2 bảng
 ```
 
-#### LEFT JOIN — Lấy tất cả từ bảng trái, kể cả không khớp
+### LEFT JOIN — Lấy TẤT CẢ từ bảng bên trái, kể cả không khớp
 
 ```sql
--- Tất cả users, kể cả chưa có order
+-- "Cho tôi xem TẤT CẢ users, kể cả người chưa mua gì"
 SELECT users.name, orders.total
-FROM users
-LEFT JOIN orders ON users.id = orders.user_id;
+FROM users                                    -- bảng TRÁI (lấy hết)
+LEFT JOIN orders ON users.id = orders.user_id; -- bảng PHẢI (khớp thì lấy, không thì NULL)
 ```
 
 ```
-LEFT JOIN result:
+Kết quả LEFT JOIN:
 ┌───────┬────────┐
 │ name  │ total  │
 ├───────┼────────┤
 │ An    │ 500K   │
 │ An    │ 200K   │
-│ Binh  │ 300K   │
-│ Chi   │ NULL   │  ← Chi vẫn xuất hiện, total = NULL
+│ Bình  │ 300K   │
+│ Chi   │ NULL   │  ← Chi VẪN xuất hiện, total = NULL vì không có đơn
 └───────┴────────┘
 ```
 
-**Tóm tắt JOINs:**
+::: tip Aha moment
+- **INNER JOIN** = "Cho tôi xem cặp đôi" — chỉ hiện những ai CÓ ĐỐI tác bên kia
+- **LEFT JOIN** = "Cho tôi xem tất cả bên trái, có đối tác thì ghép, không có thì để trống (NULL)"
 
-| JOIN type | Kết quả |
-|---|---|
-| **INNER JOIN** | Chỉ rows khớp ở cả 2 bảng |
-| **LEFT JOIN** | Tất cả rows bảng trái + khớp bảng phải |
-| **RIGHT JOIN** | Tất cả rows bảng phải + khớp bảng trái |
-| **FULL JOIN** | Tất cả rows cả 2 bảng |
-
-### INSERT — Thêm dữ liệu
-
-```sql
--- Thêm 1 user (tạo test data)
-INSERT INTO users (name, email, created_at)
-VALUES ('Test User', 'testuser@mail.com', NOW());
-
--- Thêm nhiều users cùng lúc
-INSERT INTO users (name, email, created_at) VALUES
-  ('User 1', 'user1@mail.com', NOW()),
-  ('User 2', 'user2@mail.com', NOW()),
-  ('User 3', 'user3@mail.com', NOW());
-```
-
-### UPDATE — Cập nhật dữ liệu
-
-```sql
--- Cập nhật status order
-UPDATE orders SET status = 'completed' WHERE id = 1;
-
--- Reset password cho test user
-UPDATE users SET password = 'hashed_password' WHERE email = 'test@mail.com';
-```
-
-::: danger Cẩn thận!
-**Luôn có WHERE** khi UPDATE hoặc DELETE. Quên WHERE = thay đổi **toàn bộ** bảng!
-
-```sql
--- ❌ NGUY HIỂM: Update tất cả orders thành completed!
-UPDATE orders SET status = 'completed';
-
--- ✅ AN TOÀN: Chỉ update order cụ thể
-UPDATE orders SET status = 'completed' WHERE id = 1;
-```
+QA dùng LEFT JOIN khi muốn **tìm data bị thiếu** — ví dụ: "User nào đã đăng ký nhưng chưa bao giờ mua hàng?"
 :::
-
-### DELETE — Xóa dữ liệu
-
-```sql
--- Xóa test data sau khi test
-DELETE FROM users WHERE email LIKE '%@test.com';
-
--- Xóa orders cũ hơn 1 năm (cleanup test data)
-DELETE FROM orders WHERE created_at < '2025-01-01';
-```
 
 ---
 
-## SQL trong công việc QA hàng ngày
+## INSERT / UPDATE / DELETE — Thêm, sửa, xóa data
 
-### 1. Verify API response vs Database
-
-**Scenario:** Test API "Get User Profile" trả về đúng data.
-
-```
-Step 1: Gọi API GET /api/users/123
-Step 2: Nhận response:
-        { "name": "Nguyen Van A", "email": "a@mail.com" }
-Step 3: Verify bằng SQL:
-```
+### INSERT — Thêm data mới (tạo test data)
 
 ```sql
-SELECT name, email FROM users WHERE id = 123;
--- Kết quả phải match với API response
+-- Thêm 1 test user
+INSERT INTO users (name, email, created_at)
+VALUES ('Test User', 'testuser@test.com', NOW());
 ```
 
-### 2. Verify bug ở tầng data
-
-**Scenario:** UI hiển thị tổng đơn hàng = 0, nhưng user đã mua hàng.
+Giải thích:
+- `INSERT INTO users` — Thêm vào bảng users
+- `(name, email, created_at)` — Các columns sẽ điền data
+- `VALUES (...)` — Giá trị tương ứng cho mỗi column
+- `NOW()` — Hàm trả về thời gian hiện tại
 
 ```sql
--- Kiểm tra orders của user
-SELECT * FROM orders WHERE user_id = 456;
+-- Thêm nhiều users cùng lúc (bulk insert)
+INSERT INTO users (name, email, created_at) VALUES
+  ('User 1', 'user1@test.com', NOW()),
+  ('User 2', 'user2@test.com', NOW()),
+  ('User 3', 'user3@test.com', NOW());
+```
 
--- Kiểm tra tổng
-SELECT SUM(total) as total_spent
+### UPDATE — Sửa data đã có
+
+```sql
+-- Đổi status đơn hàng #1 thành completed
+UPDATE orders SET status = 'completed' WHERE id = 1;
+```
+
+Giải thích:
+- `UPDATE orders` — Sửa trong bảng orders
+- `SET status = 'completed'` — Đặt cột status thành 'completed'
+- `WHERE id = 1` — **CHỈ** dòng có id = 1
+
+### DELETE — Xóa data
+
+```sql
+-- Xóa tất cả test data (dựa vào pattern email)
+DELETE FROM users WHERE email LIKE '%@test.com';
+```
+
+Giải thích:
+- `DELETE FROM users` — Xóa khỏi bảng users
+- `WHERE email LIKE '%@test.com'` — Chỉ xóa những user có email kết thúc bằng @test.com
+
+---
+
+::: danger CẢNH BÁO CỰC KỲ QUAN TRỌNG — UPDATE/DELETE KHÔNG CÓ WHERE
+
+Đây là sai lầm **nguy hiểm nhất** khi viết SQL và nó xảy ra thường xuyên hơn bạn nghĩ.
+
+**Nếu bạn quên WHERE, SQL sẽ thực hiện lệnh trên TOÀN BỘ bảng.**
+
+```sql
+-- ❌ THẢM HỌA: Xóa TẤT CẢ users trong database!
+DELETE FROM users;
+
+-- ❌ THẢM HỌA: Đổi TẤT CẢ đơn hàng thành completed!
+UPDATE orders SET status = 'completed';
+```
+
+Hãy tưởng tượng: bạn muốn xóa 1 folder hồ sơ test trong ngăn kéo, nhưng thay vì rút 1 folder ra, bạn **đổ hết cả ngăn kéo vào thùng rác**. Hàng ngàn hồ sơ khách hàng thật — mất hết.
+
+**Cách viết đúng — LUÔN LUÔN có WHERE:**
+
+```sql
+-- ✅ AN TOÀN: Chỉ xóa đúng test data
+DELETE FROM users WHERE email LIKE '%@test.com';
+
+-- ✅ AN TOÀN: Chỉ update đúng 1 đơn hàng
+UPDATE orders SET status = 'completed' WHERE id = 1;
+```
+
+**Quy tắc vàng: Luôn chạy SELECT trước, rồi mới DELETE/UPDATE**
+
+```sql
+-- Bước 1: XEM trước những gì sẽ bị ảnh hưởng
+SELECT * FROM users WHERE email LIKE '%@test.com';
+-- → Kết quả: 3 rows. Đúng là 3 test users cần xóa. OK!
+
+-- Bước 2: BÂY GIỜ mới xóa (thay SELECT * bằng DELETE)
+DELETE FROM users WHERE email LIKE '%@test.com';
+-- → 3 rows affected. Đúng như expected ✅
+```
+
+Nếu bước 1 cho ra 50,000 rows thay vì 3 — bạn biết WHERE clause đang sai và dừng lại kịp thời!
+:::
+
+---
+
+## Use cases thực tế QA dùng SQL hàng ngày
+
+### 1. Verify data sau khi gọi API
+
+```sql
+-- API tạo user trả về id = 999. Verify trong DB:
+SELECT * FROM users WHERE id = 999;
+-- Kiểm tra: name, email, created_at có đúng không?
+```
+
+### 2. Debug bug: UI hiển thị sai tổng đơn hàng
+
+```sql
+-- UI nói user #456 có tổng đơn = 0. Kiểm tra thực tế:
+SELECT COUNT(*) as so_don, SUM(total) as tong_tien
 FROM orders
 WHERE user_id = 456 AND status = 'completed';
+-- Phát hiện: orders đang ở status = 'pending', nên tổng completed = 0
+-- → Bug ở logic update status, không phải bug UI
 ```
-
-→ Có thể phát hiện: data đang là `status = 'pending'` thay vì `'completed'`, nên UI tính tổng sai.
 
 ### 3. Tạo test data nhanh
 
 ```sql
--- Tạo 1 VIP user cho test
+-- Tạo VIP user + đơn hàng cho test
 INSERT INTO users (name, email, role, created_at)
-VALUES ('VIP Test User', 'vip@test.com', 'vip', NOW());
+VALUES ('VIP Tester', 'vip@test.com', 'vip', NOW());
 
--- Tạo orders cho user đó
 INSERT INTO orders (user_id, total, status, created_at)
 VALUES
   ((SELECT id FROM users WHERE email = 'vip@test.com'), 500000, 'completed', NOW()),
   ((SELECT id FROM users WHERE email = 'vip@test.com'), 300000, 'pending', NOW());
 ```
 
-### 4. Cleanup test data sau khi test
+### 4. Tìm duplicate data (data bị trùng)
 
 ```sql
--- Xóa test data (dựa vào pattern email)
-DELETE FROM orders WHERE user_id IN (
-  SELECT id FROM users WHERE email LIKE '%@test.com'
-);
-DELETE FROM users WHERE email LIKE '%@test.com';
-```
-
-### 5. Kiểm tra data sau migration
-
-```sql
--- Đếm records trước và sau migration
-SELECT COUNT(*) FROM users;  -- Chạy trước migration
--- ... migration chạy ...
-SELECT COUNT(*) FROM users;  -- Chạy sau migration → phải bằng nhau
-
--- Kiểm tra không có data bị null sau migration
-SELECT COUNT(*) FROM users WHERE name IS NULL OR email IS NULL;
--- Expected: 0
-```
-
----
-
-## Query patterns hữu ích cho QA
-
-### Tìm duplicate data
-
-```sql
--- Tìm email bị trùng (bug data integrity)
-SELECT email, COUNT(*) as count
+-- Tìm email nào bị trùng — đây là bug data integrity
+SELECT email, COUNT(*) as so_lan
 FROM users
 GROUP BY email
 HAVING COUNT(*) > 1;
+-- GROUP BY email = nhóm theo email
+-- HAVING COUNT(*) > 1 = chỉ hiện nhóm nào có hơn 1 record (bị trùng)
 ```
 
-### Tìm data inconsistency
+### 5. Tìm orphan data (data mồ côi)
 
 ```sql
--- Orders có user_id không tồn tại trong bảng users (orphan data)
+-- Tìm đơn hàng có user_id trỏ đến user không tồn tại
 SELECT orders.*
 FROM orders
 LEFT JOIN users ON orders.user_id = users.id
 WHERE users.id IS NULL;
+-- LEFT JOIN giữ lại tất cả orders
+-- WHERE users.id IS NULL = lọc ra orders mà user bên kia không tồn tại
+-- Nếu có kết quả → data integrity bị lỗi!
 ```
 
-### Thống kê cho test report
+### 6. Cleanup test data sau khi test xong
 
 ```sql
--- Số orders theo status (cho báo cáo)
-SELECT
-  status,
-  COUNT(*) as count,
-  SUM(total) as total_revenue,
-  AVG(total) as avg_order_value
-FROM orders
-GROUP BY status
-ORDER BY count DESC;
-```
+-- Bước 1: XEM trước (quy tắc vàng!)
+SELECT * FROM users WHERE email LIKE '%@test.com';
 
-### Tìm data theo thời gian
+-- Bước 2: Xóa orders của test users trước (vì orders phụ thuộc vào users)
+DELETE FROM orders WHERE user_id IN (
+  SELECT id FROM users WHERE email LIKE '%@test.com'
+);
 
-```sql
--- Users đăng ký hôm nay
-SELECT * FROM users WHERE DATE(created_at) = CURDATE();
-
--- Orders trong 7 ngày gần nhất
-SELECT * FROM orders WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY);
+-- Bước 3: Xóa test users
+DELETE FROM users WHERE email LIKE '%@test.com';
 ```
 
 ---
 
-## Tools để chạy SQL
+## Tool khuyên dùng: DBeaver
 
-| Tool | Platform | Đặc điểm |
+Để chạy SQL, bạn cần một **database client** — phần mềm kết nối đến database và cho bạn viết SQL.
+
+| Tool | Giá | Ghi chú |
 |---|---|---|
-| **DBeaver** | Cross-platform (Free) | Hỗ trợ nhiều loại DB, recommended cho QA |
-| **MySQL Workbench** | Cross-platform (Free) | Cho MySQL |
-| **pgAdmin** | Cross-platform (Free) | Cho PostgreSQL |
-| **DataGrip** | Cross-platform (Paid) | JetBrains, mạnh nhất |
-| **Terminal/CLI** | Any | `mysql`, `psql` commands |
+| **DBeaver** | Free | Hỗ trợ mọi loại DB (MySQL, PostgreSQL, SQL Server...). Giao diện thân thiện, có auto-complete SQL. **Khuyên dùng cho QA.** |
+| MySQL Workbench | Free | Chỉ dùng cho MySQL |
+| pgAdmin | Free | Chỉ dùng cho PostgreSQL |
+| DataGrip | Paid | Của JetBrains, rất mạnh nhưng tốn phí |
 
-::: tip Recommend
-**DBeaver** là lựa chọn tốt nhất cho QA: miễn phí, hỗ trợ mọi loại database, giao diện dễ dùng, có auto-complete SQL.
+::: tip Tại sao DBeaver?
+DBeaver là lựa chọn tốt nhất cho QA vì: miễn phí, hỗ trợ gần như mọi loại database, giao diện trực quan, có auto-complete giúp bạn viết SQL nhanh hơn, và cộng đồng lớn nên dễ tìm hướng dẫn khi gặp khó.
 :::
-
----
-
-## Best Practices
-
-### Nguyên tắc an toàn
-
-1. **Luôn dùng SELECT trước** — Xem data trước khi UPDATE/DELETE
-2. **Luôn có WHERE** — Không bao giờ UPDATE/DELETE mà không có WHERE
-3. **Dùng LIMIT** — `SELECT * FROM users LIMIT 10` thay vì lấy hết cả triệu records
-4. **Backup trước khi thay đổi** — Đặc biệt trên shared environments
-5. **Không chạy SQL trên Production** — Trừ khi được authorize và review
-
-### Quy trình an toàn khi cần thay đổi data
-
-```
-1. Viết SELECT để xem data sẽ bị ảnh hưởng
-   SELECT * FROM users WHERE email LIKE '%@test.com';
-   → Verify: đúng 5 records cần xóa
-
-2. Confirm với team (nếu shared env)
-
-3. Thực hiện thay đổi
-   DELETE FROM users WHERE email LIKE '%@test.com';
-   → Verify: 5 rows affected ✅
-```
 
 ---
 
 ## Tóm tắt chương
 
-| Lệnh | Công dụng | QA dùng khi |
+| Lệnh | Giống như nói... | QA dùng khi |
 |---|---|---|
-| **SELECT** | Đọc data | Verify data, debug bugs |
-| **WHERE** | Lọc data | Tìm record cụ thể |
-| **JOIN** | Kết nối bảng | Kiểm tra quan hệ data |
-| **INSERT** | Thêm data | Tạo test data |
-| **UPDATE** | Sửa data | Setup test conditions |
-| **DELETE** | Xóa data | Cleanup test data |
-| **COUNT/SUM/AVG** | Tổng hợp | Verify calculations, reports |
-| **GROUP BY** | Nhóm data | Thống kê, tìm duplicates |
+| `SELECT` | "Cho tôi xem..." | Verify data, debug bugs |
+| `WHERE` | "Nhưng chỉ những cái mà..." | Lọc đúng record cần tìm |
+| `JOIN` | "Kết hợp 2 ngăn kéo" | Kiểm tra quan hệ giữa các bảng |
+| `INSERT` | "Thêm hồ sơ mới" | Tạo test data |
+| `UPDATE` | "Sửa hồ sơ" (LUÔN có WHERE!) | Setup test conditions |
+| `DELETE` | "Xóa hồ sơ" (LUÔN có WHERE!) | Cleanup test data |
+| `COUNT/SUM` | "Đếm/tính tổng giùm tôi" | Verify calculations |
+| `GROUP BY` | "Nhóm lại theo..." | Thống kê, tìm duplicates |
+
+::: warning Ghi nhớ quan trọng nhất
+**Trước khi UPDATE hoặc DELETE — LUÔN chạy SELECT với cùng WHERE clause trước.** Xem kết quả đúng chưa, rồi hẵng thực hiện. Một câu SQL sai có thể phá hủy data không khôi phục được.
+:::

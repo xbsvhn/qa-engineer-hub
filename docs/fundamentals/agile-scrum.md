@@ -1,367 +1,253 @@
 # Agile & Scrum cho QA
 
-## Tại sao cần học Agile? (WHY)
+## Tại sao phải học Agile?
 
-Khoảng **80% dự án phần mềm** hiện nay sử dụng Agile. Nếu bạn đi phỏng vấn QA, gần như chắc chắn sẽ được hỏi:
-- "Bạn đã làm việc trong Agile/Scrum chưa?"
-- "QA trong Sprint làm những gì?"
-- "Definition of Done là gì?"
-
-Không hiểu Agile = không hiểu cách team vận hành.
+Khoảng **80% dự án phần mềm** hiện nay dùng Agile. Đi phỏng vấn QA, gần như chắc chắn bạn sẽ bị hỏi: "Bạn đã làm trong Agile/Scrum chưa?" Không hiểu Agile = không hiểu cách team vận hành hàng ngày.
 
 ---
 
-## Agile là gì? (WHAT)
+## Agile là gì — bản chất?
 
-### Agile Manifesto (2001)
+Hãy tưởng tượng 2 cách xây nhà:
 
-Agile không phải framework hay tool — nó là **tập hợp giá trị và nguyên tắc** về cách phát triển phần mềm:
+**Cách 1 (Waterfall):** Vẽ bản thiết kế hoàn chỉnh → xây xong toàn bộ → bàn giao cho chủ nhà. Chủ nhà lúc này mới nói: "Tôi muốn phòng bếp to hơn!" → Đập ra xây lại → tốn tiền, tốn thời gian.
 
-| Coi trọng hơn (trái) | | Thay vì (phải) |
+**Cách 2 (Agile):** Xây phòng khách trước → cho chủ nhà xem → chủ nhà góp ý → sửa ngay. Rồi xây phòng bếp → cho xem → góp ý → sửa. Cứ thế cho đến khi xong.
+
+**Agile chính là Cách 2:** Chia dự án thành **nhiều phần nhỏ**, làm từng phần, lấy feedback sớm, điều chỉnh liên tục.
+
+### Agile Manifesto — 4 giá trị cốt lõi
+
+Năm 2001, 17 lập trình viên họp lại và viết ra "Tuyên ngôn Agile" — 4 giá trị nền tảng:
+
+| Coi trọng HƠN (trái) | | Thay vì (phải) |
 |---|---|---|
-| **Individuals and interactions** | hơn | Processes and tools |
-| **Working software** | hơn | Comprehensive documentation |
-| **Customer collaboration** | hơn | Contract negotiation |
-| **Responding to change** | hơn | Following a plan |
+| **Con người & tương tác** | hơn | Quy trình & công cụ |
+| **Phần mềm chạy được** | hơn | Tài liệu dày cộp |
+| **Hợp tác với khách hàng** | hơn | Hợp đồng cứng nhắc |
+| **Thích ứng thay đổi** | hơn | Bám theo kế hoạch |
 
-**Giải thích đơn giản:**
-- Con người quan trọng hơn quy trình
-- Phần mềm chạy được quan trọng hơn tài liệu dày cộp
-- Hợp tác với khách hàng quan trọng hơn hợp đồng cứng nhắc
-- Thích ứng thay đổi quan trọng hơn bám theo kế hoạch
-
-### Agile vs Waterfall
-
-| Tiêu chí | Waterfall | Agile |
-|---|---|---|
-| **Delivery** | Cuối dự án (vài tháng) | Mỗi Sprint (2-4 tuần) |
-| **Requirement** | Fix từ đầu | Thay đổi liên tục |
-| **Testing** | Cuối project | Mỗi Sprint |
-| **Feedback** | Muộn | Sớm, liên tục |
-| **Risk** | Phát hiện muộn | Phát hiện sớm |
-| **Team** | Chuyên biệt (Dev team, QA team) | Cross-functional (Dev + QA + BA cùng team) |
+**Ý nghĩa thực tế:** Không có nghĩa bỏ tài liệu, bỏ kế hoạch. Mà **khi phải chọn**, ưu tiên vế trái hơn vế phải. Ví dụ: phần mềm chạy được quan trọng hơn tài liệu 200 trang mà phần mềm chưa hoạt động.
 
 ---
 
-## Scrum Framework
+## Scrum là gì — bản chất?
 
-Scrum là framework Agile **phổ biến nhất**. Hiểu Scrum = hiểu cách ~70% dự án Agile vận hành.
+**Scrum** là một "cách chơi" (framework) cụ thể của Agile — giống như Agile là "thể thao", Scrum là "bóng đá". Khoảng 70% team Agile dùng Scrum.
 
-### Scrum Team
+### Scrum Team — Ai làm gì?
 
-```
-┌──────────────────────────────────────────┐
-│              Scrum Team (5-9 người)      │
-│                                          │
-│  👤 Product Owner (PO)                   │
-│     └── Quyết định build cái gì         │
-│     └── Quản lý Product Backlog         │
-│     └── Ưu tiên features               │
-│                                          │
-│  👤 Scrum Master (SM)                    │
-│     └── Đảm bảo team follow Scrum       │
-│     └── Remove blockers                 │
-│     └── Facilitate meetings             │
-│                                          │
-│  👥 Development Team (Dev + QA + Design) │
-│     └── Build & test product            │
-│     └── Self-organizing                 │
-│     └── Cross-functional                │
-└──────────────────────────────────────────┘
-```
+| Vai trò | Bản chất | Ví dụ thực tế |
+|---|---|---|
+| **Product Owner (PO)** | "Chủ nhà" — quyết định xây cái gì, ưu tiên cái gì | "Sprint này làm Login trước, Profile sau" |
+| **Scrum Master (SM)** | "Huấn luyện viên" — giúp team chơi đúng luật Scrum, gỡ bỏ chướng ngại | "QA bị block vì env down → SM escalate cho DevOps" |
+| **Development Team** | "Đội xây" — bao gồm **Dev + QA + Designer** | Dev code + QA test + Designer review UI |
 
-**QA nằm trong Development Team** — không phải team riêng. QA là một phần integral của team, tham gia mọi hoạt động.
+**Điểm quan trọng:** QA **nằm trong** Development Team, không phải team riêng biệt. QA là 1 phần của team, tham gia mọi hoạt động.
 
-### Sprint
+### Sprint — Nhịp tim của Scrum
 
-Sprint là chu kỳ phát triển cố định, thường **2 tuần** (có team dùng 1 hoặc 3 tuần).
+**Sprint là gì?** Là một **chu kỳ cố định** (thường 2 tuần) để team hoàn thành một phần công việc. Cứ 2 tuần, team deliver một phần phần mềm hoạt động được.
 
 ```
-Sprint 2 tuần (10 working days):
-╔═══════════════════════════════════════════════════════════╗
-║ Day 1    │ Day 2-3  │ Day 4-7    │ Day 8-9  │ Day 10    ║
-║ Sprint   │ Dev bắt  │ Dev + QA   │ Bug fix  │ Sprint    ║
-║ Planning │ đầu code │ test song  │ Retest   │ Review +  ║
-║          │ QA viết  │ song       │ Regress  │ Retro     ║
-║          │ test case│            │          │           ║
-╚═══════════════════════════════════════════════════════════╝
+Sprint 1 (2 tuần)         Sprint 2 (2 tuần)         Sprint 3...
+┌────────────────┐        ┌────────────────┐
+│ Plan → Code    │        │ Plan → Code    │
+│ → Test → Demo  │   →    │ → Test → Demo  │   →    ...
+│ → Feedback     │        │ → Feedback     │
+└────────────────┘        └────────────────┘
+  Deliver Login             Deliver Cart
 ```
 
-### Scrum Events (Ceremonies)
+---
 
-#### 1. Sprint Planning — "Sprint này làm gì?"
+## 4 Ceremonies — 4 cuộc họp trong mỗi Sprint
 
-| | Chi tiết |
-|---|---|
-| **Khi** | Đầu Sprint |
-| **Thời lượng** | 2-4 giờ |
-| **Ai tham gia** | Cả Scrum Team |
-| **Output** | Sprint Backlog (danh sách items sẽ làm) |
+"Ceremony" nghĩa là **cuộc họp có cấu trúc**. Scrum có đúng 4 cuộc họp, không hơn không kém:
+
+### 1. Sprint Planning — "Sprint này làm gì?"
+
+**Khi nào:** Ngày đầu Sprint
+**Bao lâu:** 2-4 giờ
+**Bản chất:** Cả team chọn công việc từ Product Backlog (danh sách tất cả việc cần làm) đưa vào Sprint này.
 
 **QA trong Sprint Planning:**
-- Đặt câu hỏi về User Story: "AC có đủ chi tiết chưa?"
-- Ước lượng effort test: "Story này cần 2 ngày test"
-- Identify test dependencies: "Cần test data X, environment Y"
-- Đóng góp vào estimation (story points)
+- Hỏi về User Story: "Acceptance Criteria đã rõ chưa?"
+- Estimate effort test: "Story này cần 2 ngày test"
+- Phát hiện dependency: "Story này cần test data đặc biệt"
 
-#### 2. Daily Standup — "Hôm nay làm gì?"
+### 2. Daily Standup — "Hôm nay làm gì?"
 
-| | Chi tiết |
-|---|---|
-| **Khi** | Mỗi ngày, cùng giờ |
-| **Thời lượng** | 15 phút (max!) |
-| **Format** | 3 câu hỏi |
-
-**QA trong Daily Standup:**
+**Khi nào:** Mỗi ngày, cùng giờ
+**Bao lâu:** Tối đa **15 phút** — đứng họp (standup = đứng, để meeting ngắn gọn)
+**Bản chất:** Mỗi người trả lời 3 câu hỏi:
 
 ```
-"Yesterday: Completed testing for User Story #123 - Login feature.
-            Found 2 bugs (JIRA-456, JIRA-457).
-
- Today:     Will start testing User Story #124 - Profile page.
-            Need to retest bug JIRA-450 (fixed yesterday).
-
- Blocker:   Staging environment is down since 9am.
-            Need DevOps to look at it."
+1. Hôm qua tôi làm gì?
+2. Hôm nay tôi sẽ làm gì?
+3. Có gì đang chặn (block) tôi không?
 ```
 
-::: warning Tips
-- Ngắn gọn, đúng 3 câu. Không biến standup thành meeting thảo luận
-- Nếu cần discuss chi tiết → "Let's take this offline"
-- Focus vào **blockers** — điều gì đang chặn bạn?
+**QA trong Daily Standup — ví dụ:**
+
+```
+"Hôm qua: Test xong Story Login — 15/15 test cases pass.
+           Tìm được 2 bugs (BUG-100, BUG-101), đã log Jira.
+
+ Hôm nay: Bắt đầu test Story Profile.
+           Retest BUG-095 (dev nói đã fix).
+
+ Blocker:  Staging server down từ sáng.
+           Cần DevOps check."
+```
+
+::: warning Lỗi thường gặp
+- Nói quá dài → Meeting kéo 30 phút → Mọi người chán
+- Nói quá chung → "Hôm qua test, hôm nay test tiếp" → Không ai biết bạn đang ở đâu
+- Biến thành thảo luận → "Tại sao bug này xảy ra?" → Nên nói "discuss offline sau meeting"
 :::
 
-#### 3. Sprint Review (Demo) — "Sprint này đã làm được gì?"
+### 3. Sprint Review (Demo) — "Đã làm được gì?"
 
-| | Chi tiết |
-|---|---|
-| **Khi** | Cuối Sprint |
-| **Thời lượng** | 1-2 giờ |
-| **Ai tham gia** | Scrum Team + Stakeholders |
-| **Mục đích** | Demo working software, thu thập feedback |
+**Khi nào:** Cuối Sprint
+**Bao lâu:** 1-2 giờ
+**Bản chất:** Demo **phần mềm đang chạy** cho stakeholders xem. Thu thập feedback.
 
 **QA trong Sprint Review:**
-- Hỗ trợ demo (prepare test accounts, data)
-- Chia sẻ test metrics: pass rate, bugs found
-- Highlight bất kỳ risk nào chưa resolve
+- Hỗ trợ demo (chuẩn bị test accounts, data)
+- Chia sẻ metrics: "Sprint này 95% pass rate, 12 bugs found, 10 fixed"
 
-#### 4. Sprint Retrospective — "Làm sao tốt hơn?"
+### 4. Sprint Retrospective — "Làm sao tốt hơn?"
 
-| | Chi tiết |
-|---|---|
-| **Khi** | Cuối Sprint (sau Review) |
-| **Thời lượng** | 1-1.5 giờ |
-| **Format** | What went well? / What to improve? / Action items |
+**Khi nào:** Cuối Sprint (sau Review)
+**Bao lâu:** 1-1.5 giờ
+**Bản chất:** Team tự nhìn lại: cái gì tốt? cái gì cần cải thiện? hành động gì cho Sprint sau?
 
-**QA nên chia sẻ:**
-- "Test environment không ổn định → đề xuất monitoring"
-- "Requirements thiếu edge cases → đề xuất QA review story trước Sprint"
-- "Automation coverage tăng 15% → tiết kiệm 2 ngày regression"
+```
+What went well:
+  "Automation save 2 ngày regression testing"
+
+What to improve:
+  "Requirements thiếu edge cases → QA nên join refinement sớm hơn"
+
+Action items:
+  "QA sẽ tham gia Backlog Refinement từ Sprint tiếp"
+```
 
 ---
 
-## Scrum Artifacts
+## User Story & Acceptance Criteria
 
-### 1. Product Backlog
+### User Story — Mô tả feature bằng ngôn ngữ người dùng
 
-**Là gì:** Danh sách **tất cả** tính năng, bug, improvement cần làm cho sản phẩm. PO quản lý và ưu tiên.
-
-**Ví dụ:**
-
-| Priority | Item | Type | Story Points |
-|---|---|---|---|
-| 1 | Login with Google | Feature | 5 |
-| 2 | Fix: Cart total sai khi apply coupon | Bug | 3 |
-| 3 | Improve search performance | Improvement | 8 |
-| 4 | Add product reviews | Feature | 13 |
-
-### 2. Sprint Backlog
-
-**Là gì:** Subset của Product Backlog — chỉ những items **team commit** sẽ hoàn thành trong Sprint này.
-
-### 3. Increment
-
-**Là gì:** Phần mềm **working** (đã test, đã đạt DoD) được deliver cuối mỗi Sprint.
-
----
-
-## User Story và Acceptance Criteria
-
-### User Story Format
-
+**Format chuẩn:**
 ```
-As a [type of user],
-I want [some goal],
-So that [some reason].
+As a [loại user],
+I want [mục tiêu],
+So that [lý do].
 ```
 
 **Ví dụ:**
-
 ```
 As a customer,
-I want to filter products by price range,
-So that I can quickly find products within my budget.
+I want to filter products by price,
+So that I can find products within my budget.
 ```
 
-### Acceptance Criteria (AC)
+**Bản chất:** User Story không phải requirement kỹ thuật. Nó mô tả **user muốn gì** và **tại sao** — cách implement là việc của Dev.
 
-AC là **điều kiện cần đạt** để User Story được coi là hoàn thành. **QA dùng AC để viết test case.**
+### Acceptance Criteria (AC) — QA dùng đây để viết test case
 
-**Ví dụ AC cho story trên:**
+AC là **danh sách điều kiện** mà User Story phải thỏa mãn để được coi là "xong". **QA dùng AC như nguồn chính để viết test case.**
+
+**Ví dụ AC cho story filter sản phẩm:**
 
 ```
-Given I am on the Products page
-When I set price filter min=100K and max=500K
-Then only products with price 100K-500K are displayed
-And the product count is updated
-And "Clear filter" button is shown
-
-Given I set an invalid range (min > max)
-When I click Apply
-Then show error "Min price must be less than max price"
+✅ Khi set filter min=100K, max=500K → chỉ hiện products 100K-500K
+✅ Khi set min > max → hiện lỗi "Min phải nhỏ hơn Max"
+✅ Khi clear filter → hiện lại tất cả products
+✅ Product count cập nhật khi filter
+✅ Filter giữ nguyên khi chuyển trang (pagination)
 ```
 
-::: tip
-QA nên **tham gia viết AC** cùng PO và Dev. QA thường phát hiện edge cases mà PO không nghĩ đến.
+Mỗi dòng AC = ít nhất 1 test case. 5 AC = ít nhất 5 test cases.
+
+::: tip QA nên tham gia viết AC
+QA thường phát hiện edge cases mà PO không nghĩ đến. Ví dụ: "Nếu filter ra 0 kết quả thì hiện gì?" — PO có thể quên case này.
 :::
 
 ---
 
-## Definition of Done (DoD) và Definition of Ready (DoR)
+## Definition of Done (DoD) & Definition of Ready (DoR)
 
-### Definition of Ready (DoR) — "Story có sẵn sàng để bắt đầu?"
+### DoR — "Story này sẵn sàng để bắt đầu chưa?"
 
-Checklist trước khi bắt đầu code:
-- [ ] User Story rõ ràng, không mơ hồ
-- [ ] Acceptance Criteria đầy đủ
-- [ ] UI/UX design có sẵn (nếu cần)
-- [ ] Dependencies đã identify
-- [ ] Story đã estimate (story points)
-- [ ] QA đã review và không có câu hỏi
+Trước khi Dev bắt đầu code, kiểm tra:
+- ☑ User Story rõ ràng, không mơ hồ
+- ☑ Acceptance Criteria đầy đủ
+- ☑ UI design sẵn sàng (nếu cần)
+- ☑ QA đã review, không còn câu hỏi
 
-### Definition of Done (DoD) — "Story đã hoàn thành chưa?"
+Chưa đạt DoR → **không bắt đầu**. Code dựa trên requirement mơ hồ = code sai = lãng phí.
 
-Checklist để confirm story DONE:
-- [ ] Code completed và pushed
-- [ ] Code reviewed (approved)
-- [ ] Unit tests pass (coverage ≥ 80%)
-- [ ] QA tested (manual + automation)
-- [ ] All AC verified
-- [ ] No open Critical/Major bugs
-- [ ] Documentation updated (nếu cần)
-- [ ] Deployed to staging successfully
+### DoD — "Story này xong chưa?"
 
-::: warning Quan trọng
-Story chưa đạt DoD = **Story chưa Done**. Không có "Done nhưng chưa test" hay "Done nhưng còn 1 bug". Done là Done.
-:::
+Sau khi Dev code xong, kiểm tra:
+- ☑ Code completed + pushed
+- ☑ Code reviewed (teammate approve)
+- ☑ Unit tests pass
+- ☑ **QA tested** (manual + automation)
+- ☑ **Tất cả AC verified**
+- ☑ **0 Critical/Major bugs open**
+- ☑ Deploy staging thành công
+
+**Quan trọng:** Chưa đạt DoD = **chưa xong**. Không có chuyện "xong nhưng chưa test" hay "xong nhưng còn 1 bug critical".
 
 ---
 
-## QA Workflow trong Sprint
-
-### Timeline chi tiết (Sprint 2 tuần)
+## QA Workflow thực tế trong Sprint 2 tuần
 
 ```
 TRƯỚC SPRINT:
-  • Review upcoming stories trong Backlog Refinement
-  • Hỏi clarification, đề xuất edge cases
-  • Tham gia Sprint Planning, estimate test effort
+  Day 0:   Sprint Planning → biết Sprint này test gì
 
 TRONG SPRINT:
-  Day 1-2: Viết test cases cho stories trong Sprint
-           Setup test data, prepare automation scripts
-
-  Day 3-5: Dev hoàn thành stories → QA bắt đầu test
-           Execute manual test cases
+  Day 1-2: Viết test cases cho stories mới
+           Chuẩn bị test data
+  Day 3-5: Dev push code → QA bắt đầu test
            Log bugs vào Jira
-
   Day 6-7: Retest bug fixes
-           Run automation tests
            Exploratory testing
-
-  Day 8-9: Regression testing (automation + manual critical paths)
+  Day 8-9: Regression testing
            Final sanity check
-           Update test results, prepare metrics
-
   Day 10:  Sprint Review (demo support)
            Sprint Retro (chia sẻ observations)
 
 SAU SPRINT:
-  • Update regression test suite
-  • Cải thiện automation coverage
-  • Document lessons learned
+  Cập nhật regression test suite
+  Cải thiện automation coverage
 ```
 
-### Collaboration trong team
+### Three Amigos — Buổi họp quan trọng nhất
 
-```
-PO viết User Story
-    ↓
-QA + PO + Dev refine AC (Three Amigos)
-    ↓
-Dev codes + Unit Test
-    ↓ (song song)
-QA viết Test Cases + Automation Scripts
-    ↓
-Dev done → QA test
-    ↓
-Bug found → Dev fix → QA retest
-    ↓
-All AC passed + DoD met → Story DONE
-```
+"Three Amigos" = PO + Dev + QA ngồi lại review User Story **trước khi code**.
 
-**Three Amigos** (Ba người bạn): Meeting ngắn giữa PO, Dev, QA để review User Story trước khi code. Đây là practice **rất hiệu quả** để đảm bảo cả 3 hiểu cùng 1 thứ.
+- **PO** giải thích business value: "User cần filter vì..."
+- **Dev** hỏi kỹ thuật: "API filter thế nào?"
+- **QA** hỏi edge cases: "Nếu filter ra 0 kết quả?"
+
+15-30 phút cho 1 story → tiết kiệm hàng ngày fix bug sau này.
 
 ---
 
-## Kanban — Alternative cho Scrum
+## Tóm tắt
 
-Ngoài Scrum, **Kanban** là Agile framework phổ biến thứ 2:
-
-| | Scrum | Kanban |
-|---|---|---|
-| **Cadence** | Sprint cố định (2 tuần) | Continuous flow |
-| **Roles** | PO, SM, Dev Team | Không bắt buộc roles |
-| **Board** | Sprint Board (reset mỗi sprint) | Kanban Board (continuous) |
-| **WIP Limit** | Sprint capacity | WIP limit per column |
-| **Planning** | Sprint Planning | Continuous prioritization |
-
-**Kanban Board:**
-
-```
-┌──────────┬──────────┬──────────┬──────────┬──────────┐
-│ Backlog  │  To Do   │  In Dev  │ In QA    │   Done   │
-│          │          │ (WIP: 3) │ (WIP: 2) │          │
-├──────────┼──────────┼──────────┼──────────┼──────────┤
-│ Story #7 │ Story #5 │ Story #3 │ Story #1 │ Story #0 │
-│ Story #8 │ Story #6 │ Story #4 │ Story #2 │          │
-│ Story #9 │          │          │          │          │
-└──────────┴──────────┴──────────┴──────────┴──────────┘
-```
-
-**WIP (Work in Progress) Limit:** Giới hạn số items đang làm cùng lúc. Nếu "In QA" limit = 2, dev không được push thêm cho QA khi QA đang test 2 items. Giúp tránh overload QA.
-
----
-
-## Câu hỏi phỏng vấn thường gặp
-
-| Câu hỏi | Key points trong câu trả lời |
+| Concept | Bản chất 1 câu |
 |---|---|
-| "QA làm gì trong Sprint?" | Test stories, log bugs, retest, regression, tham gia ceremonies |
-| "DoD vs DoR?" | DoR = ready to start, DoD = done done |
-| "Khi nào QA bắt đầu test?" | Ngay khi dev push, KHÔNG đợi cuối Sprint |
-| "Nếu cuối Sprint còn bug?" | Bug carry over sang Sprint tiếp, story chưa Done |
-| "Regression test khi nào?" | Cuối Sprint, trước release. Automation rất quan trọng |
-
----
-
-## Tóm tắt chương
-
-| Concept | Điểm cốt lõi |
-|---|---|
-| **Agile** | Iterative, feedback nhanh, embrace change |
-| **Scrum** | Sprint 2 tuần, 4 ceremonies, 3 artifacts |
-| **QA Role** | Là phần của Dev Team, tham gia mọi activities |
-| **User Story + AC** | AC là cơ sở để viết test case |
-| **DoR / DoD** | Checklist để start/finish story |
-| **Three Amigos** | PO + Dev + QA review story cùng nhau |
+| **Agile** | Chia nhỏ, deliver từng phần, feedback sớm, thay đổi linh hoạt |
+| **Scrum** | Framework cụ thể của Agile: Sprint 2 tuần + 4 ceremonies |
+| **Sprint** | Chu kỳ 2 tuần: plan → code → test → demo → retro |
+| **User Story** | Mô tả feature bằng ngôn ngữ user, không phải kỹ thuật |
+| **AC** | Điều kiện "xong" — nguồn chính để QA viết test case |
+| **DoR/DoD** | Checklist bắt đầu/kết thúc story |
+| **Three Amigos** | PO + Dev + QA review story trước khi code — rất hiệu quả |

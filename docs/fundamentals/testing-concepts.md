@@ -1,242 +1,237 @@
 # Testing Concepts
 
-## Software Testing là gì?
+## Software Testing là gì — thực sự?
 
-**Software Testing** là quá trình **đánh giá và xác minh** rằng một sản phẩm phần mềm hoạt động đúng như mong đợi. Nhưng đó chỉ là định nghĩa ngắn gọn. Bản chất sâu xa hơn:
+Bạn mua một chiếc xe máy mới. Trước khi chạy ra đường, bạn làm gì? Bạn **kiểm tra**: phanh có ăn không, đèn có sáng không, xăng có đủ không. Bạn làm vậy vì nếu phanh hỏng giữa đường, hậu quả rất nghiêm trọng.
 
-> Testing là quá trình **đặt câu hỏi** về sản phẩm, **tìm kiếm thông tin** về chất lượng, và **cung cấp feedback** để team ra quyết định đúng đắn.
+Software Testing cũng vậy — nhưng thay vì kiểm tra xe, bạn kiểm tra **phần mềm**.
 
-### Tại sao Testing quan trọng? (WHY)
+**Định nghĩa bản chất:**
 
-**Chi phí sửa bug tăng theo thời gian:**
+> Software Testing là quá trình **đặt câu hỏi** với phần mềm: "Mày có hoạt động đúng không?" — rồi **tìm bằng chứng** để trả lời câu hỏi đó.
 
-```
-Giai đoạn phát hiện bug    │  Chi phí sửa (tương đối)
-───────────────────────────┼──────────────────────────
-Requirements               │  $1
-Design                     │  $5
-Coding                     │  $10
-Testing                    │  $50
-Production                 │  $500 - $10,000+
-```
+Bằng chứng ở đây là: click vào nút Login → có vào Dashboard không? Nhập sai password → có hiện thông báo lỗi không? Chứ không phải "chắc nó đúng rồi".
 
-**Ví dụ thực tế:**
-- **2012 - Knight Capital:** Một lỗi phần mềm khiến công ty mất **$440 triệu** trong 45 phút
-- **2015 - Volkswagen:** Phần mềm gian lận khí thải, phạt **$30 tỷ**
-- **Hàng ngày:** App crash mất user, e-commerce tính sai giá mất doanh thu
+### Testing KHÔNG phải là "tìm bug"
 
-::: tip Ghi nhớ
-Testing không phải để "tìm bug" đơn thuần. Testing là để **giảm rủi ro**, **cung cấp thông tin**, và **xây dựng niềm tin** vào chất lượng sản phẩm.
-:::
+Nhiều người nghĩ QA = tìm bug. Sai.
+
+Bug chỉ là **sản phẩm phụ** của testing. Mục đích thực sự là **cung cấp thông tin** cho team để họ ra quyết định: "Phần mềm này có đủ tốt để release chưa?"
+
+- Nếu QA nói "95% test pass, 0 critical bugs" → PM quyết định release
+- Nếu QA nói "Payment module có 3 critical bugs" → PM quyết định hoãn release
+
+QA là **người cung cấp thông tin**, không phải **người quyết định**.
 
 ---
 
-## QA vs QC vs Testing
+## Tại sao Testing cực kỳ quan trọng?
 
-Đây là 3 khái niệm thường bị nhầm lẫn. Hiểu đúng bản chất sẽ giúp bạn định vị vai trò của mình trong team.
+### Chi phí sửa bug tăng GẤP BỘI theo thời gian
 
-### Phân biệt
+Hãy hình dung thế này:
 
-| | QA (Quality Assurance) | QC (Quality Control) | Testing |
-|---|---|---|---|
-| **Bản chất** | Phòng ngừa lỗi | Phát hiện lỗi | Thực thi kiểm tra |
-| **Focus** | Process (quy trình) | Product (sản phẩm) | Verification cụ thể |
-| **Khi nào** | Xuyên suốt dự án | Sau khi có sản phẩm | Trong phase test |
-| **Ai làm** | Cả team | QC team | Tester |
-| **Ví dụ** | Định nghĩa coding standards, review process | Inspect sản phẩm, review code | Execute test cases |
+```
+Bạn viết email, phát hiện lỗi chính tả TRƯỚC KHI gửi:
+→ Sửa mất 2 giây (backspace + gõ lại)
+
+Bạn phát hiện lỗi SAU KHI gửi cho 500 người:
+→ Phải gửi email đính chính, xin lỗi, giải thích → mất uy tín
+```
+
+Phần mềm cũng vậy:
+
+| Phát hiện bug ở giai đoạn... | Chi phí sửa (tương đối) | Tại sao? |
+|---|---|---|
+| Viết requirement | **$1** | Chỉ cần sửa 1 dòng trong tài liệu |
+| Đang code | **$10** | Developer sửa code của mình |
+| Đang test | **$100** | Developer sửa + QA phải test lại |
+| Đã release cho user | **$1,000 - $10,000+** | Hotfix + rollback + mất uy tín + user bỏ app |
+
+**Ví dụ thực tế gây chấn động:**
+- **2012 — Knight Capital:** Một lỗi phần mềm trading → công ty mất **$440 triệu USD** trong 45 phút → phá sản
+- **Hàng ngày:** App crash → user xóa app → mất doanh thu. Trang checkout lỗi → user bỏ giỏ hàng → mất tiền
+
+→ Testing giúp **phát hiện lỗi sớm** → sửa rẻ hơn → tránh thảm họa.
+
+---
+
+## QA vs QC vs Testing — Ba khái niệm hay bị nhầm lẫn
+
+### Giải thích bằng ví dụ nhà máy sản xuất giày
+
+**QA (Quality Assurance)** = Đảm bảo **quy trình** sản xuất tốt.
+→ "Chúng ta có quy trình kiểm tra da trước khi cắt không? Có checklist cho từng công đoạn không? Công nhân có được training không?"
+→ QA **phòng ngừa** lỗi bằng cách làm đúng quy trình từ đầu.
+
+**QC (Quality Control)** = Kiểm tra **sản phẩm** đã làm ra.
+→ "Đôi giày này có bị lệch đế không? Chỉ may có chắc không? Màu có đúng không?"
+→ QC **phát hiện** lỗi trong sản phẩm.
+
+**Testing** = Hành động **cụ thể** để kiểm tra.
+→ "Tôi đang kéo thử sợi chỉ xem có đứt không. Tôi đang đi thử giày xem có đau chân không."
+→ Testing là **việc thực thi** kiểm tra.
 
 ### Mối quan hệ
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│  QA (Quality Assurance) - Đảm bảo chất lượng QUY TRÌNH │
-│  ┌───────────────────────────────────────────────────┐  │
-│  │  QC (Quality Control) - Kiểm soát chất lượng SẢN PHẨM │
-│  │  ┌─────────────────────────────────────────────┐  │  │
-│  │  │  Testing - Thực thi kiểm tra cụ thể         │  │  │
-│  │  └─────────────────────────────────────────────┘  │  │
-│  └───────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────┘
+QA (rộng nhất) — quản lý toàn bộ quy trình chất lượng
+ └── QC — kiểm soát chất lượng sản phẩm cụ thể
+      └── Testing — hành động kiểm tra cụ thể
 ```
 
-**Trong thực tế:** Ở các công ty Việt Nam, title "QA" và "QC" thường dùng thay thế nhau. Đa số vị trí tuyển dụng "QA Engineer" thực chất bao gồm cả QC và Testing. Điều quan trọng là hiểu bản chất công việc, không phải title.
+**Trong thực tế ở Việt Nam:** Title "QA Engineer" thường bao gồm cả 3 việc: bạn vừa test (Testing), vừa report (QC), vừa đề xuất cải thiện quy trình (QA). Đừng quá quan trọng title — hiểu bản chất là đủ.
 
 ---
 
-## 7 Nguyên tắc kiểm thử (ISTQB)
+## 7 Nguyên tắc kiểm thử — ISTQB
 
-ISTQB (International Software Testing Qualifications Board) đưa ra 7 nguyên tắc nền tảng. Đây không chỉ là lý thuyết thi chứng chỉ — mà là **tư duy** bạn cần áp dụng hàng ngày.
+ISTQB (International Software Testing Qualifications Board) là tổ chức quốc tế đưa ra các chuẩn mực cho ngành testing. Họ đúc kết 7 nguyên tắc nền tảng — đây không phải lý thuyết suông, mà là **bài học xương máu** từ hàng triệu dự án.
 
-### 1. Testing shows the presence of defects, not their absence
+### 1. "Testing chỉ chứng minh có lỗi, không chứng minh không có lỗi"
 
-**Bản chất:** Testing chỉ có thể chứng minh phần mềm **có lỗi**, không thể chứng minh phần mềm **không có lỗi**.
+**Bản chất:** Giống như bạn kiểm tra 100 quả táo trong thùng 1000 quả. 100 quả OK không có nghĩa 900 quả còn lại cũng OK — có thể quả thứ 101 đã bị sâu.
 
-**Ví dụ thực tế:** Bạn test Login thành công với 100 bộ data khác nhau. Điều đó chỉ chứng minh Login hoạt động đúng với 100 bộ data đó — không có nghĩa Login không bao giờ lỗi.
+**Áp dụng:** Đừng bao giờ nói "hệ thống không có bug". Hãy nói "trong phạm vi đã test, không phát hiện bug nào".
 
-**Áp dụng:** Đừng bao giờ nói "hệ thống không có bug". Hãy nói "không phát hiện bug nào trong phạm vi đã test".
+### 2. "Không thể test mọi thứ"
 
-### 2. Exhaustive testing is impossible
+**Bản chất:** Một form có 5 ô nhập, mỗi ô có thể nhận 100 giá trị khác nhau → 100^5 = **10 tỷ** tổ hợp. Nếu mỗi tổ hợp mất 1 giây để test → cần **317 năm** để test hết.
 
-**Bản chất:** Không thể test tất cả tổ hợp đầu vào, đường đi, và điều kiện.
+**Áp dụng:** Chọn test **cái gì quan trọng nhất** thay vì test mọi thứ. Đây là lý do cần biết Test Design Techniques (bài sau).
 
-**Ví dụ thực tế:** Một form có 5 fields, mỗi field có 10 giá trị test → 10^5 = **100,000 tổ hợp**. Thêm 3 browsers × 2 OS = **600,000 tổ hợp**. Không đủ thời gian test hết.
+### 3. "Test sớm tiết kiệm tiền"
 
-**Áp dụng:** Sử dụng **risk-based testing** — ưu tiên test phần quan trọng nhất, rủi ro cao nhất. Đây là lý do cần biết Test Design Techniques.
+**Bản chất:** Quay lại ví dụ chi phí ở trên. Bug phát hiện ở requirement mất $1 để sửa. Cùng bug đó phát hiện ở production mất $10,000.
 
-### 3. Early testing saves time and money
+**Áp dụng:** QA nên **tham gia đọc requirement từ đầu** — chưa cần code, chưa cần test, chỉ cần đọc và hỏi: "Requirement này có mâu thuẫn không? Có thiếu case nào không?"
 
-**Bản chất:** Bug phát hiện càng sớm, chi phí sửa càng thấp.
+### 4. "Bug tập trung ở một số ít module"
 
-**Ví dụ thực tế:**
-- Phát hiện requirement mâu thuẫn ở phase analysis → sửa requirement (15 phút)
-- Phát hiện sau khi code xong → developer phải code lại (2 ngày)
-- Phát hiện ở production → hotfix + rollback + customer impact (1 tuần + mất uy tín)
+**Bản chất:** Giống quy tắc 80/20 (Pareto): 80% bug nằm ở 20% code. Module phức tạp (Payment, Cart) có nhiều bug hơn module đơn giản (About Us, FAQ).
 
-**Áp dụng:** QA nên tham gia từ giai đoạn **Requirement Review** — đọc spec, đặt câu hỏi, phát hiện gaps. Đây gọi là **Shift-left Testing**.
+**Áp dụng:** Phân tích xem module nào hay lỗi → tập trung test kỹ hơn ở đó.
 
-### 4. Defects cluster together
+### 5. "Chạy mãi 1 bộ test → không tìm được bug mới"
 
-**Bản chất:** Phần lớn bug tập trung ở một số ít module. Tuân theo **Pareto Principle (80/20)**: 80% bug nằm trong 20% module.
+**Bản chất:** Giống thuốc trừ sâu dùng lâu → sâu bọ kháng thuốc. Chạy đi chạy lại 100 test case cũ → chỉ confirm bug cũ không tái phát, không tìm được bug mới.
 
-**Ví dụ thực tế:** Trong một dự án e-commerce, module **Payment** và **Cart** thường có nhiều bug hơn module **About Us** hay **FAQ**. Vì chúng phức tạp hơn, có nhiều logic hơn.
+**Áp dụng:** Thường xuyên **cập nhật test case**, thêm scenarios mới. Kết hợp [Exploratory Testing](/manual-testing/exploratory-testing) để tìm bug ngoài dự kiến.
 
-**Áp dụng:** Sau vài sprint, phân tích bug report → xác định module nào nhiều bug nhất → tập trung test sâu hơn vào đó.
+### 6. "Context quyết định cách test"
 
-### 5. Pesticide paradox
+**Bản chất:** Test app game khác hoàn toàn test app ngân hàng. Game chấp nhận crash đôi khi. App ngân hàng — 1 lỗi tính sai tiền = thảm họa.
 
-**Bản chất:** Chạy đi chạy lại cùng một bộ test case sẽ không tìm được bug mới. Giống thuốc trừ sâu dùng nhiều lần, sâu bọ sẽ kháng thuốc.
-
-**Ví dụ thực tế:** Regression test suite chạy 50 lần đều pass. Nhưng user vẫn report bug mới → vì test case chỉ cover những scenario đã biết.
-
-**Áp dụng:**
-- Thường xuyên **review và cập nhật** test case
-- Bổ sung test case từ **bug đã phát hiện**
-- Kết hợp **Exploratory Testing** để tìm bug mới
-
-### 6. Testing is context dependent
-
-**Bản chất:** Không có cách test nào đúng cho mọi dự án. **Context** quyết định approach.
-
-**Ví dụ thực tế:**
-
-| Context | Approach |
+| App | Focus test |
 |---|---|
-| App ngân hàng | Security testing rất kỹ, compliance check, audit trail |
-| Game mobile | Performance testing, UX testing, device compatibility |
-| Startup MVP | Smoke testing nhanh, focus happy path, ship fast |
-| Hệ thống y tế | Exhaustive testing, regulation compliance, zero tolerance for defects |
+| Game mobile | Performance, UX, compatibility |
+| Ngân hàng | Security, accuracy, audit trail |
+| Startup MVP | Happy path, ship fast |
 
-**Áp dụng:** Luôn hỏi "Context dự án này là gì?" trước khi đề xuất test strategy.
+### 7. "Không có bug ≠ phần mềm thành công"
 
-### 7. Absence-of-errors is a fallacy
+**Bản chất:** Bạn xây một cây cầu hoàn hảo, không có lỗi kỹ thuật nào. Nhưng cầu nằm ở nơi không ai cần đi qua → cầu vô dụng.
 
-**Bản chất:** Phần mềm không có bug nhưng không đáp ứng nhu cầu user thì vẫn **thất bại**.
-
-**Ví dụ thực tế:** Bạn test app và confirm không có bug nào. Nhưng user phàn nàn: "App chậm quá", "UI khó dùng", "Không có feature tôi cần". → Sản phẩm vẫn fail.
-
-**Áp dụng:** Testing không chỉ kiểm tra "đúng/sai" mà còn phải đánh giá **usability**, **performance**, và **business value**.
+Phần mềm cũng vậy: không có bug nhưng user không thích dùng, UI khó hiểu, thiếu feature cần thiết → vẫn thất bại.
 
 ---
 
 ## Verification vs Validation
 
-Hai khái niệm này trả lời hai câu hỏi hoàn toàn khác nhau:
+Hai khái niệm này nghe giống nhau nhưng **hoàn toàn khác nhau**:
 
-| | Verification | Validation |
-|---|---|---|
-| **Câu hỏi** | "Are we building the product **right**?" | "Are we building the **right** product?" |
-| **Mục đích** | Sản phẩm có đúng spec không? | Sản phẩm có đúng nhu cầu user không? |
-| **Phương pháp** | Review, Inspection, Walkthrough, Static Analysis | Testing, UAT, Demo, Beta Testing |
-| **Khi nào** | Mọi giai đoạn (không cần chạy code) | Khi có sản phẩm chạy được |
-| **Ví dụ** | Review code xem có follow coding standards không | User dùng thử và confirm đây là cái họ cần |
+**Verification** — "Chúng ta có đang **xây đúng** không?"
+→ Kiểm tra sản phẩm có đúng theo **bản thiết kế** (spec/requirement) không.
+→ Ví dụ: Requirement nói "nút Login màu xanh" → kiểm tra nút Login có đúng màu xanh không.
 
-### Ví dụ thực tế
+**Validation** — "Chúng ta có đang **xây đúng thứ cần xây** không?"
+→ Kiểm tra sản phẩm có đáp ứng **nhu cầu thực tế** của user không.
+→ Ví dụ: Nút Login đúng màu xanh (đúng spec), nhưng user 60 tuổi nhìn không thấy vì quá nhỏ → fail validation.
 
-Bạn xây một ngôi nhà:
-- **Verification:** Kiểm tra bản vẽ có đúng kỹ thuật không? Tường có đúng kích thước? Điện nước có đúng tiêu chuẩn? → Đúng spec
-- **Validation:** Người ở có thấy thoải mái không? Phòng bếp có tiện không? Có muốn sửa gì không? → Đúng nhu cầu
+**Ví dụ dễ nhớ:**
 
-**Trong thực tế dự án:**
-- Dev push code → **Code Review** (Verification) → Merge
-- Build deploy staging → **QA Testing** (cả Verification lẫn Validation)
-- Demo cho client → **UAT** (Validation)
+Bạn đặt làm bánh sinh nhật, yêu cầu: "Bánh kem dâu, 2 tầng, ghi chữ Happy Birthday".
+
+- **Verification:** Tiệm bánh kiểm tra: Kem dâu? ✅ 2 tầng? ✅ Ghi chữ đúng? ✅ → Đúng yêu cầu.
+- **Validation:** Người nhận: "Tôi dị ứng dâu..." → Yêu cầu đúng, nhưng **nhu cầu thực sự** không được đáp ứng.
 
 ---
 
-## Error, Defect, Failure
+## Error → Defect → Failure — Chuỗi nhân quả của lỗi
 
-Ba khái niệm này mô tả **chuỗi nhân quả** của lỗi phần mềm:
+Ba từ này mô tả **3 giai đoạn** của một lỗi phần mềm:
 
-```
-  👤 Con người           📄 Sản phẩm          💻 Hệ thống
-┌──────────────┐    ┌──────────────┐    ┌──────────────┐
-│    ERROR     │ ──►│   DEFECT     │ ──►│   FAILURE    │
-│  (Mistake)   │    │   (Bug)      │    │  (Sự cố)     │
-└──────────────┘    └──────────────┘    └──────────────┘
-  Developer sai       Code bị sai         App crash/
-  logic khi code      hoặc thiếu          hiển thị sai
-```
+**Error (Sai lầm)** — Con người làm sai.
+→ Developer hiểu sai requirement: "giảm giá 10%" nhưng code thành "trừ 10 đồng".
+→ Error nằm **trong đầu người**, chưa ở trong code.
 
-### Định nghĩa chi tiết
+**Defect (Lỗi trong code)** — Kết quả của Error, đã nằm trong code.
+→ Dòng code: `price = price - 10` thay vì `price = price * 0.9`
+→ Defect nằm **trong code**, có thể tìm thấy bằng cách đọc code.
 
-| | Error | Defect | Failure |
-|---|---|---|---|
-| **Là gì** | Sai lầm của con người | Kết quả của error trong code/doc | Hệ thống hoạt động không đúng |
-| **Ở đâu** | Trong đầu developer | Trong source code, document | Khi chạy phần mềm |
-| **Ai tạo ra** | Con người (dev, BA, designer) | Tồn tại trong artifact | Biểu hiện ra bên ngoài |
-| **Ví dụ** | Dev hiểu sai requirement: "giảm 10%" thành "trừ 10 đồng" | Code: `price = price - 10` thay vì `price = price * 0.9` | User mua hàng 1 triệu, giảm giá chỉ hiện 999,990đ thay vì 900,000đ |
-
-### Quan trọng: Không phải mọi chuỗi đều hoàn chỉnh
+**Failure (Sự cố)** — User hoặc QA thấy lỗi khi chạy phần mềm.
+→ Sản phẩm giá 1 triệu, áp giảm giá 10%, hiển thị 999,990đ thay vì 900,000đ.
+→ Failure nằm **ở hệ thống đang chạy**, user nhìn thấy.
 
 ```
-Error  →  Defect  →  Failure     ✅ Chuỗi hoàn chỉnh
-Error  →  Defect  ✗  (no Failure) ✅ Defect ở code path ít dùng, chưa ai trigger
-Error  ✗  (no Defect)             ✅ Dev code sai → nhận ra ngay → sửa trước commit
-Defect  →  Failure                ✅ Defect do environment, không phải do error
+Người → Error: Hiểu sai "giảm 10%"
+  ↓
+Code → Defect: price = price - 10  (sai logic)
+  ↓
+Hệ thống → Failure: User thấy giá sai
 ```
 
-**Ví dụ "Defect without Failure":** Có bug trong code xử lý đơn hàng > 100 triệu. Nhưng shop chỉ bán đồ giá vài trăm nghìn → bug tồn tại nhưng chưa bao giờ trigger → chưa có failure.
+**Điểm quan trọng:** Không phải mọi Defect đều gây Failure. Nếu dòng code sai nằm ở chức năng chưa ai dùng → Defect tồn tại nhưng chưa ai thấy Failure. Giống như cây cầu bị nứt nhưng chưa ai đi qua → nứt có đó nhưng chưa ai ngã.
 
 ---
 
-## Tư duy của một Tester
+## Tư duy của một Tester giỏi
 
-Ngoài kiến thức kỹ thuật, mindset là thứ phân biệt tester giỏi với tester bình thường:
+Kiến thức kỹ thuật ai cũng có thể học. Nhưng **cách tư duy** là thứ tạo ra sự khác biệt:
 
-### 1. Đặt câu hỏi "What if...?"
-- What if user nhập emoji vào ô tên? 🤔
-- What if mạng đứt giữa chừng khi thanh toán?
-- What if 1000 user đăng nhập cùng lúc?
+### "What if...?" — Luôn hỏi "Nếu... thì sao?"
 
-### 2. Nghĩ như User, phá như Hacker
-- **User perspective:** Flow có dễ hiểu không? Có bị confuse ở đâu không?
-- **Hacker perspective:** Có thể bypass validation không? Có thể xem data của người khác không?
+Mỗi khi thấy một ô nhập liệu, một nút bấm, một trang web — QA giỏi tự động hỏi:
 
-### 3. Evidence-based
-- Mọi claim đều cần **bằng chứng**: screenshot, video, log
-- "Tôi nghĩ có bug" → ❌
-- "Khi thực hiện step 1-2-3, actual result là X, expected là Y. Đây là screenshot" → ✅
+```
+Ô nhập tên:
+- Nếu nhập emoji 🎉 thì sao?
+- Nếu nhập 10,000 ký tự thì sao?
+- Nếu nhập code HTML <b>bold</b> thì sao?
+- Nếu để trống thì sao?
+- Nếu chỉ nhập dấu cách thì sao?
 
-### 4. Không assume
-- Requirement không rõ → **hỏi**, đừng tự suy đoán
-- "Feature này chắc hoạt động giống version cũ" → **verify**, đừng assume
+Nút Thanh toán:
+- Nếu click 2 lần liên tiếp thì sao? (bị trừ tiền 2 lần?)
+- Nếu mạng đứt giữa chừng thì sao?
+- Nếu tab ra ngoài 30 phút rồi quay lại click thì sao?
+```
 
-::: warning Sai lầm phổ biến của Tester mới
-- Chỉ test happy path (đường đi chính xác)
-- Không test edge cases (giá trị biên, ký tự đặc biệt, empty field)
-- Test xong không report, hoặc report thiếu thông tin
-- Assume requirement thay vì hỏi lại
-:::
+### Nghĩ như User vs Nghĩ như Hacker
+
+**User:** "Trang này dễ dùng không? Tôi có hiểu nút này để làm gì không?"
+**Hacker:** "Tôi có thể xem data của người khác bằng cách đổi số trong URL không?"
+
+QA giỏi **nghĩ cả hai cách** — vừa đảm bảo user vui, vừa đảm bảo hệ thống an toàn.
+
+### Evidence-based — Mọi thứ cần bằng chứng
+
+```
+❌ "Tôi nghĩ có bug" → Không ai tin
+✅ "Khi nhập X ở step 1-2-3, kết quả là Y, nhưng requirement nói phải là Z.
+    Đây là screenshot. Đây là console log." → Dev fix ngay
+```
 
 ---
 
-## Tóm tắt chương
+## Tóm tắt
 
-| Concept | Điểm cốt lõi |
+| Concept | Bản chất 1 câu |
 |---|---|
-| **Software Testing** | Giảm rủi ro, cung cấp thông tin, xây dựng niềm tin |
-| **QA vs QC vs Testing** | QA = process, QC = product, Testing = execution |
-| **7 Principles** | Tư duy nền tảng, áp dụng hàng ngày |
-| **V&V** | Verification = đúng spec, Validation = đúng nhu cầu |
-| **Error → Defect → Failure** | Chuỗi nhân quả, không phải lúc nào cũng đầy đủ |
-| **Tester Mindset** | What if, Think like user/hacker, Evidence-based |
+| **Testing** | Hỏi phần mềm "mày đúng không?" rồi tìm bằng chứng |
+| **QA/QC/Testing** | QA = quy trình, QC = sản phẩm, Testing = hành động kiểm tra |
+| **7 Principles** | Bài học xương máu: test sớm, test smart, không test hết được |
+| **Verification** | Xây đúng theo bản vẽ chưa? |
+| **Validation** | Xây đúng thứ user cần chưa? |
+| **Error→Defect→Failure** | Người sai → Code sai → Hệ thống lỗi |
+| **Tester Mindset** | "What if?", nghĩ như user + hacker, cần bằng chứng |
