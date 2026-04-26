@@ -3,6 +3,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "QA Engineer Hub",
   description: "Kiến thức chuyên sâu dành cho QA Engineer - Testing Knowledge Base",
+  base: '/qa-engineer-hub/',
   lang: 'vi-VN',
   lastUpdated: true,
   cleanUrls: true,
