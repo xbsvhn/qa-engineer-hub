@@ -67,6 +67,7 @@ export default defineConfig({
             { text: 'Test Case Design', link: '/manual-testing/test-case-design' },
             { text: 'Bug Reporting', link: '/manual-testing/bug-reporting' },
             { text: 'Exploratory Testing', link: '/manual-testing/exploratory-testing' },
+            { text: 'Test Management Tools', link: '/manual-testing/test-management-tools' },
           ]
         }
       ],
