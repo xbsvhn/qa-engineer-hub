@@ -92,6 +92,7 @@ export default defineConfig({
           collapsed: false,
           items: [
             { text: 'Tổng quan', link: '/api-testing/' },
+            { text: 'API Fundamentals', link: '/api-testing/api-fundamentals' },
             { text: 'REST API Testing', link: '/api-testing/rest-api' },
             { text: 'Postman', link: '/api-testing/postman' },
             { text: 'API Automation', link: '/api-testing/api-automation' },
