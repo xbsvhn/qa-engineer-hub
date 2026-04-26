@@ -4,7 +4,7 @@ layout: home
 hero:
   name: "QA Engineer Hub"
   text: "Knowledge Base"
-  tagline: Nền tảng kiến thức chuyên sâu dành cho QA Engineer - Từ cơ bản đến nâng cao, được xây dựng bởi cộng đồng.
+  tagline: Nền tảng kiến thức chuyên sâu dành cho QA Engineer - Từ cơ bản đến nâng cao.
   image:
     src: /logo.svg
     alt: QA Engineer Hub
