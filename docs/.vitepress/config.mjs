@@ -49,9 +49,11 @@ export default defineConfig({
             { text: 'Tổng quan', link: '/fundamentals/' },
             { text: 'Testing Concepts', link: '/fundamentals/testing-concepts' },
             { text: 'SDLC & STLC', link: '/fundamentals/sdlc-stlc' },
+            { text: 'Agile & Scrum cho QA', link: '/fundamentals/agile-scrum' },
             { text: 'Test Design Techniques', link: '/fundamentals/test-design-techniques' },
             { text: 'Testing Levels', link: '/fundamentals/testing-levels' },
             { text: 'Testing Types', link: '/fundamentals/testing-types' },
+            { text: 'SQL cho QA', link: '/fundamentals/sql-for-qa' },
           ]
         }
       ],
