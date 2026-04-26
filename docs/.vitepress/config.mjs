@@ -76,10 +76,13 @@ export default defineConfig({
           collapsed: false,
           items: [
             { text: 'Tổng quan', link: '/automation/' },
+            { text: 'Lập trình cơ bản', link: '/automation/programming-basics' },
+            { text: 'JavaScript & TypeScript cho QA', link: '/automation/javascript-for-qa' },
             { text: 'Automation Framework', link: '/automation/framework' },
+            { text: 'Playwright (Focus)', link: '/automation/playwright' },
             { text: 'Selenium', link: '/automation/selenium' },
-            { text: 'Playwright', link: '/automation/playwright' },
             { text: 'Cypress', link: '/automation/cypress' },
+            { text: 'Automation Strategy', link: '/automation/automation-strategy' },
           ]
         }
       ],
