@@ -1,39 +1,47 @@
 # Exploratory Testing
 
-## Exploratory Testing là gì? (WHAT)
+## Exploratory Testing giống như Thám tử Điều tra Hiện trường
 
-Exploratory Testing là phương pháp mà việc **học, thiết kế, và thực thi test diễn ra đồng thời**. Tester dựa vào kinh nghiệm, trực giác và tư duy phân tích để khám phá hệ thống — thay vì follow script có sẵn.
+Hãy tưởng tượng hai cách kiểm tra một ngôi nhà:
 
-> Scripted Testing: "Làm theo hướng dẫn"
-> Exploratory Testing: "Khám phá như thám tử"
+**Cách 1 -- Scripted Testing (Theo checklist có sẵn):**
+Bạn cầm danh sách: "Kiểm tra cửa trước, kiểm tra cửa sổ, kiểm tra khóa." Bạn đi theo đúng danh sách, đánh dấu từng mục. Xong danh sách = xong việc. Nhưng nếu có vết nứt trên tường mà **không có trong danh sách**? Bạn bỏ qua.
 
-### Tại sao cần Exploratory Testing? (WHY)
+**Cách 2 -- Exploratory Testing (Thám tử điều tra):**
+Bạn bước vào nhà, quan sát tổng thể, rồi **đi theo trực giác**: "Hmm, vết nước trên trần... chắc dột. Để kiểm tra đường ống phía trên." Bạn **vừa khám phá, vừa suy luận, vừa test** -- đồng thời, không theo script.
 
-| Scripted Testing thiếu | Exploratory Testing bổ sung |
+| Scripted Testing | Exploratory Testing |
 |---|---|
-| Chỉ test scenarios đã nghĩ ra | Tìm bugs **ngoài dự kiến** |
-| Follow exact steps | **Sáng tạo**, thử nhiều cách |
-| Dễ bỏ sót edge cases | Chuyên tìm **edge cases** |
-| Không adapt realtime | **React** theo behavior hệ thống |
+| Theo danh sách có sẵn | Khám phá theo trực giác + kinh nghiệm |
+| Chỉ tìm bug đã "dự đoán" | Tìm bug **ngoài dự kiến** |
+| Follow exact steps | Sáng tạo, thử nhiều cách |
+| Bỏ sót edge cases | Chuyên tìm edge cases |
+| Không thay đổi khi chạy | React theo behavior hệ thống |
 
-**Thống kê:** ~35% bugs nghiêm trọng được tìm qua Exploratory Testing, không phải scripted testing.
+:::tip Aha moment
+Exploratory Testing **không phải "test bừa"**. Nó giống thám tử giỏi: có mục tiêu (charter), có thời gian (time-box), có ghi chép (session notes), và có báo cáo (debrief). Chỉ là **phương pháp khám phá** khác với follow script.
+:::
+
+**Thống kê thực tế:** Khoảng **35% bugs nghiêm trọng** được tìm qua Exploratory Testing -- những bug mà scripted testing bỏ sót vì không ai nghĩ tới.
 
 ---
 
-## Session-Based Test Management (SBTM)
+## Session-Based Test Management (SBTM) -- Thám tử cũng cần kế hoạch
 
-Exploratory Testing **không phải test bừa**. SBTM giúp có cấu trúc và đo lường được.
+SBTM là framework giúp Exploratory Testing có **cấu trúc và đo lường được**. Không phải "mở app lên click bừa" mà là "có nhiệm vụ, có thời gian, có báo cáo."
 
-### Charter — Nhiệm vụ cho session
+### Charter -- "Lệnh điều tra"
+
+Charter (nhiệm vụ) nói cho thám tử biết: **điều tra cái gì, bằng cách nào, để tìm gì**.
 
 Format: **Explore [target] with [resources] to discover [information]**
 
 ```
-Ví dụ charters:
+# Ví dụ các charters -- mỗi charter là 1 "lệnh điều tra"
 
-"Explore the checkout flow
- with different payment methods
- to discover payment processing bugs"
+"Explore the checkout flow                    # Điều tra cái gì
+ with different payment methods               # Bằng cách nào
+ to discover payment processing bugs"         # Để tìm gì
 
 "Explore the search feature
  with special characters and long queries
@@ -48,30 +56,29 @@ Ví dụ charters:
  to discover validation gaps"
 ```
 
-### Session Structure
+### Session Structure -- "Quy trình điều tra"
+
+Mỗi session kéo dài **60-90 phút** (time-boxed -- đặt đồng hồ, hết giờ là dừng).
 
 ```
-Session: 60-90 phút (time-boxed)
+# Phase 1: Setup (5 phút) -- Chuẩn bị trước khi "vào hiện trường"
+- Đọc charter (hiểu nhiệm vụ)
+- Chuẩn bị environment, test accounts
+- Mở tools cần thiết (browser DevTools, note app)
 
-┌─────────────────────────────────────────┐
-│  Phase 1: Setup (5 phút)               │
-│  - Đọc charter                          │
-│  - Chuẩn bị environment, test accounts  │
-├─────────────────────────────────────────┤
-│  Phase 2: Explore (45-70 phút)         │
-│  - Test theo charter                    │
-│  - Ghi notes liên tục                   │
-│  - Log bugs ngay khi phát hiện         │
-│  - Follow "interesting" paths          │
-├─────────────────────────────────────────┤
-│  Phase 3: Debrief (10-15 phút)        │
-│  - Tổng kết findings                    │
-│  - Ghi session report                   │
-│  - Identify follow-up sessions needed  │
-└─────────────────────────────────────────┘
+# Phase 2: Explore (45-70 phút) -- "Điều tra hiện trường"
+- Test theo charter nhưng KHÔNG theo script cứng
+- Ghi notes liên tục (đừng dựa vào trí nhớ)
+- Log bugs ngay khi phát hiện (đừng để "lát ghi")
+- Follow "interesting" paths -- nếu thấy gì lạ, đào sâu
+
+# Phase 3: Debrief (10-15 phút) -- "Báo cáo kết quả"
+- Tổng kết findings (tìm được gì?)
+- Viết session report
+- Ghi lại: cần sessions tiếp theo cho areas nào?
 ```
 
-### Session Report Template
+### Session Report Template -- "Biên bản điều tra"
 
 ```markdown
 ## Session Report
@@ -82,94 +89,107 @@ Session: 60-90 phút (time-boxed)
 **Duration:** 75 minutes
 **Environment:** staging.example.com, Chrome 125
 
-### Areas Covered
+### Areas Covered (Đã điều tra những đâu)
 - Credit card validation (expired, invalid number, wrong CVV)
 - Debit card flow
 - Error messages for payment failures
 - Order state after failed payment
 
-### Bugs Found
+### Bugs Found (Bằng chứng tìm được)
 1. BUG-001: Expired card returns 500 error (Critical)
-2. BUG-002: Invalid CVV shows generic "Payment failed" without detail (Minor)
-3. BUG-003: After failed payment, clicking Back loses cart items (Major)
+2. BUG-002: Invalid CVV shows generic "Payment failed" (Minor)
+3. BUG-003: After failed payment, Back button loses cart items (Major)
 
-### Observations (not bugs, but notable)
-- Payment processing takes 5-8 seconds (slow?)
-- No loading indicator during payment processing
-- Success page doesn't show payment method used
+### Observations (Ghi nhận -- chưa phải bug, nhưng đáng chú ý)
+- Payment processing mất 5-8 giây (có chậm không?)
+- Không có loading indicator khi đang xử lý payment
+- Trang Success không hiện payment method đã dùng
 
-### Questions for Team
-- What's the expected behavior for declined cards?
-- Should we support Apple Pay / Google Pay?
-- Is there a retry limit for failed payments?
+### Questions for Team (Câu hỏi cần team trả lời)
+- Expected behavior khi card bị decline là gì?
+- Có plan hỗ trợ Apple Pay / Google Pay không?
+- Có giới hạn retry cho failed payments không?
 
-### Follow-up Sessions Needed
-- Explore refund flow after successful payment
-- Explore concurrent checkout from 2 devices
+### Follow-up Sessions Needed (Cần điều tra thêm)
+- Explore refund flow sau khi payment thành công
+- Explore concurrent checkout từ 2 devices cùng lúc
 ```
 
 ---
 
-## Heuristics — Công cụ tư duy
+## Heuristics -- "Bộ công cụ tư duy" của Thám tử
 
-Heuristics là **"bộ lọc tư duy"** giúp tester biết **nên tìm ở đâu** và **tìm gì**.
+Heuristic (phương pháp suy luận) giống như **kinh nghiệm nghề** của thám tử: "Khi điều tra vụ trộm, luôn kiểm tra cửa sổ, kiểm tra camera, hỏi hàng xóm." Nó giúp bạn biết **tìm ở đâu** và **tìm gì** khi explore.
 
-### SFDPOT — San Francisco Depot
+### SFDPOT -- "San Francisco Depot" (6 góc nhìn)
 
-Mnemonic cho 6 khía cạnh cần kiểm tra:
+SFDPOT là mnemonic (cách nhớ) cho 6 khía cạnh cần kiểm tra bất kỳ feature nào:
 
-| Letter | Aspect | Câu hỏi | Ví dụ test |
+| Letter | Aspect | Câu hỏi thám tử đặt ra | Ví dụ test cho Login |
 |---|---|---|---|
-| **S** | Structure | Cấu trúc code/UI có đúng? | Links có hoạt động? Images có load? |
-| **F** | Function | Chức năng có đúng? | Login, search, checkout hoạt động? |
-| **D** | Data | Data có đúng? Edge cases? | Empty, null, max length, special chars |
-| **P** | Platform | Hoạt động trên mọi platform? | Browsers, OS, devices, screen sizes |
-| **O** | Operations | Vận hành thế nào? | Performance, backup, logging, errors |
-| **T** | Time | Thời gian ảnh hưởng? | Timeout, timezone, concurrency, cache |
+| **S** | Structure | "Cấu trúc có đúng không?" | Links hoạt động? Images load? Tab order đúng? |
+| **F** | Function | "Chức năng có đúng không?" | Login, logout, remember me hoạt động? |
+| **D** | Data | "Data có đúng? Edge cases?" | Empty fields, 10000 chars, special chars, SQL injection |
+| **P** | Platform | "Chạy trên mọi nền tảng?" | Chrome, Firefox, Safari, Mobile, Tablet |
+| **O** | Operations | "Vận hành có ổn không?" | Performance, logging, error handling |
+| **T** | Time | "Thời gian ảnh hưởng?" | Session timeout, token expiry, concurrent login |
 
-**Dùng SFDPOT cho Explore session:**
 ```
-Charter: Explore login feature using SFDPOT heuristic
+# Dùng SFDPOT cho 1 session explore Login feature
 
-S - Structure: Login page HTML đúng? Tab order? Accessibility?
-F - Function: Login, logout, remember me, forgot password?
-D - Data: Empty fields, long email, special chars, SQL injection?
-P - Platform: Chrome, Firefox, Safari, Mobile, Tablet?
-O - Operations: Login logs? Failed attempt tracking? Performance?
-T - Time: Session timeout? Token expiry? Concurrent login?
+S - Structure: HTML chuẩn không? Tab order đúng không? Accessibility OK?
+F - Function:  Login, logout, remember me, forgot password hoạt động?
+D - Data:      Empty fields, email dài 500 ký tự, special chars, SQL injection?
+P - Platform:  Chrome, Firefox, Safari, Mobile Chrome, iPad?
+O - Operations: Login có ghi log không? Failed attempt có tracking? Response time?
+T - Time:      Session timeout bao lâu? Token hết hạn xử lý sao? 2 tab cùng login?
 ```
 
-### RCRCRC — Recent, Core, Risky, Configuration, Repaired, Chronic
+:::tip Aha moment
+SFDPOT giúp bạn **không bỏ sót góc nhìn**. Nhiều QA chỉ test Function (chức năng) mà quên Data (edge cases), Time (timeout), Platform (mobile). Dùng SFDPOT như checklist tư duy -- đảm bảo bạn nhìn từ đủ 6 góc.
+:::
 
-Heuristic cho **chọn areas cần test**:
+### RCRCRC -- "Nên explore ở đâu trước?"
 
-| Letter | Focus | Tại sao |
-|---|---|---|
-| **R**ecent | Code/features vừa thay đổi | Code mới = bugs mới |
-| **C**ore | Business flows quan trọng nhất | Lỗi ở đây = mất revenue |
-| **R**isky | Phần phức tạp, nhiều integration | Phức tạp = dễ lỗi |
-| **C**onfiguration | Settings, permissions, environments | Config sai = behavior sai |
-| **R**epaired | Bugs vừa fix | Fix bug A có thể tạo bug B |
-| **C**hronic | Phần hay lỗi (lịch sử) | Pattern lặp lại |
+Khi cả hệ thống rộng mênh mông, RCRCRC giúp bạn chọn **areas nào explore trước**:
 
-### Touring Heuristics — "Đi tour" qua hệ thống
+| Letter | Focus | Tại sao cần explore area này? | Ví dụ |
+|---|---|---|---|
+| **R**ecent | Code/feature vừa thay đổi | Code mới = bugs mới chưa ai test | Sprint này mới redesign Login |
+| **C**ore | Business flow quan trọng nhất | Lỗi ở đây = mất tiền, mất user | Checkout, Payment |
+| **R**isky | Phần phức tạp, nhiều integration | Phức tạp = nhiều chỗ sai | Third-party payment API |
+| **C**onfiguration | Settings, permissions, environments | Config sai = behavior sai toàn bộ | User roles, feature flags |
+| **R**epaired | Bugs vừa được fix | Fix bug A có thể tạo bug B | Bug payment vừa fix tuần trước |
+| **C**hronic | Phần hay lỗi theo lịch sử | Lịch sử lặp lại, cần canh chừng | Module upload luôn có bugs |
+
+### Touring Heuristics -- "Đi tour" qua hệ thống
+
+Mỗi "tour" là một cách khác nhau để khám phá hệ thống, giống du khách khám phá thành phố theo các chủ đề:
 
 | Tour | Mô tả | Mục đích |
 |---|---|---|
-| **Feature Tour** | Đi qua TẤT CẢ features | Smoke test toàn bộ |
-| **Complexity Tour** | Tập trung phần phức tạp nhất | Tìm logic bugs |
-| **Claims Tour** | Verify mọi text/claim trên UI | Tìm inconsistency |
-| **Landmark Tour** | Navigate qua main pages | Tìm broken links, navigation |
-| **Money Tour** | Follow flow tạo revenue | Đảm bảo business flow |
-| **Antisocial Tour** | Cố tình dùng sai cách | Tìm error handling issues |
-| **Garbage Tour** | Nhập data rác vào mọi field | Tìm validation gaps |
+| **Feature Tour** | Đi qua TẤT CẢ features, mỗi cái thử 1 lần | Smoke test toàn bộ |
+| **Complexity Tour** | Tập trung phần phức tạp nhất, test sâu | Tìm logic bugs ẩn sâu |
+| **Claims Tour** | Verify mọi text, label, message trên UI | Tìm inconsistency, typo |
+| **Landmark Tour** | Navigate qua các trang chính, click mọi link | Tìm broken links, dead ends |
+| **Money Tour** | Follow flow tạo revenue (đặt hàng, thanh toán) | Đảm bảo business flow sống |
+| **Antisocial Tour** | Cố tình dùng sai cách, phá hệ thống | Tìm error handling yếu |
+| **Garbage Tour** | Nhập data rác vào MỌI field | Tìm validation thiếu |
 
-**Ví dụ Antisocial Tour cho Login:**
-- Paste JavaScript vào email field
-- Nhập emoji 🎉 vào password
-- Click Login 100 lần liên tục
-- Mở 10 tabs login cùng lúc
-- Login → back → forward → refresh
+**Ví dụ Antisocial Tour cho Login** -- "Phá" hệ thống một cách có chủ đích:
+
+```
+# Antisocial Tour -- đóng vai user "phá phách"
+# Mục đích: xem hệ thống xử lý tình huống bất thường tốt không
+
+- Paste JavaScript (<script>alert('XSS')</script>) vào email field
+- Nhập chuỗi siêu dài (10,000 ký tự) vào password field
+- Click Login 50 lần liên tục thật nhanh (rate limiting?)
+- Mở 10 tabs, login cùng 1 account đồng thời
+- Login --> nhấn Back --> nhấn Forward --> Refresh
+- Tắt JavaScript trong browser rồi thử login
+- Thay đổi URL parameters: /login?redirect=http://evil.com
+```
 
 ---
 
@@ -178,83 +198,86 @@ Heuristic cho **chọn areas cần test**:
 ### Khi nào Explore?
 
 ```
-Sprint Timeline:
-Day 1-2:  Scripted test case execution
-Day 3-4:  Bug fixes + retest
-Day 5:    ★ Exploratory Testing session (1-2 sessions) ★
-Day 6:    Regression
+# Sprint Timeline -- Explore thường ở cuối giai đoạn test
+
+Day 1-2:  Scripted test case execution      (Test theo kế hoạch)
+Day 3-4:  Bug fixes + retest                (Dev fix, QA verify)
+Day 5:    Exploratory Testing sessions       (Thám tử ra hiện trường)
+Day 6:    Regression test                    (Chạy lại toàn bộ)
 ```
 
-### Kết hợp Scripted + Exploratory
+### Tỷ lệ vàng: 70% Scripted + 30% Exploratory
 
 ```
-Test Strategy cho feature mới:
+# Test Strategy cho feature mới:
 
-1. Scripted Testing (70% effort)
-   - Cover acceptance criteria
-   - Positive + Negative từ test design techniques
-   - Regression tests
+# 1. Scripted Testing (70% effort)
+#    Như "kiểm tra theo danh sách" -- đảm bảo COVERAGE
+- Cover tất cả Acceptance Criteria từ User Story
+- Positive + Negative cases từ test design techniques
+- Regression tests cho features liên quan
 
-2. Exploratory Testing (30% effort)
-   - 1-2 sessions × 60-90 phút
-   - Focus: edge cases, integration points, error handling
-   - Dùng SFDPOT hoặc Tours
+# 2. Exploratory Testing (30% effort)
+#    Như "thám tử điều tra" -- tìm UNEXPECTED bugs
+- 1-2 sessions x 60-90 phút mỗi session
+- Focus: edge cases, integration points, error handling
+- Dùng SFDPOT hoặc Touring heuristics
 
-→ Scripted đảm bảo COVERAGE
-→ Exploratory tìm UNEXPECTED bugs
+# Scripted = Safety net (lưới an toàn, không bỏ sót requirements)
+# Exploratory = Discovery (khám phá, tìm bug không ai nghĩ tới)
 ```
 
----
-
-## Kỹ năng cần cho Exploratory Testing
-
-### 1. Observation — Quan sát
-
-Chú ý mọi thứ "khác thường":
-- Response time đột nhiên chậm
-- Flickering UI khi load
-- Console errors (F12)
-- Data hiển thị không consistent
-
-### 2. Questioning — Đặt câu hỏi
-
-```
-"What if...?"
-- What if tôi nhập 10,000 ký tự?
-- What if tôi submit form 2 lần?
-- What if tôi đổi URL parameter?
-- What if tôi mở 2 browsers cùng account?
-```
-
-### 3. Note-taking — Ghi chép
-
-Ghi chép **liên tục** trong session:
-- Steps đã thực hiện
-- Observations
-- Bugs tìm được
-- Ideas cho test tiếp
-
-**Tool:** Notepad, OneNote, hoặc ghi trực tiếp vào Jira/TestRail.
-
-### 4. Time Management
-
-- Đặt timer 60-90 phút
-- Không bị "rabbit hole" — nếu 1 area tốn quá 20 phút, note lại, chuyển area khác
-- Debrief ngay sau session (không để qua ngày)
-
----
-
-## Tóm tắt chương
-
-| Concept | Điểm cốt lõi |
-|---|---|
-| **Exploratory Testing** | Đồng thời learn + design + execute |
-| **SBTM** | Charter + Time-box + Session Report |
-| **SFDPOT** | 6 khía cạnh: Structure, Function, Data, Platform, Operations, Time |
-| **RCRCRC** | 6 focus areas: Recent, Core, Risky, Config, Repaired, Chronic |
-| **Tours** | Feature, Complexity, Claims, Antisocial, Garbage |
-| **Ratio** | 70% Scripted + 30% Exploratory = Best coverage |
-
-::: tip Nhớ
-Exploratory Testing **không thay thế** Scripted Testing. Kết hợp cả hai sẽ cho kết quả tốt nhất. Scripted = safety net, Exploratory = discovery.
+:::tip Aha moment
+**Scripted testing tìm bug bạn mong đợi. Exploratory testing tìm bug bạn KHÔNG mong đợi.** Cả hai đều cần. Chỉ scripted = bỏ sót edge cases. Chỉ exploratory = bỏ sót requirements. Kết hợp = best coverage.
 :::
+
+---
+
+## 4 Kỹ năng cốt lõi cho Exploratory Testing
+
+### 1. Observation -- Quan sát như thám tử
+
+Chú ý mọi thứ "khác thường" dù nhỏ nhất:
+- Response time đột nhiên chậm hơn bình thường
+- UI flicker (nhấp nháy) khi load trang
+- Console errors (F12) -- ngay cả khi UI trông bình thường
+- Data hiển thị không nhất quán giữa các trang
+
+### 2. Questioning -- Hỏi "What if...?"
+
+```
+# Câu hỏi "What if" là vũ khí mạnh nhất của Exploratory Tester
+
+"What if tôi nhập 10,000 ký tự vào field name?"
+"What if tôi submit form rồi click Submit lần nữa ngay lập tức?"
+"What if tôi thay đổi URL parameter từ userId=1 thành userId=999?"
+"What if tôi mở 2 browser tabs và login cùng 1 account?"
+"What if tôi đang checkout và network bị mất giữa chừng?"
+```
+
+### 3. Note-taking -- Ghi chép liên tục
+
+Ghi chép **ngay khi đang explore**, đừng dựa vào trí nhớ:
+- Steps đã thực hiện (để có thể reproduce nếu tìm thấy bug)
+- Observations (điều lạ nhận thấy)
+- Bugs tìm được (ghi ngay, tạo ticket sau)
+- Ideas cho test tiếp theo
+
+### 4. Time Management -- Quản lý thời gian
+
+- Đặt timer 60-90 phút -- khi hết giờ, dừng lại debrief
+- Tránh "rabbit hole" -- nếu 1 area tốn quá 20 phút mà chưa tìm thấy gì, note lại rồi chuyển area khác
+- Debrief **ngay sau session** -- không để qua ngày, sẽ quên chi tiết
+
+---
+
+## Tóm tắt -- Bộ công cụ của Thám tử QA
+
+| Concept | Điểm cốt lõi | Nhớ ngay |
+|---|---|---|
+| **Exploratory Testing** | Vừa learn + vừa design + vừa execute | Thám tử, không phải robot |
+| **SBTM** | Charter + Time-box + Session Report | Có kế hoạch, không phải test bừa |
+| **SFDPOT** | Structure, Function, Data, Platform, Operations, Time | 6 góc nhìn, đừng quên góc nào |
+| **RCRCRC** | Recent, Core, Risky, Config, Repaired, Chronic | Explore đâu trước? |
+| **Tours** | Feature, Complexity, Claims, Antisocial, Garbage... | Mỗi tour 1 góc nhìn khác |
+| **Tỷ lệ** | 70% Scripted + 30% Exploratory | Kết hợp = Best coverage |

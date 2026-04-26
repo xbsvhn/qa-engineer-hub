@@ -1,17 +1,27 @@
 # API Fundamentals
 
-## API là gì? (WHAT)
+## API là gì? — Hãy tưởng tượng bạn đi ăn nhà hàng
 
-API (Application Programming Interface) là **cầu nối giao tiếp** giữa các phần mềm với nhau. Thay vì con người tương tác qua giao diện (UI), phần mềm tương tác với nhau qua API.
+Bạn bước vào nhà hàng. Bạn **không bao giờ** tự vào bếp nấu ăn. Thay vào đó:
 
-### Ví dụ ngoài đời
+```
+Bạn (Client)  →  Phục vụ (API)  →  Bếp (Server)
+   gọi món          nhận order       nấu ăn
+                     mang ra         trả món
+```
 
-Bạn đến nhà hàng:
-- **Bạn** (Client) → nhìn menu, chọn món → gọi **phục vụ** (API) → phục vụ mang order vào **bếp** (Server) → bếp nấu xong → phục vụ mang ra cho bạn
+**Phục vụ** chính là **API** (Application Programming Interface — giao diện lập trình ứng dụng). Phục vụ là người trung gian:
+- Nhận **yêu cầu** từ bạn (request)
+- Chuyển cho **bếp** xử lý (server)
+- Mang **kết quả** về cho bạn (response)
 
-Bạn **không vào bếp trực tiếp**. Phục vụ (API) là trung gian — nhận yêu cầu, chuyển cho bếp, trả kết quả lại.
+Bạn không cần biết bếp nấu thế nào, dùng nguyên liệu gì. Bạn chỉ cần biết: **gọi đúng món, nhận đúng đồ ăn**.
 
-### Ví dụ trong phần mềm
+:::tip Aha Moment
+API chính là "người phục vụ" giữa phần mềm với nhau. App Grab gọi API Google Maps để hiển thị bản đồ — Grab không cần biết Google Maps xử lý bản đồ ra sao, chỉ cần gửi tọa độ và nhận lại hình ảnh bản đồ.
+:::
+
+### Trong phần mềm thực tế
 
 ```
 Mobile App ──────┐
@@ -19,36 +29,36 @@ Mobile App ──────┐
 Web Browser ─────┼──► API Server ──► Database
                  │
 Partner System ──┘
-
-Ví dụ thực tế:
-- App Grab gọi API Google Maps để hiển thị bản đồ
-- Website bán hàng gọi API VNPay để thanh toán
-- Frontend React gọi API Backend để lấy danh sách sản phẩm
 ```
 
-### Tại sao QA cần test API? (WHY)
+Nhiều "khách hàng" khác nhau (mobile app, web, đối tác) đều gọi cùng **một API Server** — giống như nhiều bàn trong nhà hàng đều gọi cùng một đội phục vụ.
 
-| Lý do | Giải thích |
+**Ví dụ ngoài đời:**
+- App **Grab** gọi API **Google Maps** để hiển thị bản đồ
+- Website bán hàng gọi API **VNPay** để thanh toán
+- Frontend React gọi API Backend để lấy danh sách sản phẩm
+
+### Tại sao QA cần test API?
+
+| Lý do | Giải thích bằng ví dụ nhà hàng |
 |---|---|
-| **Nhanh hơn UI test** | API test chạy trong milliseconds, UI test mất seconds-minutes |
-| **Ổn định hơn** | Không bị ảnh hưởng bởi UI changes (CSS, layout) |
-| **Phát hiện bug sớm** | Test được trước khi UI hoàn thành |
-| **Coverage sâu hơn** | Test được logic mà UI không thể (edge cases, error codes) |
+| **Nhanh hơn UI test** | Kiểm tra món trong bếp (API) nhanh hơn đợi phục vụ bưng ra bàn (UI) |
+| **Ổn định hơn** | Bếp vẫn nấu ngon dù nhà hàng sửa bàn ghế (UI thay đổi) |
+| **Phát hiện bug sớm** | Nếm thử trong bếp trước khi mang ra khách |
+| **Coverage sâu hơn** | Kiểm tra được nguyên liệu, gia vị — thứ khách không thấy trên bàn |
 | **Bắt buộc trong Agile** | Backend xong trước → QA test API → song song với UI development |
 
-**Thực tế:** Trong dự án Agile, ~60-70% bugs được tìm ở tầng API, chỉ ~30% ở tầng UI.
+**Thực tế:** Trong dự án Agile, khoảng 60-70% bugs được tìm ở tầng API, chỉ khoảng 30% ở tầng UI.
 
 ---
 
-## HTTP Protocol — Nền tảng của API
+## HTTP — Ngôn ngữ mà Client và Server nói với nhau
 
 ### HTTP là gì?
 
-HTTP (HyperText Transfer Protocol) là **giao thức giao tiếp** giữa client và server trên internet. Mọi API web đều dùng HTTP (hoặc HTTPS — phiên bản bảo mật).
+Quay lại nhà hàng: bạn nói tiếng Việt để gọi món, phục vụ hiểu và chuyển cho bếp. **HTTP** (HyperText Transfer Protocol — giao thức truyền siêu văn bản) chính là **ngôn ngữ chung** mà client và server dùng để giao tiếp qua internet.
 
-### Request & Response
-
-Mọi tương tác API đều theo mô hình **Request → Response**:
+Mọi tương tác đều theo một pattern đơn giản: **bạn hỏi (Request), bếp trả lời (Response)**.
 
 ```
 Client (Browser/App)                    Server (API)
@@ -59,35 +69,41 @@ Client (Browser/App)                    Server (API)
 └─────────────────┘                    └─────────────────┘
 ```
 
-### Cấu trúc HTTP Request
+### Cấu trúc Request — "Đơn order" của bạn
+
+Khi bạn gọi món ở nhà hàng, đơn order thường có:
+- **Bạn muốn gì?** (gọi món mới, hủy món, đổi món) → **Method**
+- **Nhà hàng nào, bàn nào?** → **URL** (Uniform Resource Locator — địa chỉ tài nguyên)
+- **Yêu cầu đặc biệt** (không cay, thêm đá) → **Headers** (thông tin bổ sung)
+- **Chi tiết món** (cơm gà, nước mắm riêng) → **Body** (dữ liệu gửi kèm)
 
 ```
-POST /api/users HTTP/1.1              ← Request Line (Method + URL + Version)
-Host: api.example.com                 ← Headers
-Content-Type: application/json
-Authorization: Bearer eyJhbGci...
-                                      ← Blank line
-{                                     ← Body (payload)
+POST /api/users HTTP/1.1              ← Method + URL: "Tôi muốn tạo user mới"
+Host: api.example.com                 ← Headers: nhà hàng nào
+Content-Type: application/json        ← Headers: tôi gửi dữ liệu dạng JSON
+Authorization: Bearer eyJhbGci...     ← Headers: đây là vé vào cửa của tôi
+                                      ← Dòng trống ngăn cách header và body
+{                                     ← Body: chi tiết "món" tôi muốn
   "name": "Nguyen Van An",
   "email": "an@mail.com"
 }
 ```
 
-| Thành phần | Mô tả | Ví dụ |
+| Thành phần | Ví dụ nhà hàng | Ví dụ API |
 |---|---|---|
-| **Method** | Hành động cần thực hiện | GET, POST, PUT, DELETE |
-| **URL** | Địa chỉ resource | `/api/users/123` |
-| **Headers** | Metadata của request | Content-Type, Authorization |
-| **Body** | Dữ liệu gửi kèm (POST, PUT) | JSON, form data |
+| **Method** | Gọi món / hủy món / đổi món | GET, POST, PUT, DELETE |
+| **URL** | Địa chỉ nhà hàng + số bàn | `/api/users/123` |
+| **Headers** | "Không cay", "thêm đá" | Content-Type, Authorization |
+| **Body** | Chi tiết: "cơm gà, nước mắm riêng" | JSON data |
 
-### Cấu trúc HTTP Response
+### Cấu trúc Response — "Đồ ăn" bếp mang ra
 
 ```
-HTTP/1.1 200 OK                       ← Status Line (Version + Status Code)
-Content-Type: application/json        ← Headers
-X-Request-Id: abc123
-                                      ← Blank line
-{                                     ← Body
+HTTP/1.1 200 OK                       ← Status: "Đơn order thành công!"
+Content-Type: application/json        ← Headers: "Đồ ăn" dạng JSON
+X-Request-Id: abc123                  ← Headers: mã tracking đơn
+                                      ← Dòng trống
+{                                     ← Body: đây là "đồ ăn" của bạn
   "id": 1,
   "name": "Nguyen Van An",
   "email": "an@mail.com",
@@ -95,49 +111,47 @@ X-Request-Id: abc123
 }
 ```
 
-| Thành phần | Mô tả | QA verify |
+| Thành phần | Ý nghĩa | QA cần verify |
 |---|---|---|
-| **Status Code** | Kết quả xử lý | 200 OK? 404 Not Found? 500 Error? |
-| **Headers** | Metadata response | Content-Type đúng? Có cache headers? |
+| **Status Code** | Kết quả: thành công hay lỗi? | 200 OK? 404 Not Found? 500 Error? |
+| **Headers** | Thông tin bổ sung về response | Content-Type đúng? Có cache headers? |
 | **Body** | Dữ liệu trả về | Data đúng? Format đúng? Đủ fields? |
 
 ---
 
-## Các kiểu API phổ biến
+## Các kiểu API — REST, GraphQL, SOAP
 
-### 1. REST API — Phổ biến nhất (~90%)
+Hãy tưởng tượng 3 kiểu nhà hàng khác nhau:
 
-| Đặc điểm | Chi tiết |
-|---|---|
-| **Protocol** | HTTP/HTTPS |
-| **Format** | JSON (chủ yếu), XML |
-| **Architecture** | Resource-based (mỗi URL = 1 resource) |
-| **Stateless** | Server không lưu state client giữa các requests |
-| **Phổ biến** | ~90% APIs hiện nay |
+### 1. REST API — Menu cố định (phổ biến nhất, khoảng 90%)
 
-```
-REST API URLs (Resource-based):
-GET    /api/users          → Lấy danh sách users
-GET    /api/users/123      → Lấy user có id=123
-POST   /api/users          → Tạo user mới
-PUT    /api/users/123      → Cập nhật toàn bộ user 123
-PATCH  /api/users/123      → Cập nhật 1 phần user 123
-DELETE /api/users/123      → Xóa user 123
-```
-
-### 2. GraphQL
+**REST** (Representational State Transfer) giống nhà hàng có **menu cố định**. Mỗi món có tên, giá, mô tả rõ ràng. Bạn gọi "Phở bò" thì được cả tô phở đầy đủ — không thêm, không bớt.
 
 | Đặc điểm | Chi tiết |
 |---|---|
-| **Đặc biệt** | Client quyết định lấy **chính xác** fields nào |
-| **1 endpoint** | Chỉ có 1 URL (thường `/graphql`) |
-| **No over-fetching** | Không lấy thừa data |
-| **Phổ biến** | Facebook, GitHub, Shopify |
+| **Format** | JSON (chủ yếu) — dữ liệu dạng text dễ đọc |
+| **Architecture** | Resource-based — mỗi URL đại diện cho 1 "món" (resource) |
+| **Stateless** | Server không nhớ bạn là ai giữa các lần gọi — mỗi request phải tự giới thiệu lại |
+
+```
+REST API URLs — mỗi URL là một "món" trên menu:
+GET    /api/users          → Xem danh sách users (đọc menu)
+GET    /api/users/123      → Xem user có id=123 (xem chi tiết 1 món)
+POST   /api/users          → Tạo user mới (gọi món)
+PUT    /api/users/123      → Thay toàn bộ thông tin user 123
+PATCH  /api/users/123      → Sửa 1 phần thông tin user 123
+DELETE /api/users/123      → Xóa user 123 (hủy món)
+```
+
+### 2. GraphQL — Gọi món tùy chỉnh
+
+**GraphQL** giống nhà hàng cho phép bạn **customize từng chi tiết**: "Tôi muốn cơm gà, nhưng **không** nước mắm, **thêm** rau, **bỏ** dưa leo". Bạn chỉ nhận **đúng thứ bạn yêu cầu**, không thừa, không thiếu.
 
 ```graphql
-# REST: GET /api/users/123 → trả về TẤT CẢ fields (có thể thừa)
+# REST: GET /api/users/123 → trả về TẤT CẢ fields (có thể thừa data)
+# Giống gọi "combo" — được cả nước ngọt dù bạn không uống
 
-# GraphQL: Chỉ lấy name và email
+# GraphQL: Chỉ lấy đúng name và email — không thừa gì cả
 query {
   user(id: 123) {
     name
@@ -145,55 +159,71 @@ query {
   }
 }
 # Response: { "name": "An", "email": "an@mail.com" }
-# Không có fields thừa!
+# Chỉ có 2 fields bạn cần! Không có fields thừa.
 ```
-
-### 3. SOAP
 
 | Đặc điểm | Chi tiết |
 |---|---|
-| **Protocol** | HTTP, SMTP, TCP |
-| **Format** | XML (bắt buộc) |
-| **Phức tạp** | WSDL, XML Schema, Envelope |
-| **Phổ biến** | Enterprise legacy (ngân hàng, bảo hiểm) |
+| **1 endpoint duy nhất** | Chỉ có 1 URL (thường là `/graphql`) — giống 1 quầy order nhận mọi loại yêu cầu |
+| **No over-fetching** | Không lấy thừa data — tiết kiệm bandwidth |
+| **Phổ biến** | Facebook, GitHub, Shopify |
 
-**QA thực tế:** 90% thời gian bạn sẽ test REST API. GraphQL đang tăng. SOAP chỉ gặp ở dự án legacy.
+### 3. SOAP — Tiệc formal có dress code
 
-### So sánh
+**SOAP** (Simple Object Access Protocol) giống **tiệc banquet formal**: có dress code nghiêm ngặt, phải dùng đúng format XML, phải khai báo đúng schema. Rất "nặng nề" nhưng rất "chính thống".
+
+| Đặc điểm | Chi tiết |
+|---|---|
+| **Format bắt buộc** | XML — format cũ, dài dòng (verbose) |
+| **Phức tạp** | WSDL, XML Schema, Envelope — nhiều "thủ tục" |
+| **Phổ biến** | Enterprise legacy: ngân hàng, bảo hiểm, chính phủ |
+
+### So sánh 3 kiểu API
 
 | | REST | GraphQL | SOAP |
 |---|---|---|---|
+| **Ví dụ** | Menu cố định | Gọi món tùy chỉnh | Tiệc formal |
 | **Format** | JSON | JSON | XML |
 | **Learning curve** | Thấp | Trung bình | Cao |
-| **Flexibility** | Medium | Cao | Thấp |
+| **Flexibility** | Trung bình | Cao | Thấp |
 | **Performance** | Tốt | Rất tốt (no over-fetch) | Chậm (XML verbose) |
 | **Tools** | Postman, Playwright | GraphQL Playground, Postman | SoapUI |
 
+:::tip Aha Moment
+90% thời gian bạn sẽ test REST API. GraphQL đang tăng dần. SOAP chỉ gặp ở dự án legacy (hệ thống cũ). Nên tập trung học REST trước!
+:::
+
 ---
 
-## JSON — Ngôn ngữ của API
+## JSON — Tờ giấy viết đơn order
 
 ### JSON là gì?
 
-JSON (JavaScript Object Notation) là format **trao đổi dữ liệu** phổ biến nhất. Nhẹ, dễ đọc, dễ parse.
+Khi bạn gọi món, phục vụ viết order lên giấy. Trong thế giới API, "tờ giấy" đó chính là **JSON** (JavaScript Object Notation — ký pháp đối tượng JavaScript). JSON là format **trao đổi dữ liệu** phổ biến nhất — nhẹ, dễ đọc, dễ xử lý.
 
-### Cú pháp
+### Cú pháp — Đơn giản là cặp key:value
+
+JSON được viết theo format **key:value** (tên:giá trị), giống nhãn dán trên hộp đồ ăn:
 
 ```json
 {
-  "string": "Hello World",
-  "number": 42,
-  "decimal": 3.14,
-  "boolean": true,
-  "null_value": null,
-  "array": [1, 2, 3],
-  "object": {
+  "string": "Hello World",       // Text — luôn nằm trong dấu ""
+  "number": 42,                  // Số nguyên — không cần dấu ""
+  "decimal": 3.14,               // Số thập phân
+  "boolean": true,               // Đúng/Sai — chỉ có true hoặc false
+  "null_value": null,            // Trống — không có giá trị
+  "array": [1, 2, 3],           // Danh sách — nhiều giá trị trong []
+  "object": {                    // Object lồng nhau — {} bên trong {}
     "nested": "value"
   }
 }
 ```
 
-### Ví dụ thực tế — API Response
+:::tip Aha Moment
+JSON giống **nhãn dán trên hộp đồ ăn**: `"tên_món": "Phở bò"`, `"giá": 50000`, `"cay": true`. Mỗi thông tin là một cặp **key:value**. Key nằm bên trái dấu `:`, value nằm bên phải.
+:::
+
+### Ví dụ thực tế — API trả về thông tin user
 
 ```json
 {
@@ -229,78 +259,94 @@ JSON (JavaScript Object Notation) là format **trao đổi dữ liệu** phổ b
 
 ### QA cần verify gì trong JSON Response?
 
-```
-1. Structure — Có đủ fields không? Đúng cấu trúc không?
-2. Data types — "id" phải là number, "name" phải là string
-3. Values — Data đúng logic không? email format đúng?
-4. Null handling — Field nào có thể null? Nào bắt buộc?
-5. Array — Số phần tử đúng? Mỗi phần tử đủ fields?
-6. Nested objects — Object con có đúng structure?
-```
+| Cần check | Ví dụ | Giống như |
+|---|---|---|
+| **Structure** | Có đủ fields không? | Kiểm tra tô phở có đủ thịt, rau, nước |
+| **Data types** | `id` phải là number, `name` phải là string | Thịt phải là thịt, rau phải là rau |
+| **Values** | Email format đúng? Số dương? | Món ăn phải đúng vị đặt |
+| **Null handling** | Field nào được phép null? | Món nào có thể hết nguyên liệu? |
+| **Array** | Đúng số phần tử? Mỗi phần tử đủ fields? | Set combo đủ 3 món? |
+| **Nested objects** | Object con đúng structure? | Nước chấm trong tô phở đúng loại? |
 
 ---
 
-## Authentication & Authorization
+## Authentication — "Bạn là ai?" (Vòng tay vào cửa lễ hội)
 
-### Authentication (Authn) — "Bạn là ai?"
+### Tưởng tượng bạn đi lễ hội âm nhạc
 
-Xác minh danh tính của người gọi API.
+Bạn mua vé → đến cổng → nhân viên kiểm tra vé → đeo cho bạn **vòng tay (wristband)**. Từ đó, bạn chỉ cần **giơ vòng tay** là vào được mọi khu vực — không cần mua vé lại.
 
-| Phương thức | Cách hoạt động | Phổ biến |
+Trong API, **vòng tay** đó chính là **Bearer Token** (mã xác thực). Flow hoạt động y hệt:
+
+```
+Bước 1: "Mua vé" — Login để lấy token
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+POST /api/auth/login
+Body: { "email": "an@mail.com", "password": "Pass@123" }
+
+→ Server kiểm tra email + password
+→ Response: { "token": "eyJhbGciOiJIUzI1NiIs..." }
+  (Đây là "vòng tay" của bạn)
+
+Bước 2: "Giơ vòng tay" — Gửi token trong mọi request sau
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+GET /api/users/me
+Headers: { "Authorization": "Bearer eyJhbGciOiJIUzI1NiIs..." }
+
+→ Server kiểm tra token → hợp lệ → trả về data
+→ Response: { "name": "An", "email": "an@mail.com" }
+
+Bước 3: Token hết hạn — "Vòng tay" hết hiệu lực
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+GET /api/users/me (với token cũ/hết hạn)
+→ Response: 401 Unauthorized — "Vòng tay đã hết hạn, vui lòng lấy cái mới"
+```
+
+:::tip Aha Moment
+Bearer Token giống **vòng tay lễ hội**: login 1 lần → nhận token → dùng token cho mọi request sau. Khi token hết hạn (giống vòng tay hết ngày), bạn phải login lại để lấy token mới.
+:::
+
+### Các phương thức Authentication phổ biến
+
+| Phương thức | Ví dụ ngoài đời | Khi nào dùng |
 |---|---|---|
-| **API Key** | Gửi key trong header/query | Simple APIs, third-party |
-| **Basic Auth** | Username:Password encoded Base64 | Legacy systems |
-| **Bearer Token (JWT)** | Login → nhận token → gửi trong header | Modern apps (~80%) |
-| **OAuth 2.0** | Login qua Google/Facebook → nhận token | Social login |
+| **API Key** | Mã thành viên gym — 1 mã duy nhất, ai có cũng vào được | Simple APIs, third-party |
+| **Basic Auth** | Username + Password mỗi lần vào cửa | Legacy systems (hệ thống cũ) |
+| **Bearer Token (JWT)** | Vòng tay lễ hội — login 1 lần, dùng nhiều lần | Modern apps (khoảng 80% hiện nay) |
+| **OAuth 2.0** | Login bằng Google/Facebook — nhờ bên thứ 3 xác nhận | Social login |
 
-#### Bearer Token Flow (phổ biến nhất)
+### Authorization — "Bạn được phép làm gì?"
 
-```
-1. Client gửi login request:
-   POST /api/auth/login
-   Body: { "email": "an@mail.com", "password": "Pass@123" }
-
-2. Server verify → trả về token:
-   Response: { "token": "eyJhbGciOiJIUzI1NiIs..." }
-
-3. Client gửi token trong mọi request sau:
-   GET /api/users/me
-   Headers: { "Authorization": "Bearer eyJhbGciOiJIUzI1NiIs..." }
-
-4. Server verify token → trả về data
-```
-
-### Authorization (Authz) — "Bạn được phép làm gì?"
-
-Kiểm tra quyền truy cập sau khi đã xác minh danh tính.
+Authentication (Authn) = xác minh **bạn là ai** (kiểm tra vé). Authorization (Authz) = kiểm tra **bạn được vào khu nào** (VIP hay thường).
 
 ```
-Admin user:
+Admin user (vé VIP):
   GET  /api/users     → 200 OK (có quyền xem tất cả users)
   DELETE /api/users/5  → 200 OK (có quyền xóa user)
 
-Normal user:
+Normal user (vé thường):
   GET  /api/users     → 403 Forbidden (không có quyền xem all users)
   DELETE /api/users/5  → 403 Forbidden (không có quyền xóa)
-  GET  /api/users/me  → 200 OK (chỉ xem được thông tin mình)
+  GET  /api/users/me  → 200 OK (chỉ xem được thông tin của mình)
 ```
 
-**QA test Authorization:**
-- User role A có truy cập được endpoint của role B không? (Expected: 403)
-- User có thể xem/sửa/xóa data của user khác không? (Expected: 403)
-- Token hết hạn thì trả về gì? (Expected: 401)
+**QA test Authorization cần check:**
+- User role A có truy cập được endpoint của role B không? (Expected: 403 Forbidden)
+- User có xem/sửa/xóa data của user khác không? (Expected: 403)
+- Token hết hạn → trả về gì? (Expected: 401 Unauthorized)
 
 ---
 
-## API Documentation
+## Swagger — "Menu" của nhà hàng API
 
-### Swagger / OpenAPI
+### Swagger là gì?
 
-Hầu hết dự án cung cấp API docs qua **Swagger UI**. QA dùng Swagger để:
-- Xem tất cả endpoints available
-- Biết request format (fields nào required, data type)
-- Biết response format (status codes, response body)
-- Try it out — gọi API trực tiếp từ Swagger
+Nhà hàng có **menu** để bạn biết có món gì, giá bao nhiêu, mô tả thế nào. API cũng có "menu" — đó là **Swagger** (hay **OpenAPI**). Swagger UI là trang web hiển thị tất cả API endpoints, giúp bạn:
+
+- Xem tất cả "món" (endpoints) available
+- Biết cần gửi gì (request format: fields nào required, data type gì)
+- Biết nhận lại gì (response format: status codes, response body)
+- **Try it out** — gọi API trực tiếp từ trang Swagger (như nếm thử!)
 
 ```
 Swagger UI URL thường gặp:
@@ -309,56 +355,61 @@ https://api.example.com/docs
 https://api.example.com/api-docs
 ```
 
-### Đọc API Documentation
+### Cách đọc Swagger — Giống đọc menu nhà hàng
 
 ```yaml
-# Ví dụ Swagger/OpenAPI spec
-POST /api/users:
-  summary: Create a new user
-  requestBody:
-    required: true
+# Đây là "mô tả món" trong menu API
+POST /api/users:                    # Endpoint: "gọi món tạo user mới"
+  summary: Create a new user        # Mô tả ngắn
+  requestBody:                      # Bạn cần gửi gì?
+    required: true                  # Bắt buộc phải có body
     content:
-      application/json:
+      application/json:             # Format: JSON
         schema:
           type: object
-          required: [name, email, password]
+          required: [name, email, password]  # 3 fields bắt buộc!
           properties:
             name:
-              type: string
-              maxLength: 100
+              type: string          # name phải là text
+              maxLength: 100        # tối đa 100 ký tự
             email:
               type: string
-              format: email
+              format: email         # phải đúng format email
             password:
               type: string
-              minLength: 8
-  responses:
+              minLength: 8          # tối thiểu 8 ký tự
+  responses:                        # Bếp có thể trả lại gì?
     201:
-      description: User created successfully
+      description: User created successfully    # Thành công
     400:
-      description: Validation error
+      description: Validation error             # Gửi sai data
     409:
-      description: Email already exists
+      description: Email already exists         # Email trùng
 ```
 
-**Từ API doc này, QA biết cần test:**
-- POST với valid data → 201
-- POST thiếu name → 400
-- POST email sai format → 400
-- POST password < 8 ký tự → 400
-- POST email đã tồn tại → 409
+:::tip Aha Moment
+Từ API doc (Swagger) trên, QA biết ngay cần test gì:
+- POST với valid data → 201 (thành công)
+- POST thiếu `name` → 400 (thiếu field bắt buộc)
+- POST email sai format → 400 (sai format)
+- POST password < 8 ký tự → 400 (quá ngắn)
+- POST email đã tồn tại → 409 (trùng)
+
+**Swagger chính là nguồn để viết test cases!**
+:::
 
 ---
 
 ## Tóm tắt chương
 
-| Concept | Điểm cốt lõi |
-|---|---|
-| **API** | Cầu nối giao tiếp giữa phần mềm, test nhanh hơn UI |
-| **HTTP** | Request (Method + URL + Headers + Body) → Response (Status + Body) |
-| **REST** | Resource-based, JSON, phổ biến nhất (~90%) |
-| **GraphQL** | Client chọn exact fields, 1 endpoint |
-| **JSON** | Format dữ liệu chính, cần verify structure + types + values |
-| **Authentication** | Bearer Token/JWT phổ biến nhất |
-| **Authorization** | Test role-based access, permission boundaries |
-| **Swagger** | API documentation, nguồn để viết test cases |
+| Concept | Bản chất (Essence) | Điểm cốt lõi |
+|---|---|---|
+| **API** | Phục vụ nhà hàng — trung gian client ↔ server | Test nhanh hơn, ổn định hơn UI |
+| **HTTP** | Ngôn ngữ giao tiếp client ↔ server | Request (Method+URL+Headers+Body) → Response (Status+Body) |
+| **REST** | Menu cố định — mỗi URL là 1 resource | Phổ biến nhất, dùng JSON, khoảng 90% APIs |
+| **GraphQL** | Gọi món tùy chỉnh — lấy đúng data cần | 1 endpoint, no over-fetching |
+| **SOAP** | Tiệc formal — XML bắt buộc, phức tạp | Legacy systems (ngân hàng, bảo hiểm) |
+| **JSON** | Tờ giấy viết order — format key:value | Verify structure + types + values |
+| **Authentication** | Vòng tay lễ hội — login 1 lần, dùng nhiều lần | Bearer Token/JWT phổ biến nhất |
+| **Authorization** | Vé VIP vs thường — ai vào khu nào | Test role-based access, permission boundaries |
+| **Swagger** | Menu nhà hàng — liệt kê tất cả "món" API | Nguồn chính để viết test cases |

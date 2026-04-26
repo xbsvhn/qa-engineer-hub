@@ -1,15 +1,15 @@
 # API Testing
 
-API Testing là kiểm thử tầng **business logic** mà không cần qua giao diện — nhanh hơn, ổn định hơn, và phát hiện bug sớm hơn UI testing. Trong dự án Agile, đây là kỹ năng **được yêu cầu nhiều nhất** ở QA hiện nay.
+API Testing là kiểm thử **"nhà bếp" phía sau nhà hàng** — nơi dữ liệu được xử lý, logic nghiệp vụ được thực thi — mà không cần đi qua giao diện (UI). Nhanh hơn, ổn định hơn, và phát hiện bug sớm hơn UI testing. Trong dự án Agile, đây là kỹ năng **được yêu cầu nhiều nhất** ở QA hiện nay.
 
 ## Nội dung
 
-| # | Chủ đề | Mô tả |
+| # | Chủ đề | Bạn sẽ học được gì |
 |---|---|---|
-| 1 | [API Fundamentals](./api-fundamentals) | API là gì? HTTP protocol, REST vs GraphQL vs SOAP, JSON, Authentication, Swagger |
-| 2 | [REST API Testing](./rest-api) | HTTP Methods (CRUD), Status Codes chi tiết, Headers, Testing Checklist đầy đủ |
-| 3 | [Postman](./postman) | Gửi request, Environments, viết Tests/Assertions, Collection Runner, Data-driven |
-| 4 | [API Automation](./api-automation) | Playwright API testing, CRUD examples, Auth testing, API + UI kết hợp, CI/CD |
+| 1 | [API Fundamentals](./api-fundamentals) | API = phục vụ nhà hàng, HTTP = ngôn ngữ giao tiếp, JSON, Authentication, Swagger |
+| 2 | [REST API Testing](./rest-api) | HTTP Methods (5 hành động), Status Codes (phản hồi từ bếp), Testing Checklist |
+| 3 | [Postman](./postman) | Chiếc điện thoại gọi API — Environments, Tests, Collection Runner |
+| 4 | [API Automation](./api-automation) | Từ gọi tay sang hệ thống tự động — Playwright API testing, API+UI combo |
 
 ## Lộ trình học
 
@@ -26,7 +26,7 @@ API Fundamentals → REST API Testing → Postman (manual) → API Automation (c
                     │    (10% effort)     │
                     ├─────────────────────┤
                     │   API Testing       │  Nhanh, ổn định, coverage cao
-                    │   (60% effort)      │  ← FOCUS HERE
+                    │   (60% effort)      │  ← TẬP TRUNG Ở ĐÂY
                     ├─────────────────────┤
                     │   Unit Testing      │  Developer viết
                     │   (30% effort)      │
@@ -39,5 +39,5 @@ API Fundamentals → REST API Testing → Postman (manual) → API Automation (c
 - Test được trước khi frontend hoàn thành
 
 ::: tip Recommendation
-Học **Postman** trước để hiểu API testing manually → sau đó chuyển sang **Playwright API testing** để automate và tích hợp CI/CD. Combo này đủ dùng cho mọi dự án.
+Học **Postman** trước để hiểu API testing bằng tay (nhanh, trực quan) → sau đó chuyển sang **Playwright API testing** để automate và tích hợp CI/CD. Combo này đủ dùng cho mọi dự án.
 :::

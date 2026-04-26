@@ -1,40 +1,47 @@
 # CI/CD
 
-CI/CD (Continuous Integration / Continuous Delivery) là quy trình **tự động hóa** build, test, và deploy phần mềm. Đây là kỹ năng **bắt buộc** cho QA hiện đại — automation tests chỉ có giá trị thực sự khi tích hợp vào CI/CD pipeline.
+## CI/CD la gi? -- Hieu ban chat truoc
 
-## Nội dung
+Tuong tuong ban la mot dau bep trong nha hang. Moi ngay ban nau mon moi (code moi). Truoc khi phuc vu khach, ban phai:
 
-| # | Chủ đề | Mô tả |
-|---|---|---|
-| 1 | [Git & Version Control](./git) | Git workflow, branching, commands thiết yếu, Pull Request flow |
-| 2 | [GitHub Actions](./github-actions) | CI/CD pipeline, workflows cho test automation, artifacts, secrets |
-| 3 | [Docker cho QA](./docker) | Containers, test environments, Docker Compose cho testing |
+1. **Kiem tra nguyen lieu** (build -- code co compile duoc khong?)
+2. **Nem thu** (test -- code co chay dung khong?)
+3. **Bung ra ban** (deploy -- dua code len server cho user dung)
 
-## CI/CD Pipeline cho QA
+**CI/CD** la **robot lam 3 buoc nay tu dong** moi khi ban thay doi code. Ban chi viec nau (code), robot lo phan con lai.
+
+- **CI** (Continuous Integration) = tu dong build + test moi khi ai do push code
+- **CD** (Continuous Delivery) = tu dong deploy len server sau khi tests pass
+
+## Pipeline = day chuyen san xuat
 
 ```
 Developer push code
-    │
-    ▼
-┌─────────────────────────────────────────────────────────┐
-│                    CI/CD Pipeline                        │
-│                                                         │
-│  Build ──► Unit Tests ──► API Tests ──► Deploy Staging  │
-│                                              │          │
-│                                              ▼          │
-│                              E2E Tests ──► Smoke Test   │
-│                                              │          │
-│                                    Pass? ────┤          │
-│                                    │         │          │
-│                                   Yes        No         │
-│                                    │         │          │
-│                              Deploy Prod   Notify QA    │
-│                                           + Block deploy│
-└─────────────────────────────────────────────────────────┘
+       |
+       v
++----------------------------------------------------------+
+|                    CI/CD Pipeline                          |
+|                                                           |
+|  Build --> Unit Tests --> API Tests --> Deploy Staging     |
+|                                            |              |
+|                                            v              |
+|                            E2E Tests --> Smoke Test        |
+|                                            |              |
+|                                   Tests pass? ---+        |
+|                                    |             |        |
+|                                   Yes           No        |
+|                                    |             |        |
+|                              Deploy Prod    Notify QA     |
+|                                             + Block       |
++----------------------------------------------------------+
 ```
 
-**QA trong CI/CD:**
-- Viết automation tests chạy trong pipeline
-- Configure test stages (smoke, regression, E2E)
-- Monitor test results, fix flaky tests
-- Gate deployment: tests fail → deploy bị block
+> **Aha moment:** Automation tests chi THUC SU co gia tri khi chay trong CI/CD pipeline. Viet 1000 test cases ma phai chay bang tay = lang phi. Dat chung vao pipeline = moi lan dev push code, tests tu dong chay va bao ket qua.
+
+## Noi dung section nay
+
+| # | Chu de | Mo ta |
+|---|---|---|
+| 1 | [Git & Version Control](./git) | "Save game" cho code, branching, Pull Request |
+| 2 | [GitHub Actions](./github-actions) | May tinh GitHub cho muon mien phi de chay tests |
+| 3 | [Docker cho QA](./docker) | Dong goi code vao "container" chay giong nhau moi noi |
