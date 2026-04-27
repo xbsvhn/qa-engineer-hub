@@ -360,6 +360,22 @@ Analogy: Flaky test giống chuông báo cháy hay kêu giả.
 
 ---
 
+## Góc nhìn đa chiều — Mỗi công ty, mỗi cách automate
+
+Không có "automation strategy chuẩn" cho mọi tổ chức. Dưới đây là cách các loại công ty khác nhau tiếp cận — **tất cả đều hợp lý** cho context của họ:
+
+| Loại công ty | Strategy | Lý do |
+|---|---|---|
+| **Enterprise (ngân hàng, bảo hiểm)** | Automate **mọi thứ có thể** — regression, API, security, compliance, performance. Coverage target 90%+. | Rủi ro cao (mất tiền thật), quy định pháp lý nghiêm ngặt (audit trail), release cycle dài. 1 bug = phạt hàng tỷ đồng. |
+| **Startup giai đoạn đầu** | Automate **chỉ critical path** — login, core feature chính, payment (nếu có). 20-30 tests là đủ. | Ship nhanh là sống còn. Feature thay đổi hàng tuần — automate nhiều = viết đi viết lại. Manual + exploratory hiệu quả hơn ở giai đoạn này. |
+| **Agency / Outsource** | Automate **smoke tests only** — 10-15 tests cho mỗi dự án. Có template sẵn, apply nhanh cho mỗi client. | Nhiều dự án cùng lúc, mỗi dự án ngắn hạn (3-6 tháng). Invest sâu vào automation cho 1 dự án = không đủ ROI. |
+| **SaaS product (B2B/B2C)** | Automate **regression + API heavy** — UI cho critical flows, API cho business logic. CI/CD integration bắt buộc. | Sản phẩm ổn định, release thường xuyên (weekly/daily). Regression manual mất 3 ngày = bottleneck. API tests cho ROI cao nhất. |
+| **Công ty có team QA 1 người** | Automate **smoke + top 10 regression** — đủ để chạy trước mỗi release. Phần còn lại manual có checklist. | 1 người không thể maintain 200 tests. Focus vào giá trị cao nhất, giữ suite nhỏ và green (pass rate 100%). |
+
+**Bài học quan trọng:** Khi đi phỏng vấn hoặc vào dự án mới, **đừng áp đặt** strategy từ công ty cũ. Hỏi trước: "Team size bao nhiêu? Release cycle thế nào? Budget automation ra sao?" — rồi đề xuất strategy phù hợp.
+
+---
+
 ## Tóm tắt — Strategy trên 1 trang
 
 ```

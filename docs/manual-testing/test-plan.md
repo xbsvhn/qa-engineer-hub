@@ -272,6 +272,36 @@ Test Plan giống lịch trình trip -- **ngắn gọn nhưng đầy đủ**. Đ
 
 ---
 
+## Sai lầm thường gặp
+
+❌ **Viết Test Plan 50 trang mà không ai đọc**
+→ ✅ Viết ngắn gọn, đủ thông tin — 1-3 trang cho Agile, dài hơn chỉ khi Waterfall yêu cầu
+→ 💡 Test Plan dài mà không ai đọc = không tồn tại. Plan ngắn mà cả team dùng = có giá trị thực
+
+❌ **Viết xong rồi không bao giờ update khi requirements thay đổi**
+→ ✅ Coi Test Plan là **living document** — update mỗi khi scope, timeline, hoặc risk thay đổi
+→ 💡 Plan không phản ánh thực tế = plan sai. Sprint thay đổi requirement → plan phải thay đổi theo
+
+❌ **Không có Risk section — chỉ viết "happy path"**
+→ ✅ Luôn có bảng Risk & Mitigation với ít nhất 3-5 risks
+→ 💡 Không có risk plan = khi vấn đề xảy ra, team hoảng loạn. Có risk plan = team biết plan B ngay lập tức
+
+❌ **Copy-paste template mà không customize cho project**
+→ ✅ Mỗi project có context riêng — điều chỉnh scope, approach, risks cho phù hợp
+→ 💡 Template là khung sườn, không phải bài mẫu. Hai project khác nhau mà plan giống nhau = có vấn đề
+
+---
+
+## Góc nhìn đa chiều
+
+**Waterfall teams:** Viết Test Plan chi tiết 20-50 trang, approved bởi nhiều stakeholders, ít thay đổi. Phù hợp khi requirements ổn định (ngân hàng, y tế, chính phủ).
+
+**Agile teams:** Viết Test Plan 1 trang mỗi sprint, update liên tục, focus vào scope + risks + exit criteria. Phù hợp khi requirements thay đổi thường xuyên (startup, SaaS).
+
+**Context quyết định độ dài.** Không có "Test Plan đúng" — chỉ có Test Plan **phù hợp với cách team làm việc**. Hỏi: "Ai đọc plan này? Họ cần biết gì?" → viết vừa đủ cho audience đó.
+
+---
+
 ## Tóm tắt -- Mỗi thành phần trả lời 1 câu hỏi
 
 | Thành phần | Câu hỏi trả lời | Tương đương Du lịch |

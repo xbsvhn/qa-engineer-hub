@@ -472,6 +472,36 @@ Data-Driven Testing cực kỳ mạnh: viết 1 request + 1 test script, nhưng 
 
 ---
 
+## Sai lầm thường gặp
+
+❌ **Hardcode URL trực tiếp trong request**
+→ ✅ Dùng **Environments** với `{{base_url}}`
+→ 💡 Khi đổi environment (Dev → Staging → Prod), chỉ cần switch dropdown thay vì sửa 50 requests
+
+❌ **Gửi request xong nhưng không viết Tests trong tab Tests**
+→ ✅ Mỗi request đều viết ít nhất 1 assertion (status code, response body)
+→ 💡 Không có tests = Postman chỉ là tool gửi request, không phải testing tool. Tests biến Postman thành automation tool
+
+❌ **Lưu password, API key thật trong Shared Collections**
+→ ✅ Dùng **Environment variables** cho sensitive data, chỉ share Collection (không share Environment)
+→ 💡 Collection share cho cả team → ai cũng thấy. Sensitive data phải nằm trong Environment riêng của mỗi người
+
+❌ **Không tổ chức requests — đổ hết vào 1 collection**
+→ ✅ Dùng **Folders** phân nhóm theo module (Auth, Users, Orders...)
+→ 💡 Khi collection có 100+ requests mà không có folders = không ai tìm được gì
+
+---
+
+## Góc nhìn đa chiều
+
+**Team A:** "Dùng Postman cho MỌI THỨ" — manual testing, automation (Collection Runner), monitoring, documentation. Postman là trung tâm API testing.
+
+**Team B:** "Dùng Postman chỉ để EXPLORE" — khám phá API mới, debug nhanh. Sau đó chuyển hết sang code (Supertest, Playwright API testing) để tích hợp CI/CD và version control qua Git.
+
+**Cả hai đều hợp lý.** Team nhỏ, ít automation experience → Postman-centric tiết kiệm thời gian. Team có strong engineering culture → code-based cho long-term maintainability. Quan trọng là **chọn đúng cho context của team**, không phải chọn theo trend.
+
+---
+
 ## Tóm tắt chương
 
 | Feature | Bản chất (Essence) | Khi dùng |

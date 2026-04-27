@@ -241,6 +241,40 @@ Khi báo cáo performance test, ĐỪNG chỉ liệt kê số liệu. Hãy trả
 
 ---
 
+## Sai lầm thường gặp
+
+❌ **Chỉ nhìn Average response time để đánh giá performance**
+→ ✅ Luôn report **P90/P95/P99** — Average che giấu những trường hợp tệ nhất
+→ 💡 4 requests: 1ms, 1ms, 1ms, 10,000ms → Average = 2,500ms "trông OK", nhưng P99 = 10s. 1% users đợi 10 giây!
+
+❌ **Test performance trên Dev environment thay vì Staging**
+→ ✅ Test trên **Staging** — môi trường giống Production nhất (cùng config, cùng data volume)
+→ 💡 Dev environment thường có ít data, phần cứng khác Production → kết quả không phản ánh thực tế
+
+❌ **Không dùng think time trong load test — bắn request liên tục**
+→ ✅ Thêm **think time** (1-5 giây giữa các requests) để mô phỏng user thật
+→ 💡 User thật đọc trang, suy nghĩ, rồi mới click tiếp. Không có think time = tải giả cao hơn thực tế → kết quả sai lệch
+
+❌ **Chạy load test từ cùng network với server (cùng data center)**
+→ ✅ Chạy từ **máy/cloud khác network** với server, hoặc dùng distributed load generators
+→ 💡 Cùng network = latency gần 0, không phản ánh trải nghiệm user thật (user ở xa, qua internet)
+
+❌ **Chạy 1 lần rồi kết luận — không chạy lại để verify**
+→ ✅ Chạy ít nhất **2-3 lần** để confirm kết quả ổn định, loại bỏ noise
+→ 💡 1 lần chạy có thể bị ảnh hưởng bởi background processes, GC, network spike. Nhiều lần → kết quả đáng tin hơn
+
+---
+
+## Góc nhìn đa chiều
+
+**Team A:** "Test performance **mỗi sprint**" — tích hợp vào CI/CD, chạy automated performance tests mỗi build. Phù hợp cho SaaS products, e-commerce, real-time apps nơi performance là core feature.
+
+**Team B:** "Test performance **trước major releases**" — chạy full load/stress test 1-2 lần mỗi quarter. Phù hợp cho internal tools, B2B apps ít users, hoặc team nhỏ không đủ resource cho continuous perf testing.
+
+**Cả hai đều hợp lý.** Sản phẩm có millions users cần test thường xuyên vì mỗi regression nhỏ ảnh hưởng lớn. Sản phẩm có 50 users nội bộ chỉ cần test khi có thay đổi lớn về architecture hoặc data volume.
+
+---
+
 ## Tóm tắt chương
 
 | Concept | Ẩn dụ | Điểm cốt lõi |

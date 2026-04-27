@@ -240,6 +240,39 @@ SAU SPRINT:
 
 ---
 
+## Sai lầm thường gặp
+
+### ❌ Dồn test vào cuối Sprint
+→ ✅ **Test song song với Dev** — Dev push xong story nào, QA test story đó ngay. Đừng đợi ngày 8-9 mới bắt đầu test.
+→ 💡 **Tại sao:** Nếu dồn cuối Sprint, phát hiện bug lúc này → Dev không đủ thời gian fix → Story không Done → Sprint fail. Test sớm = feedback sớm = fix kịp.
+
+### ❌ Không tham gia Backlog Refinement
+→ ✅ **QA phải tham gia Refinement và Three Amigos** — đọc User Story, hỏi edge cases, review Acceptance Criteria TRƯỚC khi Dev code.
+→ 💡 **Tại sao:** QA nhìn thấy những case mà PO và Dev không nghĩ tới ("Nếu user nhập emoji vào tên?"). Phát hiện requirement gap ở đây tiết kiệm hàng ngày fix bug sau.
+
+### ❌ Không lên tiếng trong Daily Standup
+→ ✅ **Nói rõ ràng: hôm qua test gì, hôm nay test gì, đang bị block gì** — cụ thể số test case, tên bug, tên story.
+→ 💡 **Tại sao:** Nếu QA im lặng, team không biết QA đang ở đâu. Blocker không được escalate → QA bị block cả ngày mà không ai biết.
+
+### ❌ Không update test case sau Retro
+→ ✅ **Mỗi Sprint Retro, review lại test approach** — thêm test case cho bug types mới, cập nhật regression suite.
+→ 💡 **Tại sao:** Cùng loại bug xảy ra 2 Sprint liên tiếp = QA chưa học từ sai lầm. Retro mà không action = họp cho có.
+
+## Góc nhìn đa chiều
+
+Không có một mô hình Agile QA nào đúng cho mọi team. Dưới đây là các cách tiếp cận khác nhau — **tất cả đều hợp lệ** tùy context:
+
+| Mô hình | Cách hoạt động | Phù hợp khi |
+|---|---|---|
+| **Dedicated QA trong team** | Mỗi Scrum team có 1-2 QA riêng, QA tham gia từ Sprint Planning đến Retro | Team lớn (5+ devs), sản phẩm phức tạp (fintech, healthcare), cần chuyên môn test sâu |
+| **Dev tự test (No dedicated QA)** | Developer viết unit test + integration test, peer review thay thế QA | Startup giai đoạn đầu, team nhỏ (2-3 devs), sản phẩm đơn giản, ship nhanh là ưu tiên #1 |
+| **QA chia sẻ giữa nhiều team** | 1 QA support 2-3 Scrum teams, ưu tiên theo risk | Công ty vừa, không đủ budget QA cho mỗi team, QA focus vào critical paths |
+| **Whole-team quality** | Mọi người đều chịu trách nhiệm chất lượng — Dev viết test, QA coach/review, PO verify AC | Team mature, culture mạnh, mọi người đều hiểu testing |
+
+**Điều quan trọng:** Dù mô hình nào, **ai đó phải chịu trách nhiệm verify rằng phần mềm hoạt động đúng**. Câu hỏi không phải "có cần QA không?" mà là "ai sẽ đảm bảo chất lượng và bằng cách nào?"
+
+---
+
 ## Tóm tắt
 
 | Concept | Bản chất 1 câu |

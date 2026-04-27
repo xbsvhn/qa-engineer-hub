@@ -290,6 +290,26 @@ const password = process.env.TEST_USER_PASSWORD;
 
 ---
 
+## Sai lầm thường gặp
+
+❌ **Không cache dependencies — mỗi lần chạy đều `npm install` từ đầu**
+→ ✅ Dùng `cache: 'npm'` trong `actions/setup-node` hoặc `actions/cache`
+→ 💡 Không cache = mỗi pipeline mất thêm 2-5 phút cài packages. Cache = giảm còn 10-30 giây. Nhân 20 lần chạy/ngày = tiết kiệm hàng giờ
+
+❌ **Chạy ALL tests trên mọi push — kể cả thay đổi README**
+→ ✅ Dùng `paths` filter để chỉ trigger khi code thay đổi, hoặc dùng `@smoke` tag cho push, `@regression` cho nightly
+→ 💡 Push sửa docs mà phải đợi 30 phút chạy full regression = waste resources. Filter thông minh = feedback nhanh hơn
+
+❌ **Hardcode secrets (password, API key) trong code hoặc file .yml**
+→ ✅ Dùng **GitHub Secrets** (Settings → Secrets → Actions), đọc bằng `${{ secrets.TEN_BIEN }}`
+→ 💡 Code trên GitHub ai cũng đọc được (nhất là public repo). Hardcode password = lộ cho toàn thế giới
+
+❌ **Không upload artifacts — test fail mà không có report/screenshot để debug**
+→ ✅ Luôn dùng `actions/upload-artifact` với `if: always()` để upload report + screenshots
+→ 💡 `if: always()` = upload KỂ CẢ khi test fail. Không có artifacts = test fail nhưng không ai biết fail ở đâu → mất thời gian reproduce lại trên local
+
+---
+
 ## Tóm tắt chương
 
 | Concept | Ẩn dụ | Giải thích |

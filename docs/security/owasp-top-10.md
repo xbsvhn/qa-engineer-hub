@@ -272,6 +272,26 @@ Xác thực yếu, cho phép brute force, session management kém. Giống như 
 
 ---
 
+## Sai lầm thường gặp
+
+❌ **Nghĩ rằng security testing = penetration testing (pentest)**
+→ ✅ QA không cần là pentester. QA cần biết **test cơ bản theo OWASP checklist** mỗi sprint
+→ 💡 Pentest là chuyên sâu, thường thuê bên ngoài. Nhưng 80% lỗ hổng phổ biến (IDOR, XSS, SQL injection) QA có thể tìm được bằng test đơn giản
+
+❌ **Chỉ test SQL Injection và XSS, bỏ qua Access Control (A01)**
+→ ✅ Broken Access Control là lỗ hổng **#1 phổ biến nhất**. Luôn test: User A có xem/sửa/xóa data User B được không?
+→ 💡 IDOR (đổi ID trong URL để xem data người khác) là lỗ hổng dễ test nhất nhưng hay bị bỏ qua nhất
+
+❌ **Test security trên Production thay vì Staging**
+→ ✅ Chạy security tests trên **Staging environment** — không bao giờ thử SQL injection hay brute force trên Production
+→ 💡 Test phá trên Production = phá hệ thống thật, ảnh hưởng real users. Staging có data giả, an toàn để "phá"
+
+❌ **Thấy error 500 khi nhập payload lạ mà không report**
+→ ✅ Server trả 500 khi nhận input bất thường = **BUG NGHIÊM TRỌNG**. Expected: 400 Bad Request
+→ 💡 Error 500 = server không handle được input → có thể là dấu hiệu của injection vulnerability
+
+---
+
 ## Tóm tắt chương
 
 | Vulnerability | Ẩn dụ | QA Quick Test |

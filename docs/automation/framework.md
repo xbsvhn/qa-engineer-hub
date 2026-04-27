@@ -655,6 +655,37 @@ fixtures/
 
 ---
 
+## Sai lầm thường gặp
+
+### ❌ Quá nhiều layers of abstraction
+→ ✅ **Giữ đơn giản: Test → Page Object → Browser.** Đừng tạo thêm BasePage → AbstractPage → BaseComponent → PageFactory nếu dự án chỉ có 20 tests.
+→ 💡 **Tại sao:** Mỗi layer thêm complexity. Người mới vào team mất 2 ngày chỉ để hiểu architecture thay vì viết test. Over-engineering tệ hơn under-engineering.
+
+### ❌ Page Object quá lớn — 1 file 500+ dòng
+→ ✅ **Chia nhỏ theo component/section** — `CheckoutPage` có thể tách thành `ShippingForm`, `PaymentForm`, `OrderSummary` nếu mỗi phần phức tạp.
+→ 💡 **Tại sao:** File 500 dòng = khó tìm method, khó maintain, dễ conflict khi 2 người cùng sửa. Rule of thumb: 1 Page Object nên dưới 200 dòng.
+
+### ❌ Trộn test logic vào Page Object
+→ ✅ **Page Object chỉ chứa locators + actions + assertions cơ bản.** Business logic, conditional flows, test data decisions nằm trong test file.
+→ 💡 **Tại sao:** Page Object là "API của trang web" — nó mô tả trang CÓ GÌ và LÀM ĐƯỢC GÌ. Nó không quyết định test scenario. Trộn lẫn = khó reuse, khó đọc.
+
+### ❌ Không dùng BasePage khi đã có 5+ Page Objects
+→ ✅ **Tạo BasePage cho các method chung** — `waitForPageLoad()`, `takeScreenshot()`, `getTitle()` nên nằm ở BasePage, không copy-paste vào từng Page.
+→ 💡 **Tại sao:** DRY (Don't Repeat Yourself). Sửa logic wait 1 lần ở BasePage = tất cả Pages được cập nhật. Copy-paste = sửa 10 chỗ, miss 1 chỗ = bug.
+
+## Góc nhìn đa chiều
+
+| Approach | Mô tả | Phù hợp khi |
+|---|---|---|
+| **POM nghiêm ngặt** | Mọi tương tác PHẢI qua Page Object. Test file không có bất kỳ locator nào. | Dự án lớn (100+ tests), nhiều QA cùng làm, cần consistency và maintainability |
+| **POM nhẹ (Lightweight)** | Có Page Objects cho các trang chính, nhưng test đơn giản có thể dùng locator trực tiếp. | Dự án nhỏ (dưới 30 tests), 1 QA làm, ưu tiên tốc độ viết test |
+| **Screenplay Pattern** | Tổ chức theo Actor → Task → Action thay vì theo Page. Trừu tượng hơn POM. | Team có kinh nghiệm, dự án cần mô tả business flows phức tạp |
+| **Không dùng pattern** | Viết test trực tiếp, không Page Object. | Proof of concept, spike, hoặc dự án có dưới 10 tests và không ai maintain |
+
+**Lời khuyên:** Bắt đầu với POM cơ bản. Nếu thấy đủ tốt → giữ nguyên. Nếu thấy thiếu → mở rộng dần. Đừng bắt đầu với architecture phức tạp nhất rồi mới viết test đầu tiên.
+
+---
+
 ## Tóm tắt chương
 
 | Pattern | Vấn đề nó giải quyết | Khi nào dùng |

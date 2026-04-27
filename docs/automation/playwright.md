@@ -875,6 +875,30 @@ test.describe('Checkout Flow @smoke @critical', () => {
 
 ---
 
+## Sai lầm thường gặp
+
+### ❌ Quên `await` trước mỗi action
+→ ✅ **Mọi tương tác với browser đều cần `await`** — `await page.click()`, `await page.fill()`, `await expect()`. Thiếu `await` = test chạy nhưng không thực sự đợi kết quả.
+→ 💡 **Tại sao:** Không có `await`, Playwright fire-and-forget — click chưa xong đã chạy dòng tiếp theo. Test lúc pass lúc fail (flaky) mà không hiểu tại sao. TypeScript compiler sẽ warn nhưng nhiều người bỏ qua.
+
+### ❌ Hardcode test data trong test file
+→ ✅ **Tách test data ra file riêng** — dùng JSON, .env, hoặc fixtures. Test file chỉ chứa logic, không chứa `'user@mail.com'` hay `'Pass@123'` rải rác khắp nơi.
+→ 💡 **Tại sao:** Khi đổi môi trường (staging → production), bạn phải sửa 50 file thay vì sửa 1 file data. Và password hardcode trong code = security risk khi push lên Git.
+
+### ❌ Không dùng `data-testid` — dựa vào CSS class hoặc XPath phức tạp
+→ ✅ **Yêu cầu Dev thêm `data-testid` cho các element quan trọng** — `<button data-testid="submit-order">`. Dùng `page.getByTestId('submit-order')`.
+→ 💡 **Tại sao:** CSS class thay đổi khi developer refactor UI (`.btn-primary` → `.button-main`). XPath dài dễ gãy khi DOM structure thay đổi. `data-testid` tồn tại CHỈ cho testing — không ai đổi nó vô tình.
+
+### ❌ Dùng flaky selectors — `.container > div:nth-child(3) > span`
+→ ✅ **Ưu tiên thứ tự: `getByRole()` > `getByText()` > `getByTestId()` > CSS selector.** Chỉ dùng CSS/XPath khi không có lựa chọn nào khác.
+→ 💡 **Tại sao:** Selector dựa vào DOM structure gãy ngay khi Dev thêm 1 `<div>` wrapper. `getByRole('button', { name: 'Submit' })` vẫn hoạt động dù HTML structure thay đổi hoàn toàn.
+
+### ❌ Không dùng `beforeEach` để setup — copy-paste login code vào mỗi test
+→ ✅ **Dùng `test.beforeEach()` hoặc custom Fixtures** để setup chung (login, navigate, tạo data).
+→ 💡 **Tại sao:** DRY — login flow thay đổi, bạn sửa 1 chỗ thay vì 30 chỗ. Fixtures còn tự động teardown (dọn dẹp) sau mỗi test.
+
+---
+
 ## Tóm tắt chương
 
 | Feature | Ý nghĩa | Tại sao quan trọng |

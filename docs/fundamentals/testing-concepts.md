@@ -224,6 +224,26 @@ QA giỏi **nghĩ cả hai cách** — vừa đảm bảo user vui, vừa đảm
 
 ---
 
+## Sai lầm thường gặp
+
+### ❌ Chỉ test Happy Path
+→ ✅ **Luôn test cả Negative Path và Edge Cases** — nhập sai, để trống, nhập ký tự đặc biệt, giá trị biên (boundary).
+→ 💡 **Tại sao:** 70-80% bugs nằm ở những case mà user "không nên làm" nhưng vẫn làm. Happy path thường developer đã tự test rồi.
+
+### ❌ Assume thay vì Verify
+→ ✅ **Mọi thứ phải có bằng chứng** — screenshot, log, steps to reproduce. "Tôi nghĩ nó đúng" không phải testing.
+→ 💡 **Tại sao:** Không có evidence = không thuyết phục được ai. Dev sẽ hỏi "reproduce lại đi" — nếu bạn không có steps rõ ràng, bug report bị reject.
+
+### ❌ Bỏ qua Requirement Review
+→ ✅ **Đọc requirement TRƯỚC khi dev code** — hỏi ngay khi thấy mơ hồ, thiếu acceptance criteria, hoặc mâu thuẫn.
+→ 💡 **Tại sao:** Bug phát hiện ở requirement mất $1 sửa. Cùng bug đó phát hiện sau khi code xong mất $100+. QA đọc requirement sớm = tiết kiệm cả team hàng tuần effort.
+
+### ❌ Test không có kế hoạch — "mở app lên rồi click lung tung"
+→ ✅ **Có test plan hoặc checklist trước khi bắt đầu** — dù đơn giản cũng cần biết mình sẽ test gì.
+→ 💡 **Tại sao:** Random testing không lặp lại được, không đo lường được coverage. Bạn không biết mình đã test bao nhiêu % và còn thiếu gì.
+
+---
+
 ## Tóm tắt
 
 | Concept | Bản chất 1 câu |
