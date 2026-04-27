@@ -7,7 +7,16 @@ layout: page
 <div class="about-hero">
   <div class="about-avatar">
     <div class="avatar-ring"></div>
-    <div class="avatar-text">VHN</div>
+    <div class="avatar-icon">
+      <svg viewBox="0 0 64 64" width="42" height="42" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Lotus flower -->
+        <path d="M32 14c0 0-4 8-4 18s4 16 4 16 4-6 4-16-4-18-4-18z" fill="rgba(255,255,255,0.9)"/>
+        <path d="M32 48c0 0-8-4-14-14s-4-18-4-18 6 4 10 14 8 18 8 18z" fill="rgba(255,255,255,0.7)"/>
+        <path d="M32 48c0 0 8-4 14-14s4-18 4-18-6 4-10 14-8 18-8 18z" fill="rgba(255,255,255,0.7)"/>
+        <path d="M32 48c0 0-12-2-20-10S4 20 4 20s8 6 14 14 14 14 14 14z" fill="rgba(255,255,255,0.45)"/>
+        <path d="M32 48c0 0 12-2 20-10S60 20 60 20s-8 6-14 14-14 14-14 14z" fill="rgba(255,255,255,0.45)"/>
+      </svg>
+    </div>
   </div>
   <h1 class="about-name">Vũ Hoài Nam</h1>
   <p class="about-tagline">Software quality, from code to culture.</p>
@@ -78,7 +87,7 @@ layout: page
   margin-bottom: 1.5rem;
 }
 
-.avatar-text {
+.avatar-icon {
   width: 84px;
   height: 84px;
   border-radius: 50%;
@@ -86,10 +95,6 @@ layout: page
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
   position: relative;
   z-index: 2;
   box-shadow:
@@ -306,7 +311,8 @@ layout: page
 @media (max-width: 640px) {
   .about-page { padding: 2rem 1.2rem 4rem; }
   .about-name { font-size: 1.6rem; }
-  .avatar-text { width: 68px; height: 68px; font-size: 22px; }
+  .avatar-icon { width: 68px; height: 68px; }
+  .avatar-icon svg { width: 34px; height: 34px; }
   .about-avatar { width: 82px; height: 82px; }
   .about-connect { flex-direction: column; align-items: center; }
   .about-quote { padding: 1.2rem 1.5rem; }
