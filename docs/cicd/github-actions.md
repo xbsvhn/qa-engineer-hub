@@ -301,7 +301,7 @@ const password = process.env.TEST_USER_PASSWORD;
 → 💡 Push sửa docs mà phải đợi 30 phút chạy full regression = waste resources. Filter thông minh = feedback nhanh hơn
 
 ❌ **Hardcode secrets (password, API key) trong code hoặc file .yml**
-→ ✅ Dùng **GitHub Secrets** (Settings → Secrets → Actions), đọc bằng `${{ secrets.TEN_BIEN }}`
+→ ✅ Dùng **GitHub Secrets** (Settings → Secrets → Actions), đọc bằng cú pháp `$\{\{ secrets.TEN_BIEN \}\}`
 → 💡 Code trên GitHub ai cũng đọc được (nhất là public repo). Hardcode password = lộ cho toàn thế giới
 
 ❌ **Không upload artifacts — test fail mà không có report/screenshot để debug**
