@@ -245,7 +245,6 @@ export default defineConfig({
           { text: 'CI/CD', link: '/cicd/' },
           { text: 'Best Practices', link: '/best-practices/' },
           { text: 'Roadmap', link: '/roadmap' },
-          { text: 'About', link: '/about' },
         ],
         sidebar: viSidebar,
         outline: { label: 'Nội dung trang', level: [2, 3] },
@@ -288,7 +287,6 @@ export default defineConfig({
           { text: 'CI/CD', link: '/en/cicd/' },
           { text: 'Best Practices', link: '/en/best-practices/' },
           { text: 'Roadmap', link: '/roadmap' },
-          { text: 'About', link: '/about' },
         ],
         sidebar: enSidebar,
         outline: { label: 'On this page', level: [2, 3] },
@@ -304,7 +302,7 @@ export default defineConfig({
     siteTitle: 'QA Engineer Hub',
 
     socialLinks: [
-      { icon: 'linkedin', link: 'https://www.linkedin.com/in/namvuhoai/' },
+      { icon: { svg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>' }, link: '/qa-engineer-hub/about' },
     ],
 
     footer: {
