@@ -99,6 +99,151 @@ function addReadingTime() {
   })
 }
 
+// Scroll-reveal for feature cards + philosophy section
+function initScrollReveal() {
+  nextTick(() => {
+    const cards = document.querySelectorAll('.VPFeatures .VPFeature')
+    const philosophy = document.querySelector('.home-philosophy')
+    const targets = [...cards, philosophy].filter(Boolean)
+
+    if (!targets.length) return
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          const el = entry.target
+          const delay = el.classList.contains('VPFeature')
+            ? Array.from(cards).indexOf(el) * 80
+            : 0
+          setTimeout(() => el.classList.add('revealed'), delay)
+          observer.unobserve(el)
+        }
+      })
+    }, { threshold: 0.15 })
+
+    targets.forEach(t => observer.observe(t))
+  })
+}
+
+// Animated counter for stats
+function initCounters() {
+  nextTick(() => {
+    const items = document.querySelectorAll('.stat-item[data-count]')
+    if (!items.length) return
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target
+          const target = parseInt(el.dataset.count)
+          const numEl = el.querySelector('.stat-num')
+          if (!numEl || numEl.dataset.done) return
+          numEl.dataset.done = '1'
+
+          const duration = 1200
+          const start = performance.now()
+          const step = (now) => {
+            const progress = Math.min((now - start) / duration, 1)
+            const ease = 1 - Math.pow(1 - progress, 3) // easeOutCubic
+            numEl.textContent = Math.round(target * ease)
+            if (progress < 1) requestAnimationFrame(step)
+          }
+          requestAnimationFrame(step)
+          observer.unobserve(el)
+        }
+      })
+    }, { threshold: 0.5 })
+
+    items.forEach(item => observer.observe(item))
+  })
+}
+
+// Floating particles on homepage hero
+function initParticles() {
+  nextTick(() => {
+    const hero = document.querySelector('.VPHero')
+    if (!hero || hero.querySelector('.particles-canvas')) return
+
+    const canvas = document.createElement('canvas')
+    canvas.className = 'particles-canvas'
+    canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;'
+    hero.style.position = 'relative'
+    hero.insertBefore(canvas, hero.firstChild)
+
+    const ctx = canvas.getContext('2d')
+    let particles = []
+    let animId
+
+    function resize() {
+      canvas.width = hero.offsetWidth
+      canvas.height = hero.offsetHeight
+    }
+
+    function createParticles() {
+      particles = []
+      const count = Math.floor(canvas.width * canvas.height / 18000)
+      for (let i = 0; i < Math.min(count, 40); i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 1.8 + 0.5,
+          dx: (Math.random() - 0.5) * 0.3,
+          dy: (Math.random() - 0.5) * 0.3,
+          opacity: Math.random() * 0.3 + 0.1,
+        })
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      particles.forEach(p => {
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(99,102,241,${p.opacity})`
+        ctx.fill()
+
+        p.x += p.dx
+        p.y += p.dy
+
+        if (p.x < 0) p.x = canvas.width
+        if (p.x > canvas.width) p.x = 0
+        if (p.y < 0) p.y = canvas.height
+        if (p.y > canvas.height) p.y = 0
+      })
+
+      // Draw connections
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dist = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y)
+          if (dist < 120) {
+            ctx.beginPath()
+            ctx.moveTo(particles[i].x, particles[i].y)
+            ctx.lineTo(particles[j].x, particles[j].y)
+            ctx.strokeStyle = `rgba(99,102,241,${0.06 * (1 - dist / 120)})`
+            ctx.lineWidth = 0.5
+            ctx.stroke()
+          }
+        }
+      }
+
+      animId = requestAnimationFrame(draw)
+    }
+
+    resize()
+    createParticles()
+    draw()
+
+    window.addEventListener('resize', () => { resize(); createParticles() })
+
+    // Cleanup on route change
+    const cleanup = () => {
+      cancelAnimationFrame(animId)
+      canvas.remove()
+    }
+    return cleanup
+  })
+}
+
 export default {
   extends: DefaultTheme,
   Layout() {
@@ -109,11 +254,21 @@ export default {
   },
   setup() {
     const route = useRoute()
+    let cleanupParticles
+
     onMounted(() => {
       addReadingTime()
+      initScrollReveal()
+      initCounters()
+      cleanupParticles = initParticles()
     })
+
     watch(() => route.path, () => {
       addReadingTime()
+      if (typeof cleanupParticles === 'function') cleanupParticles()
+      initScrollReveal()
+      initCounters()
+      cleanupParticles = initParticles()
     })
   }
 }

@@ -50,11 +50,49 @@
 }
 
 /* ===== Hero Section ===== */
+.VPHero {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated gradient mesh background */
+.VPHero::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background:
+    radial-gradient(ellipse 600px 400px at 20% 30%, rgba(99,102,241,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 350px at 80% 60%, rgba(139,92,246,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 300px at 50% 80%, rgba(167,139,250,0.05) 0%, transparent 70%);
+  animation: meshFloat 12s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes meshFloat {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(30px, -20px) rotate(1deg); }
+  66% { transform: translate(-20px, 15px) rotate(-1deg); }
+}
+
+.VPHero .container { position: relative; z-index: 1; }
+
+/* Animated gradient title */
 .VPHero .text {
   font-size: 48px !important;
   font-weight: 800 !important;
   letter-spacing: -0.02em;
   animation: heroFadeIn 0.8s ease-out;
+}
+
+.VPHero .name {
+  background-size: 200% 200% !important;
+  animation: gradientShift 6s ease-in-out infinite !important;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 .VPHero .tagline {
@@ -71,6 +109,17 @@
 
 .VPHero .image-container {
   animation: heroFloat 6s ease-in-out infinite;
+}
+
+/* Hero logo glow pulse */
+.VPHero .image-container img {
+  filter: drop-shadow(0 0 20px rgba(99,102,241,0.2));
+  animation: logoPulse 4s ease-in-out infinite;
+}
+
+@keyframes logoPulse {
+  0%, 100% { filter: drop-shadow(0 0 20px rgba(99,102,241,0.2)); }
+  50% { filter: drop-shadow(0 0 32px rgba(99,102,241,0.35)); }
 }
 
 @keyframes heroFadeIn {
@@ -111,6 +160,14 @@
   border: 1px solid var(--vp-c-divider) !important;
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   background: var(--vp-c-bg) !important;
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.VPFeatures .VPFeature.revealed {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out, box-shadow 0.35s, border-color 0.35s;
 }
 
 .VPFeatures .VPFeature:hover {
@@ -126,6 +183,11 @@
 .VPFeatures .VPFeature .icon {
   font-size: 28px;
   margin-bottom: 8px;
+  transition: transform 0.3s ease;
+}
+
+.VPFeatures .VPFeature:hover .icon {
+  transform: scale(1.2) rotate(-5deg);
 }
 
 .VPFeatures .VPFeature .title {
