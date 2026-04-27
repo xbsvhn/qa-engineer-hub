@@ -1,7 +1,52 @@
 import DefaultTheme from 'vitepress/theme'
 import './custom.css'
-import { onMounted, watch, nextTick, h } from 'vue'
-import { useRoute } from 'vitepress'
+import { onMounted, watch, nextTick, h, ref } from 'vue'
+import { useRoute, useRouter, withBase } from 'vitepress'
+
+// About icon in navbar — client-side navigation, no reload
+const AboutIcon = {
+  setup() {
+    const router = useRouter()
+    const route = useRoute()
+    const isHover = ref(false)
+
+    const navigate = (e) => {
+      e.preventDefault()
+      router.go(withBase('/about'))
+    }
+
+    const isActive = () => route.path.includes('/about')
+
+    return () => h('a', {
+      href: withBase('/about'),
+      class: 'about-nav-icon',
+      title: 'About',
+      'aria-label': 'About',
+      onClick: navigate,
+      onMouseenter: () => { isHover.value = true },
+      onMouseleave: () => { isHover.value = false },
+      style: {
+        opacity: isActive() ? '1' : (isHover.value ? '0.85' : '0.55'),
+        color: isActive() ? 'var(--vp-c-brand-1)' : 'var(--vp-c-text-2)',
+      }
+    }, [
+      h('svg', {
+        xmlns: 'http://www.w3.org/2000/svg',
+        width: '20',
+        height: '20',
+        viewBox: '0 0 24 24',
+        fill: 'none',
+        stroke: 'currentColor',
+        'stroke-width': '1.8',
+        'stroke-linecap': 'round',
+        'stroke-linejoin': 'round',
+      }, [
+        h('circle', { cx: '12', cy: '8', r: '4' }),
+        h('path', { d: 'M20 21a8 8 0 0 0-16 0' }),
+      ])
+    ])
+  }
+}
 
 // Reading progress bar component
 const ReadingProgress = {
@@ -52,7 +97,8 @@ export default {
   extends: DefaultTheme,
   Layout() {
     return h(DefaultTheme.Layout, null, {
-      'layout-top': () => h(ReadingProgress)
+      'layout-top': () => h(ReadingProgress),
+      'nav-bar-content-after': () => h(AboutIcon),
     })
   },
   setup() {
