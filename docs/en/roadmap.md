@@ -2,6 +2,10 @@
 layout: page
 ---
 
+<script setup>
+import { withBase } from 'vitepress'
+</script>
+
 <div class="roadmap-page">
 
 <div class="roadmap-header">
@@ -18,7 +22,7 @@ layout: page
 
   <div class="zigzag-grid">
 
-    <a href="/qa-engineer-hub/en/fundamentals/" class="planet-node left" style="--i:0;--c:#3b82f6">
+    <a :href="withBase('/en/fundamentals/')" class="planet-node left" style="--i:0;--c:#3b82f6">
       <div class="node-planet">
         <svg viewBox="0 0 80 80" class="planet-svg"><circle cx="40" cy="40" r="32" fill="url(#eg0)"/><circle cx="40" cy="40" r="36" stroke="#3b82f6" stroke-width="1" fill="none" opacity="0.3" stroke-dasharray="4 3"><animateTransform attributeName="transform" type="rotate" dur="12s" from="0 40 40" to="360 40 40" repeatCount="indefinite"/></circle><text x="40" y="48" text-anchor="middle" font-size="22">📚</text><defs><radialGradient id="eg0"><stop offset="0%" stop-color="#60a5fa" stop-opacity="0.3"/><stop offset="100%" stop-color="#1e40af" stop-opacity="0.1"/></radialGradient></defs></svg>
         <div class="planet-ring-glow"></div>
@@ -31,7 +35,7 @@ layout: page
       </div>
     </a>
 
-    <a href="/qa-engineer-hub/en/manual-testing/" class="planet-node right" style="--i:1;--c:#8b5cf6">
+    <a :href="withBase('/en/manual-testing/')" class="planet-node right" style="--i:1;--c:#8b5cf6">
       <div class="node-info">
         <span class="node-phase">Phase 2</span>
         <span class="node-title">Manual Testing</span>
@@ -44,7 +48,7 @@ layout: page
       </div>
     </a>
 
-    <a href="/qa-engineer-hub/en/api-testing/" class="planet-node left" style="--i:2;--c:#06b6d4">
+    <a :href="withBase('/en/api-testing/')" class="planet-node left" style="--i:2;--c:#06b6d4">
       <div class="node-planet">
         <svg viewBox="0 0 80 80" class="planet-svg"><circle cx="40" cy="40" r="32" fill="url(#eg2)"/><circle cx="40" cy="40" r="36" stroke="#06b6d4" stroke-width="1" fill="none" opacity="0.3" stroke-dasharray="4 3"><animateTransform attributeName="transform" type="rotate" dur="10s" from="0 40 40" to="360 40 40" repeatCount="indefinite"/></circle><text x="40" y="48" text-anchor="middle" font-size="22">🔗</text><defs><radialGradient id="eg2"><stop offset="0%" stop-color="#22d3ee" stop-opacity="0.3"/><stop offset="100%" stop-color="#0e7490" stop-opacity="0.1"/></radialGradient></defs></svg>
         <div class="planet-ring-glow"></div>
@@ -57,7 +61,7 @@ layout: page
       </div>
     </a>
 
-    <a href="/qa-engineer-hub/en/automation/" class="planet-node right core" style="--i:3;--c:#6366f1">
+    <a :href="withBase('/en/automation/')" class="planet-node right core" style="--i:3;--c:#6366f1">
       <div class="node-info">
         <span class="node-phase">Phase 4 — Core</span>
         <span class="node-title">Automation</span>
@@ -70,7 +74,7 @@ layout: page
       </div>
     </a>
 
-    <a href="/qa-engineer-hub/en/performance/" class="planet-node left" style="--i:4;--c:#f59e0b">
+    <a :href="withBase('/en/performance/')" class="planet-node left" style="--i:4;--c:#f59e0b">
       <div class="node-planet">
         <svg viewBox="0 0 80 80" class="planet-svg"><circle cx="40" cy="40" r="32" fill="url(#eg4)"/><circle cx="40" cy="40" r="36" stroke="#f59e0b" stroke-width="1" fill="none" opacity="0.3" stroke-dasharray="4 3"><animateTransform attributeName="transform" type="rotate" dur="11s" from="0 40 40" to="360 40 40" repeatCount="indefinite"/></circle><text x="40" y="48" text-anchor="middle" font-size="22">⚡</text><defs><radialGradient id="eg4"><stop offset="0%" stop-color="#fbbf24" stop-opacity="0.3"/><stop offset="100%" stop-color="#b45309" stop-opacity="0.1"/></radialGradient></defs></svg>
         <div class="planet-ring-glow"></div>
@@ -83,7 +87,7 @@ layout: page
       </div>
     </a>
 
-    <a href="/qa-engineer-hub/en/security/" class="planet-node right" style="--i:5;--c:#ef4444">
+    <a :href="withBase('/en/security/')" class="planet-node right" style="--i:5;--c:#ef4444">
       <div class="node-info">
         <span class="node-phase">Phase 6</span>
         <span class="node-title">Security</span>
@@ -96,7 +100,7 @@ layout: page
       </div>
     </a>
 
-    <a href="/qa-engineer-hub/en/cicd/" class="planet-node left" style="--i:6;--c:#10b981">
+    <a :href="withBase('/en/cicd/')" class="planet-node left" style="--i:6;--c:#10b981">
       <div class="node-planet">
         <svg viewBox="0 0 80 80" class="planet-svg"><circle cx="40" cy="40" r="32" fill="url(#eg6)"/><circle cx="40" cy="40" r="36" stroke="#10b981" stroke-width="1" fill="none" opacity="0.3" stroke-dasharray="4 3"><animateTransform attributeName="transform" type="rotate" dur="9s" from="0 40 40" to="360 40 40" repeatCount="indefinite"/></circle><text x="40" y="48" text-anchor="middle" font-size="22">🔄</text><defs><radialGradient id="eg6"><stop offset="0%" stop-color="#6ee7b7" stop-opacity="0.3"/><stop offset="100%" stop-color="#047857" stop-opacity="0.1"/></radialGradient></defs></svg>
         <div class="planet-ring-glow"></div>
@@ -109,7 +113,7 @@ layout: page
       </div>
     </a>
 
-    <a href="/qa-engineer-hub/en/best-practices/" class="planet-node right destination" style="--i:7;--c:#f59e0b">
+    <a :href="withBase('/en/best-practices/')" class="planet-node right destination" style="--i:7;--c:#f59e0b">
       <div class="node-info">
         <span class="node-phase">Destination</span>
         <span class="node-title">Senior QA Engineer</span>
