@@ -103,7 +103,7 @@ function addReadingTime() {
 function initScrollReveal() {
   nextTick(() => {
     const cards = document.querySelectorAll('.VPFeatures .VPFeature')
-    const philosophy = document.querySelector('.home-philosophy')
+    const philosophy = document.querySelector('.home-motto')
     const targets = [...cards, philosophy].filter(Boolean)
 
     if (!targets.length) return
@@ -128,7 +128,7 @@ function initScrollReveal() {
 // Animated counter for stats
 function initCounters() {
   nextTick(() => {
-    const items = document.querySelectorAll('.stat-item[data-count]')
+    const items = document.querySelectorAll('[data-count]')
     if (!items.length) return
 
     const observer = new IntersectionObserver((entries) => {
