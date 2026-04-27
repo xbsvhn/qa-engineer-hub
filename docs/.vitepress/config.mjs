@@ -4,7 +4,21 @@ import { defineConfig } from 'vitepress'
 const sharedHead = [
   ['link', { rel: 'icon', type: 'image/svg+xml', href: '/qa-engineer-hub/favicon.svg' }],
   ['meta', { name: 'theme-color', content: '#6366f1' }],
-  ['meta', { name: 'og:type', content: 'website' }],
+  // Open Graph
+  ['meta', { property: 'og:type', content: 'website' }],
+  ['meta', { property: 'og:title', content: 'QA Engineer Hub' }],
+  ['meta', { property: 'og:description', content: 'Knowledge Base for QA Engineers — Testing, Automation, API, Performance, Security, CI/CD & Best Practices.' }],
+  ['meta', { property: 'og:image', content: 'https://xbsvhn.github.io/qa-engineer-hub/og-image.png' }],
+  ['meta', { property: 'og:image:width', content: '1200' }],
+  ['meta', { property: 'og:image:height', content: '630' }],
+  ['meta', { property: 'og:url', content: 'https://xbsvhn.github.io/qa-engineer-hub/' }],
+  ['meta', { property: 'og:site_name', content: 'QA Engineer Hub' }],
+  // Twitter Card
+  ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+  ['meta', { name: 'twitter:title', content: 'QA Engineer Hub' }],
+  ['meta', { name: 'twitter:description', content: 'Knowledge Base for QA Engineers — Testing, Automation, API, Performance, Security, CI/CD & Best Practices.' }],
+  ['meta', { name: 'twitter:image', content: 'https://xbsvhn.github.io/qa-engineer-hub/og-image.png' }],
+  // Fonts
   ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
   ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],
   ['link', { href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap', rel: 'stylesheet' }],
