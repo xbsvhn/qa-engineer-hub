@@ -10,15 +10,19 @@ const AboutIcon = {
     const route = useRoute()
     const isHover = ref(false)
 
+    const getAboutPath = () => route.path.startsWith('/en/') || route.path.startsWith(withBase('/en/'))
+      ? withBase('/en/about')
+      : withBase('/about')
+
     const navigate = (e) => {
       e.preventDefault()
-      router.go(withBase('/about'))
+      router.go(getAboutPath())
     }
 
     const isActive = () => route.path.includes('/about')
 
     return () => h('a', {
-      href: withBase('/about'),
+      href: getAboutPath(),
       class: 'about-nav-icon',
       title: 'About',
       'aria-label': 'About',
@@ -88,7 +92,9 @@ function addReadingTime() {
 
     const badge = document.createElement('div')
     badge.className = 'reading-time-badge'
-    badge.innerHTML = `<span class="rt-icon">&#128214;</span> ${minutes} phút đọc`
+    const isEn = window.location.pathname.includes('/en/')
+    const label = isEn ? `${minutes} min read` : `${minutes} phút đọc`
+    badge.innerHTML = `<span class="rt-icon">&#128214;</span> ${label}`
     h1.insertAdjacentElement('afterend', badge)
   })
 }
