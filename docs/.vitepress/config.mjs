@@ -286,7 +286,7 @@ export default defineConfig({
           },
           { text: 'CI/CD', link: '/en/cicd/' },
           { text: 'Best Practices', link: '/en/best-practices/' },
-          { text: 'Roadmap', link: '/roadmap' },
+          { text: 'Roadmap', link: '/en/roadmap' },
         ],
         sidebar: enSidebar,
         outline: { label: 'On this page', level: [2, 3] },
