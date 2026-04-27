@@ -8,365 +8,262 @@ layout: page
   <div class="header-glow"></div>
   <h1 class="roadmap-title">QA Roadmap</h1>
   <p class="roadmap-subtitle">Journey from Zero to Senior</p>
-  <p class="roadmap-desc">Click a planet to explore</p>
 </div>
 
 <div class="galaxy">
-  <div class="stars-layer"></div>
-  <div class="orbit-line"></div>
+  <svg class="zigzag-path" viewBox="0 0 600 100" preserveAspectRatio="none">
+    <path d="M0,50 Q150,0 300,50 Q450,100 600,50" stroke="url(#zigzag-grad-en)" stroke-width="2" fill="none" stroke-dasharray="8 6" opacity="0.3"/>
+    <defs><linearGradient id="zigzag-grad-en" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs>
+  </svg>
 
-  <a href="/qa-engineer-hub/en/fundamentals/" class="planet-card" style="--i:0">
-    <div class="planet-orb p1"><span>📚</span></div>
-    <div class="planet-glow p1-glow"></div>
-    <div class="card-body">
-      <div class="phase-badge">Phase 1</div>
-      <h3>Fundamentals</h3>
-      <p>Testing Concepts · SDLC · Agile · Test Design · SQL</p>
-      <div class="time-tag">Month 1-2</div>
-    </div>
-  </a>
+  <div class="zigzag-grid">
 
-  <a href="/qa-engineer-hub/en/manual-testing/" class="planet-card" style="--i:1">
-    <div class="planet-orb p2"><span>🔍</span></div>
-    <div class="planet-glow p2-glow"></div>
-    <div class="card-body">
-      <div class="phase-badge">Phase 2</div>
-      <h3>Manual Testing</h3>
-      <p>Test Plan · Test Case · Bug Report · Exploratory</p>
-      <div class="time-tag">Month 2-3</div>
-    </div>
-  </a>
+    <a href="/qa-engineer-hub/en/fundamentals/" class="planet-node left" style="--i:0;--c:#3b82f6">
+      <div class="node-planet">
+        <svg viewBox="0 0 80 80" class="planet-svg"><circle cx="40" cy="40" r="32" fill="url(#eg0)"/><circle cx="40" cy="40" r="36" stroke="#3b82f6" stroke-width="1" fill="none" opacity="0.3" stroke-dasharray="4 3"><animateTransform attributeName="transform" type="rotate" dur="12s" from="0 40 40" to="360 40 40" repeatCount="indefinite"/></circle><text x="40" y="48" text-anchor="middle" font-size="22">📚</text><defs><radialGradient id="eg0"><stop offset="0%" stop-color="#60a5fa" stop-opacity="0.3"/><stop offset="100%" stop-color="#1e40af" stop-opacity="0.1"/></radialGradient></defs></svg>
+        <div class="planet-ring-glow"></div>
+      </div>
+      <div class="node-info">
+        <span class="node-phase">Phase 1</span>
+        <span class="node-title">Fundamentals</span>
+        <span class="node-desc">Testing Concepts · SDLC · Agile · Test Design</span>
+        <span class="node-time">Month 1-2</span>
+      </div>
+    </a>
 
-  <a href="/qa-engineer-hub/en/api-testing/" class="planet-card" style="--i:2">
-    <div class="planet-orb p3"><span>🔗</span></div>
-    <div class="planet-glow p3-glow"></div>
-    <div class="card-body">
-      <div class="phase-badge">Phase 3</div>
-      <h3>API Testing</h3>
-      <p>HTTP · REST · Postman · Automation</p>
-      <div class="time-tag">Month 3-4</div>
-    </div>
-  </a>
+    <a href="/qa-engineer-hub/en/manual-testing/" class="planet-node right" style="--i:1;--c:#8b5cf6">
+      <div class="node-info">
+        <span class="node-phase">Phase 2</span>
+        <span class="node-title">Manual Testing</span>
+        <span class="node-desc">Test Plan · Test Case · Bug Report · Exploratory</span>
+        <span class="node-time">Month 2-3</span>
+      </div>
+      <div class="node-planet">
+        <svg viewBox="0 0 80 80" class="planet-svg"><circle cx="40" cy="40" r="32" fill="url(#eg1)"/><circle cx="40" cy="40" r="36" stroke="#8b5cf6" stroke-width="1" fill="none" opacity="0.3" stroke-dasharray="4 3"><animateTransform attributeName="transform" type="rotate" dur="14s" from="0 40 40" to="360 40 40" repeatCount="indefinite"/></circle><text x="40" y="48" text-anchor="middle" font-size="22">🔍</text><defs><radialGradient id="eg1"><stop offset="0%" stop-color="#a78bfa" stop-opacity="0.3"/><stop offset="100%" stop-color="#5b21b6" stop-opacity="0.1"/></radialGradient></defs></svg>
+        <div class="planet-ring-glow"></div>
+      </div>
+    </a>
 
-  <a href="/qa-engineer-hub/en/automation/" class="planet-card featured" style="--i:3">
-    <div class="planet-orb p4"><span>🤖</span></div>
-    <div class="planet-glow p4-glow"></div>
-    <div class="card-body">
-      <div class="phase-badge">Phase 4 — Core</div>
-      <h3>Automation</h3>
-      <p>JavaScript · TypeScript · Playwright · POM</p>
-      <div class="time-tag">Month 4-7</div>
-    </div>
-  </a>
+    <a href="/qa-engineer-hub/en/api-testing/" class="planet-node left" style="--i:2;--c:#06b6d4">
+      <div class="node-planet">
+        <svg viewBox="0 0 80 80" class="planet-svg"><circle cx="40" cy="40" r="32" fill="url(#eg2)"/><circle cx="40" cy="40" r="36" stroke="#06b6d4" stroke-width="1" fill="none" opacity="0.3" stroke-dasharray="4 3"><animateTransform attributeName="transform" type="rotate" dur="10s" from="0 40 40" to="360 40 40" repeatCount="indefinite"/></circle><text x="40" y="48" text-anchor="middle" font-size="22">🔗</text><defs><radialGradient id="eg2"><stop offset="0%" stop-color="#22d3ee" stop-opacity="0.3"/><stop offset="100%" stop-color="#0e7490" stop-opacity="0.1"/></radialGradient></defs></svg>
+        <div class="planet-ring-glow"></div>
+      </div>
+      <div class="node-info">
+        <span class="node-phase">Phase 3</span>
+        <span class="node-title">API Testing</span>
+        <span class="node-desc">HTTP · REST · Postman · Automation</span>
+        <span class="node-time">Month 3-4</span>
+      </div>
+    </a>
 
-  <a href="/qa-engineer-hub/en/performance/" class="planet-card" style="--i:4">
-    <div class="planet-orb p5"><span>⚡</span></div>
-    <div class="planet-glow p5-glow"></div>
-    <div class="card-body">
-      <div class="phase-badge">Phase 5</div>
-      <h3>Performance</h3>
-      <p>Load Testing · JMeter · K6</p>
-      <div class="time-tag">Month 7-8</div>
-    </div>
-  </a>
+    <a href="/qa-engineer-hub/en/automation/" class="planet-node right core" style="--i:3;--c:#6366f1">
+      <div class="node-info">
+        <span class="node-phase">Phase 4 — Core</span>
+        <span class="node-title">Automation</span>
+        <span class="node-desc">JavaScript · TypeScript · Playwright · POM</span>
+        <span class="node-time">Month 4-7</span>
+      </div>
+      <div class="node-planet big">
+        <svg viewBox="0 0 80 80" class="planet-svg"><circle cx="40" cy="40" r="32" fill="url(#eg3)"/><circle cx="40" cy="40" r="36" stroke="#6366f1" stroke-width="1.5" fill="none" opacity="0.4" stroke-dasharray="4 3"><animateTransform attributeName="transform" type="rotate" dur="8s" from="0 40 40" to="360 40 40" repeatCount="indefinite"/></circle><circle cx="40" cy="40" r="28" stroke="#a78bfa" stroke-width="0.5" fill="none" opacity="0.2"><animateTransform attributeName="transform" type="rotate" dur="15s" from="360 40 40" to="0 40 40" repeatCount="indefinite"/></circle><text x="40" y="48" text-anchor="middle" font-size="24">🤖</text><defs><radialGradient id="eg3"><stop offset="0%" stop-color="#818cf8" stop-opacity="0.35"/><stop offset="100%" stop-color="#4338ca" stop-opacity="0.15"/></radialGradient></defs></svg>
+        <div class="planet-ring-glow core-glow"></div>
+      </div>
+    </a>
 
-  <a href="/qa-engineer-hub/en/security/" class="planet-card" style="--i:5">
-    <div class="planet-orb p6"><span>🛡️</span></div>
-    <div class="planet-glow p6-glow"></div>
-    <div class="card-body">
-      <div class="phase-badge">Phase 6</div>
-      <h3>Security</h3>
-      <p>OWASP Top 10 · ZAP · Burp Suite</p>
-      <div class="time-tag">Month 8-9</div>
-    </div>
-  </a>
+    <a href="/qa-engineer-hub/en/performance/" class="planet-node left" style="--i:4;--c:#f59e0b">
+      <div class="node-planet">
+        <svg viewBox="0 0 80 80" class="planet-svg"><circle cx="40" cy="40" r="32" fill="url(#eg4)"/><circle cx="40" cy="40" r="36" stroke="#f59e0b" stroke-width="1" fill="none" opacity="0.3" stroke-dasharray="4 3"><animateTransform attributeName="transform" type="rotate" dur="11s" from="0 40 40" to="360 40 40" repeatCount="indefinite"/></circle><text x="40" y="48" text-anchor="middle" font-size="22">⚡</text><defs><radialGradient id="eg4"><stop offset="0%" stop-color="#fbbf24" stop-opacity="0.3"/><stop offset="100%" stop-color="#b45309" stop-opacity="0.1"/></radialGradient></defs></svg>
+        <div class="planet-ring-glow"></div>
+      </div>
+      <div class="node-info">
+        <span class="node-phase">Phase 5</span>
+        <span class="node-title">Performance</span>
+        <span class="node-desc">Load Testing · JMeter · K6</span>
+        <span class="node-time">Month 7-8</span>
+      </div>
+    </a>
 
-  <a href="/qa-engineer-hub/en/cicd/" class="planet-card" style="--i:6">
-    <div class="planet-orb p7"><span>🔄</span></div>
-    <div class="planet-glow p7-glow"></div>
-    <div class="card-body">
-      <div class="phase-badge">Phase 7</div>
-      <h3>CI/CD & DevOps</h3>
-      <p>Git · GitHub Actions · Docker</p>
-      <div class="time-tag">Month 9-10</div>
-    </div>
-  </a>
+    <a href="/qa-engineer-hub/en/security/" class="planet-node right" style="--i:5;--c:#ef4444">
+      <div class="node-info">
+        <span class="node-phase">Phase 6</span>
+        <span class="node-title">Security</span>
+        <span class="node-desc">OWASP Top 10 · ZAP · Burp Suite</span>
+        <span class="node-time">Month 8-9</span>
+      </div>
+      <div class="node-planet">
+        <svg viewBox="0 0 80 80" class="planet-svg"><circle cx="40" cy="40" r="32" fill="url(#eg5)"/><circle cx="40" cy="40" r="36" stroke="#ef4444" stroke-width="1" fill="none" opacity="0.3" stroke-dasharray="4 3"><animateTransform attributeName="transform" type="rotate" dur="13s" from="0 40 40" to="360 40 40" repeatCount="indefinite"/></circle><text x="40" y="48" text-anchor="middle" font-size="22">🛡️</text><defs><radialGradient id="eg5"><stop offset="0%" stop-color="#fca5a5" stop-opacity="0.3"/><stop offset="100%" stop-color="#b91c1c" stop-opacity="0.1"/></radialGradient></defs></svg>
+        <div class="planet-ring-glow"></div>
+      </div>
+    </a>
 
-  <a href="/qa-engineer-hub/en/best-practices/" class="planet-card destination" style="--i:7">
-    <div class="planet-orb p8"><span>🌟</span></div>
-    <div class="planet-glow p8-glow"></div>
-    <div class="card-body">
-      <div class="phase-badge">Destination</div>
-      <h3>Senior QA Engineer</h3>
-      <p>Mindset · Communication · Career</p>
-      <div class="time-tag">Month 10-12+</div>
-    </div>
-  </a>
+    <a href="/qa-engineer-hub/en/cicd/" class="planet-node left" style="--i:6;--c:#10b981">
+      <div class="node-planet">
+        <svg viewBox="0 0 80 80" class="planet-svg"><circle cx="40" cy="40" r="32" fill="url(#eg6)"/><circle cx="40" cy="40" r="36" stroke="#10b981" stroke-width="1" fill="none" opacity="0.3" stroke-dasharray="4 3"><animateTransform attributeName="transform" type="rotate" dur="9s" from="0 40 40" to="360 40 40" repeatCount="indefinite"/></circle><text x="40" y="48" text-anchor="middle" font-size="22">🔄</text><defs><radialGradient id="eg6"><stop offset="0%" stop-color="#6ee7b7" stop-opacity="0.3"/><stop offset="100%" stop-color="#047857" stop-opacity="0.1"/></radialGradient></defs></svg>
+        <div class="planet-ring-glow"></div>
+      </div>
+      <div class="node-info">
+        <span class="node-phase">Phase 7</span>
+        <span class="node-title">CI/CD & DevOps</span>
+        <span class="node-desc">Git · GitHub Actions · Docker</span>
+        <span class="node-time">Month 9-10</span>
+      </div>
+    </a>
 
+    <a href="/qa-engineer-hub/en/best-practices/" class="planet-node right destination" style="--i:7;--c:#f59e0b">
+      <div class="node-info">
+        <span class="node-phase">Destination</span>
+        <span class="node-title">Senior QA Engineer</span>
+        <span class="node-desc">Mindset · Communication · Career</span>
+        <span class="node-time">Month 10-12+</span>
+      </div>
+      <div class="node-planet big">
+        <svg viewBox="0 0 80 80" class="planet-svg"><circle cx="40" cy="40" r="32" fill="url(#eg7)"/><circle cx="40" cy="40" r="36" stroke="#f59e0b" stroke-width="1.5" fill="none" opacity="0.4" stroke-dasharray="4 3"><animateTransform attributeName="transform" type="rotate" dur="10s" from="0 40 40" to="360 40 40" repeatCount="indefinite"/></circle><circle cx="40" cy="40" r="28" stroke="#fbbf24" stroke-width="0.5" fill="none" opacity="0.2"><animateTransform attributeName="transform" type="rotate" dur="18s" from="360 40 40" to="0 40 40" repeatCount="indefinite"/></circle><text x="40" y="48" text-anchor="middle" font-size="24">🌟</text><defs><radialGradient id="eg7"><stop offset="0%" stop-color="#fbbf24" stop-opacity="0.35"/><stop offset="100%" stop-color="#ea580c" stop-opacity="0.15"/></radialGradient></defs></svg>
+        <div class="planet-ring-glow dest-glow"></div>
+      </div>
+    </a>
+
+  </div>
 </div>
 </div>
 
 <style>
-/* ===== Page ===== */
 .roadmap-page {
-  max-width: 720px;
+  max-width: 760px;
   margin: 0 auto;
-  padding: 0 1.5rem 3rem;
+  padding: 0 1.5rem 4rem;
 }
 
-/* ===== Header ===== */
 .roadmap-header {
   text-align: center;
-  padding: 2rem 0 1.5rem;
+  padding: 2.5rem 0 2rem;
   position: relative;
 }
 
 .header-glow {
   position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 300px;
-  height: 120px;
-  background: radial-gradient(ellipse, rgba(99,102,241,0.12) 0%, transparent 70%);
+  top: 0; left: 50%; transform: translateX(-50%);
+  width: 300px; height: 120px;
+  background: radial-gradient(ellipse, rgba(99,102,241,0.1) 0%, transparent 70%);
   pointer-events: none;
 }
 
 .roadmap-title {
-  font-size: 2rem;
-  font-weight: 800;
-  margin: 0;
+  font-size: 2rem; font-weight: 800; margin: 0;
   background: linear-gradient(135deg, #6366f1, #a78bfa);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 
 .roadmap-subtitle {
-  font-size: 1rem;
-  font-weight: 500;
-  margin: 0.3rem 0 0;
-  opacity: 0.8;
+  font-size: 1rem; font-weight: 500; margin: 0.3rem 0 0; opacity: 0.7;
 }
 
-.roadmap-desc {
-  font-size: 0.8rem;
-  margin: 0.5rem 0 0;
-  opacity: 0.4;
-}
+.galaxy { position: relative; }
 
-/* ===== Galaxy ===== */
-.galaxy {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-/* Stars */
-.stars-layer {
+.zigzag-path {
   position: absolute;
-  inset: -20px;
-  border-radius: 24px;
-  pointer-events: none;
-  background:
-    radial-gradient(1.5px 1.5px at 8% 15%, rgba(99,102,241,0.4) 0%, transparent 100%),
-    radial-gradient(1px 1px at 22% 45%, rgba(167,139,250,0.3) 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 38% 8%, rgba(99,102,241,0.35) 0%, transparent 100%),
-    radial-gradient(1px 1px at 55% 70%, rgba(139,92,246,0.25) 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 72% 25%, rgba(99,102,241,0.4) 0%, transparent 100%),
-    radial-gradient(1px 1px at 85% 55%, rgba(167,139,250,0.3) 0%, transparent 100%),
-    radial-gradient(1px 1px at 15% 80%, rgba(99,102,241,0.2) 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 92% 90%, rgba(139,92,246,0.35) 0%, transparent 100%);
+  top: 40px; bottom: 40px; left: 0; right: 0;
+  width: 100%; height: calc(100% - 80px);
+  pointer-events: none; z-index: 0;
 }
 
-/* Orbit line */
-.orbit-line {
-  position: absolute;
-  left: 38px;
-  top: 40px;
-  bottom: 40px;
-  width: 2px;
-  background: linear-gradient(to bottom,
-    transparent,
-    rgba(99,102,241,0.15) 10%,
-    rgba(99,102,241,0.15) 90%,
-    transparent
-  );
-  pointer-events: none;
+.zigzag-grid {
+  display: flex; flex-direction: column; gap: 8px;
+  position: relative; z-index: 1;
 }
 
-/* ===== Planet Card ===== */
-.planet-card {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  padding: 14px 18px;
-  border-radius: 14px;
-  text-decoration: none !important;
-  color: var(--vp-c-text-1) !important;
-  position: relative;
+.planet-node {
+  display: flex; align-items: center; gap: 20px;
+  padding: 16px 20px; border-radius: 16px;
+  text-decoration: none !important; color: var(--vp-c-text-1) !important;
   border: 1px solid transparent;
-  transition: all 0.25s ease;
-  animation: slideIn 0.4s ease-out backwards;
-  animation-delay: calc(var(--i) * 0.06s);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: nodeSlideIn 0.5s ease-out backwards;
+  animation-delay: calc(var(--i) * 0.08s);
 }
 
-.planet-card:hover {
-  background: var(--vp-c-brand-soft);
-  border-color: rgba(99,102,241,0.25);
-  transform: translateX(6px) scale(1.01);
-}
+.planet-node.left { margin-right: 20%; flex-direction: row; }
+.planet-node.right { margin-left: 20%; flex-direction: row-reverse; text-align: right; }
+.planet-node.right .node-info { align-items: flex-end; }
 
-.planet-card.featured {
-  border: 1px solid rgba(99,102,241,0.2);
+.planet-node:hover {
   background: rgba(99,102,241,0.04);
+  border-color: rgba(99,102,241,0.12);
+  transform: scale(1.02);
 }
 
-.planet-card.destination {
-  border: 1px solid rgba(245,158,11,0.2);
-  background: rgba(245,158,11,0.04);
+.planet-node.core {
+  background: rgba(99,102,241,0.03);
+  border: 1px solid rgba(99,102,241,0.1);
 }
 
-/* ===== Planet Orb ===== */
-.planet-orb {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  position: relative;
-  z-index: 2;
-  transition: transform 0.3s, box-shadow 0.3s;
+.planet-node.destination {
+  background: rgba(245,158,11,0.03);
+  border: 1px solid rgba(245,158,11,0.1);
 }
 
-.planet-card:hover .planet-orb {
-  transform: scale(1.12);
+.node-planet { position: relative; flex-shrink: 0; width: 72px; height: 72px; }
+.node-planet.big { width: 84px; height: 84px; }
+
+.planet-svg {
+  width: 100%; height: 100%;
+  filter: drop-shadow(0 0 8px rgba(99,102,241,0.15));
+  transition: transform 0.4s, filter 0.4s;
 }
 
-.planet-orb span {
-  font-size: 22px;
+.planet-node:hover .planet-svg {
+  transform: scale(1.12) rotate(5deg);
+  filter: drop-shadow(0 0 16px var(--c));
 }
 
-/* Planet colors + glow */
-.p1 { background: linear-gradient(135deg, #3b82f6, #1e40af); }
-.p2 { background: linear-gradient(135deg, #8b5cf6, #5b21b6); }
-.p3 { background: linear-gradient(135deg, #06b6d4, #0e7490); }
-.p4 { background: linear-gradient(135deg, #6366f1, #4338ca); }
-.p5 { background: linear-gradient(135deg, #f59e0b, #b45309); }
-.p6 { background: linear-gradient(135deg, #ef4444, #b91c1c); }
-.p7 { background: linear-gradient(135deg, #10b981, #047857); }
-.p8 { background: linear-gradient(135deg, #f59e0b, #ea580c); }
-
-.planet-glow {
-  position: absolute;
-  left: 18px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  filter: blur(12px);
-  opacity: 0;
-  transition: opacity 0.3s;
-  pointer-events: none;
-  z-index: 1;
+.planet-ring-glow {
+  position: absolute; inset: -8px; border-radius: 50%;
+  background: radial-gradient(circle, var(--c) 0%, transparent 70%);
+  opacity: 0; filter: blur(12px);
+  transition: opacity 0.4s; pointer-events: none;
 }
 
-.planet-card:hover .planet-glow { opacity: 0.5; }
+.planet-node:hover .planet-ring-glow { opacity: 0.25; }
+.core-glow { opacity: 0.12; }
+.dest-glow { opacity: 0.15; }
 
-.p1-glow { background: #3b82f6; }
-.p2-glow { background: #8b5cf6; }
-.p3-glow { background: #06b6d4; }
-.p4-glow { background: #6366f1; }
-.p5-glow { background: #f59e0b; }
-.p6-glow { background: #ef4444; }
-.p7-glow { background: #10b981; }
-.p8-glow { background: #f59e0b; }
+.node-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 
-/* Always glow for destination */
-.planet-card.destination .planet-glow { opacity: 0.35; }
-.planet-card.destination:hover .planet-glow { opacity: 0.6; }
-
-/* ===== Card Body ===== */
-.card-body {
-  flex: 1;
-  min-width: 0;
+.node-phase {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1.2px; color: var(--c);
 }
 
-.phase-badge {
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
-  color: var(--vp-c-brand-1);
-  margin-bottom: 1px;
+.node-title { font-size: 1.05rem; font-weight: 700; line-height: 1.3; }
+.node-desc { font-size: 0.8rem; opacity: 0.5; line-height: 1.35; }
+
+.node-time {
+  display: inline-block; margin-top: 4px; font-size: 11px; font-weight: 600;
+  padding: 2px 10px; border-radius: 8px;
+  background: var(--vp-c-bg-soft); color: var(--vp-c-text-2);
+  opacity: 0.6; width: fit-content;
 }
 
-.planet-card.destination .phase-badge {
-  color: #f59e0b;
+.planet-node.destination .node-phase { color: #f59e0b; }
+
+@keyframes nodeSlideIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.card-body h3 {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.3;
-}
+.dark .planet-node:hover { background: rgba(99,102,241,0.06); }
 
-.card-body p {
-  margin: 3px 0 0;
-  font-size: 0.82rem;
-  opacity: 0.55;
-  line-height: 1.35;
-}
-
-.time-tag {
-  display: inline-block;
-  margin-top: 5px;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 1px 8px;
-  border-radius: 8px;
-  background: var(--vp-c-bg-soft);
-  color: var(--vp-c-text-2);
-  opacity: 0.7;
-}
-
-/* ===== Animation ===== */
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ===== Dark mode ===== */
-.dark .galaxy {
-  background: rgba(0,0,0,0.15);
-  border-radius: 20px;
-  padding: 8px;
-}
-
-.dark .orbit-line {
-  background: linear-gradient(to bottom,
-    transparent,
-    rgba(99,102,241,0.2) 10%,
-    rgba(99,102,241,0.2) 90%,
-    transparent
-  );
-}
-
-/* ===== Mobile ===== */
 @media (max-width: 640px) {
-  .roadmap-page { padding: 0 0.75rem 2rem; }
+  .roadmap-page { padding: 0 0.75rem 2.5rem; }
   .roadmap-title { font-size: 1.5rem; }
-  .planet-card { gap: 12px; padding: 10px 12px; }
-  .planet-orb { width: 42px; height: 42px; }
-  .planet-orb span { font-size: 18px; }
-  .card-body h3 { font-size: 0.9rem; }
-  .card-body p { font-size: 0.78rem; }
-  .orbit-line { left: 31px; }
-  .planet-glow { left: 12px; width: 42px; height: 42px; }
+  .planet-node.left, .planet-node.right {
+    margin-left: 0; margin-right: 0;
+    flex-direction: row; text-align: left;
+  }
+  .planet-node.right .node-info { align-items: flex-start; }
+  .node-planet { width: 56px; height: 56px; }
+  .node-planet.big { width: 64px; height: 64px; }
+  .planet-node { gap: 14px; padding: 12px 14px; }
+  .node-title { font-size: 0.95rem; }
+  .zigzag-path { display: none; }
 }
 </style>
