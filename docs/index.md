@@ -13,8 +13,8 @@ hero:
       text: Bắt đầu ngay
       link: /fundamentals/
     - theme: alt
-      text: GitHub
-      link: https://github.com/xbsvhn/qa-engineer-hub
+      text: Xem Roadmap
+      link: /roadmap
 
 features:
   - icon: 📚

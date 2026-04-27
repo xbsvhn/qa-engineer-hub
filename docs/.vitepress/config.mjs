@@ -244,6 +244,7 @@ export default defineConfig({
           },
           { text: 'CI/CD', link: '/cicd/' },
           { text: 'Best Practices', link: '/best-practices/' },
+          { text: 'Roadmap', link: '/roadmap' },
         ],
         sidebar: viSidebar,
         outline: { label: 'Nội dung trang', level: [2, 3] },
@@ -285,6 +286,7 @@ export default defineConfig({
           },
           { text: 'CI/CD', link: '/en/cicd/' },
           { text: 'Best Practices', link: '/en/best-practices/' },
+          { text: 'Roadmap', link: '/roadmap' },
         ],
         sidebar: enSidebar,
         outline: { label: 'On this page', level: [2, 3] },
@@ -300,7 +302,7 @@ export default defineConfig({
     siteTitle: 'QA Engineer Hub',
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/xbsvhn/qa-engineer-hub' }
+      { icon: 'linkedin', link: 'https://www.linkedin.com/in/namvuhoai/' },
     ],
 
     footer: {
