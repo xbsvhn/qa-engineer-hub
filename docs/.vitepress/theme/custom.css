@@ -55,39 +55,77 @@
   overflow: hidden;
 }
 
-/* Animated gradient mesh background */
-.VPHero::before {
+/* Animated gradient orbs */
+.VPHero::before,
+.VPHero::after {
   content: '';
   position: absolute;
-  inset: -50%;
-  background:
-    radial-gradient(ellipse 600px 400px at 20% 30%, rgba(99,102,241,0.08) 0%, transparent 70%),
-    radial-gradient(ellipse 500px 350px at 80% 60%, rgba(139,92,246,0.06) 0%, transparent 70%),
-    radial-gradient(ellipse 400px 300px at 50% 80%, rgba(167,139,250,0.05) 0%, transparent 70%);
-  animation: meshFloat 12s ease-in-out infinite;
+  border-radius: 50%;
   pointer-events: none;
   z-index: 0;
+  filter: blur(70px);
 }
 
-@keyframes meshFloat {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  33% { transform: translate(30px, -20px) rotate(1deg); }
-  66% { transform: translate(-20px, 15px) rotate(-1deg); }
+.VPHero::before {
+  width: 500px; height: 500px;
+  top: -25%; left: -8%;
+  background: radial-gradient(circle, rgba(99,102,241,0.13) 0%, transparent 70%);
+  animation: orbFloat1 14s ease-in-out infinite;
+}
+
+.VPHero::after {
+  width: 400px; height: 400px;
+  bottom: -20%; right: -5%;
+  background: radial-gradient(circle, rgba(139,92,246,0.10) 0%, transparent 70%);
+  animation: orbFloat2 18s ease-in-out infinite;
+}
+
+@keyframes orbFloat1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(60px, 30px) scale(1.1); }
+  66% { transform: translate(-30px, -20px) scale(0.95); }
+}
+
+@keyframes orbFloat2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  40% { transform: translate(-50px, -25px) scale(1.08); }
+  70% { transform: translate(40px, 20px) scale(0.92); }
 }
 
 .VPHero .container { position: relative; z-index: 1; }
 
-/* Animated gradient title */
+/* Title entrance + shimmer */
 .VPHero .text {
   font-size: 48px !important;
   font-weight: 800 !important;
   letter-spacing: -0.02em;
-  animation: heroFadeIn 0.8s ease-out;
+  animation: heroSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .VPHero .name {
   background-size: 200% 200% !important;
   animation: gradientShift 6s ease-in-out infinite !important;
+  position: relative;
+}
+
+/* Shimmer sweep across title */
+.VPHero .clip {
+  position: relative;
+  overflow: hidden;
+}
+
+.VPHero .clip::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  animation: shimmerSweep 4s ease-in-out 1s infinite;
+  pointer-events: none;
+}
+
+@keyframes shimmerSweep {
+  0%, 100% { left: -100%; }
+  50% { left: 150%; }
 }
 
 @keyframes gradientShift {
@@ -95,41 +133,91 @@
   50% { background-position: 100% 50%; }
 }
 
+/* "Knowledge Base" with animated underline */
+.VPHero .text .clip:last-child {
+  position: relative;
+  display: inline-block;
+}
+
+.VPHero .main .text {
+  position: relative;
+}
+
 .VPHero .tagline {
   font-size: 18px !important;
   line-height: 1.6;
-  opacity: 0.85;
+  opacity: 0;
   max-width: 520px;
-  animation: heroFadeIn 0.8s ease-out 0.1s backwards;
+  animation: heroSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.12s forwards;
 }
 
 .VPHero .actions {
-  animation: heroFadeIn 0.8s ease-out 0.2s backwards;
+  opacity: 0;
+  animation: heroSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.24s forwards;
 }
 
+/* Logo: float + glow + rotating ring */
 .VPHero .image-container {
+  animation: heroLogoIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards;
+  position: relative;
+}
+
+.VPHero .image-container .image-bg {
   animation: heroFloat 6s ease-in-out infinite;
 }
 
-/* Hero logo glow pulse */
-.VPHero .image-container img {
-  filter: drop-shadow(0 0 20px rgba(99,102,241,0.2));
-  animation: logoPulse 4s ease-in-out infinite;
+.VPHero .image-container img,
+.VPHero .image-container .VPImage {
+  animation: heroFloat 6s ease-in-out infinite;
+  filter: drop-shadow(0 0 24px rgba(99,102,241,0.25));
+  position: relative;
+  z-index: 2;
 }
 
-@keyframes logoPulse {
-  0%, 100% { filter: drop-shadow(0 0 20px rgba(99,102,241,0.2)); }
-  50% { filter: drop-shadow(0 0 32px rgba(99,102,241,0.35)); }
+/* Rotating ring around logo */
+.VPHero .image-container::before {
+  content: '';
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  border: 2px dashed rgba(99,102,241,0.2);
+  animation: logoRingSpin 20s linear infinite;
+  z-index: 1;
 }
 
-@keyframes heroFadeIn {
-  from { opacity: 0; transform: translateY(16px); }
+/* Glow pulse behind logo */
+.VPHero .image-container::after {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%);
+  animation: logoGlowPulse 3s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes logoRingSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes logoGlowPulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+
+@keyframes heroSlideUp {
+  from { opacity: 0; transform: translateY(24px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes heroLogoIn {
+  from { opacity: 0; transform: scale(0.8) rotate(-10deg); }
+  to { opacity: 1; transform: scale(1) rotate(0deg); }
 }
 
 @keyframes heroFloat {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  50% { transform: translateY(-12px); }
 }
 
 /* Hero buttons */
@@ -139,19 +227,40 @@
   font-weight: 600;
   font-size: 15px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 }
 
 .VPHero .actions .VPButton.brand {
   box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
 }
 
+/* Shine sweep on brand button */
+.VPHero .actions .VPButton.brand::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  animation: btnShine 3s ease-in-out 2s infinite;
+}
+
+@keyframes btnShine {
+  0%, 100% { left: -100%; }
+  50% { left: 150%; }
+}
+
 .VPHero .actions .VPButton.brand:hover {
-  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
-  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(99, 102, 241, 0.5);
+  transform: translateY(-3px) scale(1.02);
+}
+
+.VPHero .actions .VPButton.alt {
+  backdrop-filter: blur(8px);
 }
 
 .VPHero .actions .VPButton.alt:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.02);
+  border-color: var(--vp-c-brand-1);
 }
 
 /* ===== Feature Cards ===== */
