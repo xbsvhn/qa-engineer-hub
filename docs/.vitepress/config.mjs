@@ -301,9 +301,7 @@ export default defineConfig({
     logo: '/logo.svg',
     siteTitle: 'QA Engineer Hub',
 
-    socialLinks: [
-      { icon: 'linkedin', link: 'https://www.linkedin.com/in/namvuhoai/' },
-    ],
+    socialLinks: [],
 
     footer: {
       message: 'Open-source QA knowledge base — Built with VitePress',
