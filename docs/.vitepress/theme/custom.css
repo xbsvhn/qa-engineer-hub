@@ -312,9 +312,21 @@
   background: rgba(99, 102, 241, 0.35);
 }
 
-/* ===== Smooth scroll ===== */
+/* ===== Smooth scroll & Dark mode transition ===== */
 html {
   scroll-behavior: smooth;
+}
+
+html, body {
+  transition: background-color 0.3s ease, color 0.2s ease;
+}
+
+.VPNav,
+.VPSidebar,
+.VPContent,
+.VPFooter,
+.VPDoc {
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 /* ===== About Nav Icon ===== */
@@ -364,6 +376,115 @@ html {
 .VPDocOutlineItem .outline-link:hover {
   color: var(--vp-c-brand-1);
   padding-left: 4px;
+}
+
+/* ===== External Link Indicator ===== */
+.vp-doc a[href^="http"]::after {
+  content: '';
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  margin-left: 3px;
+  margin-bottom: 1px;
+  background: currentColor;
+  vertical-align: middle;
+  opacity: 0.35;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/%3E%3Cpolyline points='15 3 21 3 21 9'/%3E%3Cline x1='10' y1='14' x2='21' y2='3'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/%3E%3Cpolyline points='15 3 21 3 21 9'/%3E%3Cline x1='10' y1='14' x2='21' y2='3'/%3E%3C/svg%3E");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  transition: opacity 0.15s;
+}
+
+.vp-doc a[href^="http"]:hover::after {
+  opacity: 0.6;
+}
+
+/* Don't show on images, badges, or nav links */
+.vp-doc a[href^="http"] img + ::after,
+.VPFeatures a::after,
+.VPNavBarMenuLink a::after {
+  display: none !important;
+}
+
+/* ===== Code Block Copy Button ===== */
+.vp-doc div[class*='language-'] button.copy {
+  border-radius: 8px;
+  border: 1px solid var(--vp-c-divider);
+  background: var(--vp-c-bg);
+  transition: all 0.2s ease;
+  opacity: 0;
+}
+
+.vp-doc div[class*='language-']:hover button.copy {
+  opacity: 1;
+}
+
+.vp-doc div[class*='language-'] button.copy:hover {
+  border-color: var(--vp-c-brand-1);
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-1);
+}
+
+.vp-doc div[class*='language-'] button.copy.copied {
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+}
+
+/* ===== Blockquote ===== */
+.vp-doc blockquote {
+  border-left: 3px solid var(--vp-c-brand-1);
+  background: var(--vp-c-brand-soft);
+  padding: 12px 20px;
+  border-radius: 0 8px 8px 0;
+  margin: 16px 0;
+  color: var(--vp-c-text-2);
+  font-style: italic;
+}
+
+.vp-doc blockquote p {
+  margin: 0;
+}
+
+/* ===== Keyboard (kbd) ===== */
+.vp-doc kbd {
+  display: inline-block;
+  padding: 2px 7px;
+  font-size: 0.8em;
+  font-family: var(--vp-font-family-mono);
+  line-height: 1.4;
+  color: var(--vp-c-text-1);
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-divider);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.06);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* ===== Focus States (Accessibility) ===== */
+:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.VPButton:focus-visible,
+.VPNavBarMenuLink .VPLink:focus-visible,
+.VPSidebar .VPSidebarItem .link:focus-visible,
+.about-nav-icon:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
+}
+
+/* ===== Last Updated ===== */
+.VPDocFooter .VPLastUpdated {
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: var(--vp-c-bg-soft);
+  display: inline-block;
 }
 
 /* ===== Mobile ===== */
