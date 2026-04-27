@@ -2,10 +2,6 @@
 layout: page
 ---
 
-<script setup>
-import { withBase } from 'vitepress'
-</script>
-
 <div class="rm-page">
 
 <div class="rm-header">
@@ -23,13 +19,13 @@ import { withBase } from 'vitepress'
       <span class="tl-desc">Testing Concepts · SDLC · Agile · Test Design</span>
       <em class="tl-time">Tháng 1-2</em>
     </div>
-    <a :href="withBase('/fundamentals/')" class="tl-planet"><div class="tl-orb"><div class="tl-ring"></div><span>📚</span></div></a>
+    <a href="/qa-engineer-hub/fundamentals/" class="tl-planet"><div class="tl-orb"><div class="tl-ring"></div><span>📚</span></div></a>
     <div class="tl-spacer"></div>
   </div>
 
   <div class="tl-row" style="--i:1;--c:#8b5cf6">
     <div class="tl-spacer"></div>
-    <a :href="withBase('/manual-testing/')" class="tl-planet"><div class="tl-orb"><div class="tl-ring"></div><span>🔍</span></div></a>
+    <a href="/qa-engineer-hub/manual-testing/" class="tl-planet"><div class="tl-orb"><div class="tl-ring"></div><span>🔍</span></div></a>
     <div class="tl-content tl-right">
       <b class="tl-phase">Phase 2</b>
       <b class="tl-name">Manual Testing</b>
@@ -45,13 +41,13 @@ import { withBase } from 'vitepress'
       <span class="tl-desc">HTTP · REST · Postman · API Automation</span>
       <em class="tl-time">Tháng 3-4</em>
     </div>
-    <a :href="withBase('/api-testing/')" class="tl-planet"><div class="tl-orb"><div class="tl-ring"></div><span>🔗</span></div></a>
+    <a href="/qa-engineer-hub/api-testing/" class="tl-planet"><div class="tl-orb"><div class="tl-ring"></div><span>🔗</span></div></a>
     <div class="tl-spacer"></div>
   </div>
 
   <div class="tl-row tl-core" style="--i:3;--c:#6366f1">
     <div class="tl-spacer"></div>
-    <a :href="withBase('/automation/')" class="tl-planet big"><div class="tl-orb"><div class="tl-ring"></div><div class="tl-ring inner"></div><span>🤖</span></div></a>
+    <a href="/qa-engineer-hub/automation/" class="tl-planet big"><div class="tl-orb"><div class="tl-ring"></div><div class="tl-ring inner"></div><span>🤖</span></div></a>
     <div class="tl-content tl-right">
       <b class="tl-phase">Phase 4 — Core</b>
       <b class="tl-name">Automation</b>
@@ -67,13 +63,13 @@ import { withBase } from 'vitepress'
       <span class="tl-desc">Load Testing · JMeter · K6</span>
       <em class="tl-time">Tháng 7-8</em>
     </div>
-    <a :href="withBase('/performance/')" class="tl-planet"><div class="tl-orb"><div class="tl-ring"></div><span>⚡</span></div></a>
+    <a href="/qa-engineer-hub/performance/" class="tl-planet"><div class="tl-orb"><div class="tl-ring"></div><span>⚡</span></div></a>
     <div class="tl-spacer"></div>
   </div>
 
   <div class="tl-row" style="--i:5;--c:#ef4444">
     <div class="tl-spacer"></div>
-    <a :href="withBase('/security/')" class="tl-planet"><div class="tl-orb"><div class="tl-ring"></div><span>🛡️</span></div></a>
+    <a href="/qa-engineer-hub/security/" class="tl-planet"><div class="tl-orb"><div class="tl-ring"></div><span>🛡️</span></div></a>
     <div class="tl-content tl-right">
       <b class="tl-phase">Phase 6</b>
       <b class="tl-name">Security</b>
@@ -89,13 +85,13 @@ import { withBase } from 'vitepress'
       <span class="tl-desc">Git · GitHub Actions · Docker</span>
       <em class="tl-time">Tháng 9-10</em>
     </div>
-    <a :href="withBase('/cicd/')" class="tl-planet"><div class="tl-orb"><div class="tl-ring"></div><span>🔄</span></div></a>
+    <a href="/qa-engineer-hub/cicd/" class="tl-planet"><div class="tl-orb"><div class="tl-ring"></div><span>🔄</span></div></a>
     <div class="tl-spacer"></div>
   </div>
 
   <div class="tl-row tl-dest" style="--i:7;--c:#f59e0b">
     <div class="tl-spacer"></div>
-    <a :href="withBase('/best-practices/')" class="tl-planet big"><div class="tl-orb"><div class="tl-ring"></div><div class="tl-ring inner"></div><span>🌟</span></div></a>
+    <a href="/qa-engineer-hub/best-practices/" class="tl-planet big"><div class="tl-orb"><div class="tl-ring"></div><div class="tl-ring inner"></div><span>🌟</span></div></a>
     <div class="tl-content tl-right">
       <b class="tl-phase">Destination</b>
       <b class="tl-name">Senior QA Engineer</b>
